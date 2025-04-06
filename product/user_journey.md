@@ -1,14 +1,49 @@
 
-# Search, Select, and Follow Recipe
+# Recipe Search & Selection Feature
 
-## Dependency
-* [required] user account
-* [optional] user's preferences: diet, budget
-* [optional] user's ingredients: Array<(item,quantity,unit_of_measure)>
-* [optional] user's equipment: Array<(item,quantity,unit_of_measure)>
-* [optional] user's favourite recipes: Array<(item,quantity,unit_of_measure)>
 
-## Steps
+## Introduction
+
+The Recipe Search & Selection feature enables users to discover, view, and follow cooking recipes tailored to their specific needs and preferences. By leveraging both a curated database of existing recipes and dynamic LLM-generated content, the system provides personalized recommendations based on user-specified dietary restrictions, budget constraints, available ingredients, and kitchen equipment. This intelligent approach to recipe discovery simplifies meal planning while accommodating individual circumstances, allowing users to find appropriate recipes quickly and receive guidance on any missing requirements.
+
+
+## Dependencies
+
+### Required Dependencies
+- **User Authentication System**
+  - Active user account with unique identifier
+  - Authentication tokens with appropriate permission levels
+  - Session management capabilities
+
+### Optional User Preference Dependencies
+
+- **Dietary Preferences**
+  - Type: `Array<String>`
+  - Schema: `[preference_type, preference_value, preference_strength]`
+  - Examples: `["restriction", "gluten-free", "strict"]`, `["preference", "low-carb", "moderate"]`
+
+- **Budget Configuration**
+  - Type: `Object`
+  - Schema: `{currency: String, max_per_meal: Number, max_per_week: Number}`
+  - Example: `{currency: "USD", max_per_meal: 15.00, max_per_week: 85.00}`
+
+- **Ingredient Inventory**
+  - Type: `Array<Object>`
+  - Schema: `[{item_id: String, item_name: String, quantity: Number, unit: String, expiry_date: Date}]`
+  - Example: `[{item_id: "i123", item_name: "chicken breast", quantity: 2, unit: "pound", expiry_date: "2025-04-10"}]`
+
+- **Equipment Registry**
+  - Type: `Array<Object>`
+  - Schema: `[{equipment_id: String, equipment_name: String, quantity: Number}]`
+  - Example: `[{equipment_id: "e456", equipment_name: "blender", quantity: 1}]`
+
+- **Favorite Recipes**
+  - Type: `Array<Object>`
+  - Schema: `[{recipe_id: String, last_made: Date, rating: Number, notes: String}]`
+  - Example: `[{recipe_id: "r789", last_made: "2025-03-15", rating: 4.5, notes: "Add more garlic next time"}]`
+
+
+## Process
 
 ```mermaid
 flowchart TD
