@@ -1,4 +1,4 @@
-# Picture-to-Palatable (PtP) 📸->🍲
+# Picture-to-Palatable (PtP) 📸➡🍲
 
 ## AI-Powered Home Cooking Assistant
 
