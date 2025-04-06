@@ -114,13 +114,18 @@ Picture-to-Palatable helps you answer critical cooking questions:
 
 This project is licensed under the GNU GPLv3 License - see the see the [LICENSE](LICENSE) file for details.
 
-<!--
 ## 🙏 Acknowledgments
 
 - Thanks to [Hackathon Name] for the opportunity
-- Special thanks to our mentors and advisors
+- Special thanks to our mentors and advisors from
+  * [Vultr](https://www.vultr.com/)
+  * [AMD](https://www.amd.com/)
+  * [Pinecone](https://www.pinecone.io/)
+  * [Huggingface](https://huggingface.co/)
+  * [Mistral AI](https://mistral.ai/)
+  * [Luma Labs](https://lumalabs.ai/)
+  * [Twelve Labs](https://www.twelvelabs.io/)
 - All open-source libraries and APIs that made this project possible
---->
 
 ---
 
