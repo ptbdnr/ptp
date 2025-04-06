@@ -9,6 +9,8 @@ Picture-to-Palatable is a multi-modal AI application that transforms the way you
 
 **Developed during a 2-week hackathon to bring AI innovation into your kitchen.**
 
+Hackaton: [The Ultimate, Multi-modal, AI Acceleration Event LPB 25](https://www.kxsb.org/lpb25)
+
 PtP DEMO: TBC
 
 ## 🌟 Features
