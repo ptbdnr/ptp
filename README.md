@@ -39,9 +39,9 @@ Picture-to-Palatable leverages a modular architecture:
 
 1. **Input Processing Module**:
    - Text processing
-   - Speech-to-text conversion
+   - Speech-to-text conversion (perhaps native support on device?)
    - Image recognition
-   - Video frame analysis
+   - Video frame analysis (perhaps via video to image, then image recognition?)
 
 2. **AI Decision Engine**:
    - Dietary requirements analyzer
