@@ -1,0 +1,51 @@
+---
+config:
+  look: neo
+---
+flowchart LR
+ subgraph s2["Front"]
+        n2["Webapp"]
+  end
+ subgraph s3["Back"]
+        n3["API"]
+        n4["Ingredients"]
+        n5["Equipments"]
+        n6["Recipes"]
+        n7["Recommender"]
+        n8["VisionAI"]
+        n9["ObjectStore"]
+        n10["TextDB"]
+        n11["TextAndVectorDB"]
+        n12["EmbeddingModel"]
+        n13["LLM"]
+        n14["Text-To-Video"]
+        n15["Text-To-Speech"]
+        n16["Video-To-Sound"]
+  end
+ subgraph s1["Cloud"]
+        s2
+        s3
+  end
+    n1["Client"] --> n2
+    n2 --> n3
+    n3 --> n4 & n5 & n6 & n7
+    n4 --> n8 & n9 & n10
+    n5 --> n8 & n9 & n10
+    n6 --> n8 & n10 & n11
+    n7 --> n9 & n10 & n11 & n12 & n13 & n14 & n15 & n16
+    n2@{ icon: "fa:building"}
+    n3@{ icon: "fa:map"}
+    n4@{ icon: "fa:circle-play"}
+    n5@{ icon: "fa:circle-play"}
+    n6@{ icon: "fa:circle-play"}
+    n7@{ icon: "fa:circle-play"}
+    n8@{ icon: "fa:eye"}
+    n9@{ icon: "fa:folder-open"}
+    n10@{ icon: "fa:file-lines"}
+    n11@{ icon: "fa:clone"}
+    n12@{ icon: "fa:object-ungroup"}
+    n13@{ icon: "fa:chess-pawn"}
+    n14@{ icon: "fa:chess-knight"}
+    n15@{ icon: "fa:chess-bishop"}
+    n16@{ icon: "fa:chess-rook"}
+    n1@{ icon: "fa:circle-user"}
