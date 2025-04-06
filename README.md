@@ -116,7 +116,7 @@ This project is licensed under the GNU GPLv3 License - see the see the [LICENSE]
 
 ## 🙏 Acknowledgments
 
-- Thanks to [Hackathon Name] for the opportunity
+- Thanks to [KXSB LPB25](https://www.kxsb.org/lpb25) for the opportunity
 - Special thanks to our mentors and advisors from
   * [Vultr](https://www.vultr.com/)
   * [AMD](https://www.amd.com/)
