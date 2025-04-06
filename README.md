@@ -1,4 +1,4 @@
-# Picture-to-Palatable (P2P) 📸->🍲
+# Picture-to-Palatable (PtP) 📸->🍲
 
 ## AI-Powered Home Cooking Assistant
 
@@ -9,7 +9,7 @@ Picture-to-Palatable is a multi-modal AI application that transforms the way you
 
 **Developed during a 2-week hackathon to bring AI innovation into your kitchen.**
 
-P2P DEMO: TBC
+PtP DEMO: TBC
 
 ## 🌟 Features
 
