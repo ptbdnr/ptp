@@ -35,6 +35,8 @@ PtP DEMO: TBC
 
 Picture-to-Palatable leverages a modular architecture:
 
+![High Level Design](https://github.com/ptbdnr/main/ptp/assets/hld_v1.0.0.png)
+
 1. **Input Processing Module**:
    - Text processing
    - Speech-to-text conversion
