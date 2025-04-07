@@ -17,8 +17,8 @@ logger.addHandler(handler)
 def initialize_session_state() -> None:
     """Initialize the session state variables if they are not already set."""
     env_vars = {
-        "FOO": "FOO",
-        "BAR": "BAR",
+        # "FOO": "FOO",
+        # "BAR": "BAR",
     }
     for var, env in env_vars.items():
         if var not in st.session_state:
@@ -52,20 +52,20 @@ if theme and theme.get("base") == "dark":
 # Header
 with st.container():
     col1, col2 = st.columns([250, 800])
-    col1.image("media/Smiley.svg.png", width=150)
-    col2.title("Picture-to-Palatable (PtP) 📸➡🍲")
+    col1.image("media/Smiley.svg.png", width=10)
+    col2.write("Picture-to-Palatable (PtP) 📸➡🍲")
     col2.write("AI-Powered Home Cooking Assistant")
     col2.code("v0.0.1")
 
 # Side panel navigation
 pg = st.navigation(
     pages=[
-        st.Page("pages/recommend.py", title="Cook", icon="🧑‍🍳", default=True),
-        st.Page("pages/profile.py", title="Profile", icon="👤"),
-        st.Page("pages/ingredients.py", title="Ingredients", icon="🥫"),
-        st.Page("pages/equipment.py", title="Equipment", icon="🍳"),
-        st.Page("pages/repices.py", title="Fav Recipes", icon="🍲"),
-        st.Page("pages/shop.py", title="Shop", icon="🛒"),
+        st.Page("components/recommend.py", title="Cook", icon="🧑‍🍳", default=True),
+        st.Page("components/profile.py", title="Profile", icon="👤"),
+        st.Page("components/ingredients.py", title="Ingredients", icon="🥫"),
+        st.Page("components/equipment.py", title="Equipment", icon="🍳"),
+        st.Page("components/repices.py", title="Fav Recipes", icon="🍲"),
+        st.Page("components/shop.py", title="Shop", icon="🛒"),
     ],
     position="sidebar",
     # expanded=False,
