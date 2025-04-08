@@ -1,13 +1,19 @@
 # Blob Storage
 
+provider: Vultr
+
 storage name: `ptpblobtstnl001`
+
 location: Amsterdam, NL
+
 tier: Premium	 
 
 hostname: `ams1.vultrobjects.com`
 
 
 # Container Registry
+
+provider: Vultr
 
 url: `https://ams.vultrcr.com/ptpcrtstnl001`
 
