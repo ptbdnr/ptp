@@ -39,6 +39,9 @@ Picture-to-Palatable leverages a modular architecture:
 
 ![High Level Design](https://github.com/ptbdnr/ptp/blob/main/assets/hld_v1.0.1.png)
 
+[OpenAPI](https://swagger.io/specification/) specification is available [here](https://github.com/ptbdnr/ptp/blob/main/assets/openapi_v1.0.0.yaml). To review, use an editor like [SwaggerEditor](https://editor.swagger.io/).
+
+
 1. **Input Processing Module**:
    - Text processing
    - Speech-to-text conversion (perhaps native support on device?)
