@@ -41,3 +41,6 @@ docker pull hello-world:latest
 docker tag hello-world:latest ams.vultrcr.com/ptpcrtstnl001/hello-world:latest
 docker push ams.vultrcr.com/ptpcrtstnl001/hello-world:latest
 ```
+
+Useful links:
+* [Manage Credentials](https://docs.vultr.com/products/container-registry/management/configurations/generate-docker-config)
