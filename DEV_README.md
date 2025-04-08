@@ -10,6 +10,10 @@ tier: Premium
 
 hostname: `ams1.vultrobjects.com`
 
+Useful links:
+* [Manage Credentials](https://docs.vultr.com/products/cloud-storage/object-storage/management/manage-credentials)
+* [Python SDK](https://docs.vultr.com/how-to-use-vultr-object-storage-in-python)
+
 
 # Container Registry
 
