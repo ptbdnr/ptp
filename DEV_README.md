@@ -44,3 +44,10 @@ docker push ams.vultrcr.com/ptpcrtstnl001/hello-world:latest
 
 Useful links:
 * [Manage Credentials](https://docs.vultr.com/products/container-registry/management/configurations/generate-docker-config)
+
+
+# Mistral
+
+Useful links:
+* [Manage Credentials](https://docs.mistral.ai/getting-started/quickstart/)
+* [Console Access](https://console.mistral.ai)
