@@ -15,6 +15,14 @@ Useful links:
 * [Python SDK](https://docs.vultr.com/how-to-use-vultr-object-storage-in-python)
 
 
+# Vector Storage
+
+provider: Pinecone
+
+Useful links:
+* [Manage Credentials](https://docs.pinecone.io/reference/api/authentication)
+
+
 # Container Registry
 
 provider: Vultr
