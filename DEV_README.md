@@ -44,6 +44,7 @@ docker push ams.vultrcr.com/ptpcrtstnl001/hello-world:latest
 
 Useful links:
 * [Manage Credentials](https://docs.vultr.com/products/container-registry/management/configurations/generate-docker-config)
+* [FastAPI in Containers)(https://fastapi.tiangolo.com/deployment/docker/)
 
 
 # Mistral
