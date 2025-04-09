@@ -60,3 +60,4 @@ Useful links:
 Useful links:
 * [Manage Credentials](https://docs.mistral.ai/getting-started/quickstart/)
 * [Console Access](https://console.mistral.ai)
+* [Mistral AI Embeddings with Python SDK](https://docs.mistral.ai/capabilities/embeddings/)
