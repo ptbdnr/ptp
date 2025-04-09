@@ -78,7 +78,7 @@ app.add_middleware(
 db = {
     "users": {
         # Sample user data
-        "user123": {
+        DEFAULT_USER_ID: {
             "ingredients": Ingredients(ingredients=[
                 Ingredient(name="Tomato", quantity=5, unit="pieces", expiry_date=date(2025, 4, 15)),
                 Ingredient(name="Onion", quantity=3, unit="pieces", expiry_date=date(2025, 4, 20)),
