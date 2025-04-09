@@ -1,13 +1,5 @@
 # Picture-to-Palatable (PtP) 📸➡🍲
 
-<div style="width: 80%; margin: 0 auto;">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
-    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/mistral.svg" alt="Mistral" height="100"/>
-    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/pinecone.svg" alt="Pinecone" height="100"/>
-  </div>
-</div>
-
 ## AI-Powered Home Cooking Assistant
 
 [![License: GNU GPLv3](https://img.shields.io/badge/License-GPLv3-yellow.svg)](https://choosealicense.com/licenses/gpl-3.0/)
@@ -20,6 +12,15 @@ Picture-to-Palatable is a multi-modal AI application that transforms the way you
 Hackaton: [The Ultimate, Multi-modal, AI Acceleration Event LPB 25](https://www.kxsb.org/lpb25)
 
 PtP DEMO: TBC
+
+Partners:
+<div style="width: 80%; margin: 0 auto;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/mistral.svg" alt="Mistral" height="100"/>
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/pinecone.svg" alt="Pinecone" height="100"/>
+  </div>
+</div>
 
 ## 🌟 Features
 
