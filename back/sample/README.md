@@ -22,6 +22,14 @@ This implementation provides a solid foundation that you can extend with actual 
 
 # Developer Guide
 
+## Requirements
+
+* Python3.11
+* Docker
+* Vultr account with:
+    * Container Registry
+    * Compute instance
+
 ## Clone the repo
 
 Connect your host to GitHub
@@ -82,19 +90,29 @@ quick test
 curl http://127.0.0.1:8000/recommend -X POST
 ```
 
-### Run as a background service
+### Deploy to VM with Docker
+
+Ensure Docker daemon is running on your machine.
 
 ```shell
-# Install screen if not already available
-sudo apt-get install screen
+# Build the image
+docker build -t ptp/$IMAGE_NAME:$TAG .
+```
 
-# Start a new screen session
-screen -S fastapi_app
+```shell
+# Log into Vultr Container Registry 
+docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
 
-# Start your FastAPI app
-cd /path/to/project
-cd ./src
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+# Pull yout latest image
+docker pull ptp/$IMAGE_NAME:latest
 
-# Detach from screen with Ctrl+A followed by D
+# Tag and Push your image to Vults Container Registry
+docker tag $IMAGE_NAME:latest ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+docker push ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+```
+
+On the server run
+```shell
+docker pull ptp/$IMAGE_NAME:latest
+docker run -d --name mycontainer -p 80:80 myimage
 ```
