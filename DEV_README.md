@@ -1,4 +1,6 @@
-# Blob Storage
+# 📦 Storage
+
+## Blob Storage
 
 provider: Vultr
 
@@ -15,7 +17,7 @@ Useful links:
 * [Python SDK](https://docs.vultr.com/how-to-use-vultr-object-storage-in-python)
 
 
-# Vector Storage
+## Vector Storage
 
 provider: Pinecone
 
@@ -23,7 +25,7 @@ Useful links:
 * [Manage Credentials](https://docs.pinecone.io/reference/api/authentication)
 
 
-# Container Registry
+## Container Registry
 
 provider: Vultr
 
@@ -55,7 +57,28 @@ Useful links:
 * [FastAPI in Containers)(https://fastapi.tiangolo.com/deployment/docker/)
 
 
-# Mistral
+----------
+
+# 🖥️ Compute
+
+## Virtual Machine
+
+provider: Vultr
+
+name: `ptpvmtstde001`
+IP address: `95.179.135.1`
+user: `root`
+
+spec: 1 vCPU, 2GB RAM, 25GB NVMe, 4TB/mo
+location: Amserdam, NL
+cost: $28/mo
+
+
+----------
+
+# 🤝 Service
+
+## Mistral
 
 Useful links:
 * [Manage Credentials](https://docs.mistral.ai/getting-started/quickstart/)
