@@ -52,7 +52,6 @@ class Recipe(BaseModel):
 class RecommendedRecipes(BaseModel):
     """Model for recommended recipes."""
 
-    
     recipes: list[Recipe]
     missing_ingredients: list[str]
     missing_equipment: list[str]
@@ -131,7 +130,7 @@ async def recommend_recipe(
     )
 
 @app.get("/users/{userId}/ingredients", response_model=Ingredients)
-async def get_inventory(
+async def get_ingredients(
     userId: Annotated[str, Path()],
 ) -> Ingredients:
     """Get user inventory."""
@@ -141,7 +140,7 @@ async def get_inventory(
     return ingredients
 
 @app.post("/users/{userId}/ingredients")
-async def upsert_inventory(
+async def upsert_ingredients(
     userId: Annotated[str, Path()],
     ingredients: Ingredients,
 ) -> dict:
