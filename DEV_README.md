@@ -2,9 +2,7 @@
 
 ## Blob Storage
 
-provider: Vultr
-
-![image](https://github.com/user-attachments/assets/99b79296-5877-473d-8f79-f1c91a1e3b33)
+<img src="https://github.com/user-attachments/assets/f4a994e6-6bf6-4872-a7c8-936e44ba2634" alt="Vultr" height="100"/>
 
 | name              | hostname                | tier	  | location	     | cost/mo           |
 |---	              |---                      |---	    |---	           |--:                |
@@ -17,9 +15,7 @@ Useful links:
 
 ## Vector Storage
 
-provider: Pinecone
-
-![image](https://github.com/user-attachments/assets/50cd1c0e-c852-45d0-af30-e99040c08789)
+<img src="https://github.com/user-attachments/assets/a199e69e-01bb-42e8-b6fe-47dbd0c0b0ec" alt="Pinecone" height="100"/>
 
 Useful links:
 * [Manage Credentials](https://docs.pinecone.io/reference/api/authentication)
@@ -27,9 +23,7 @@ Useful links:
 
 ## Container Registry
 
-provider: Vultr
-
-![image](https://github.com/user-attachments/assets/99b79296-5877-473d-8f79-f1c91a1e3b33)
+<img src="https://github.com/user-attachments/assets/f4a994e6-6bf6-4872-a7c8-936e44ba2634" alt="Vultr" height="100"/>
 
 | url                                     | visibility  | tier	          | location	     | cost/mo |
 |---	                                    |---          |---	            |---	           |--:      |
@@ -61,15 +55,11 @@ Useful links:
 
 ## Virtual Machine
 
-provider: Vultr
-
-![image](https://github.com/user-attachments/assets/99b79296-5877-473d-8f79-f1c91a1e3b33)
+<img src="https://github.com/user-attachments/assets/f4a994e6-6bf6-4872-a7c8-936e44ba2634" alt="Vultr" height="100"/>
 
 | label           | IPv4            | user	    | spec                                | OS         | location	      | cost/mo |
 |---	            |---	            |---	      |---	                                |---         |---	            |--:	    |
 | `ptpvmtstnl001` | `95.179.135.1`	| `root` 	  | 1 vCPU, 2GB RAM, 25GB NVMe, 4TB/mo  | Ubuntu 24  | Amsterdam, NL  | $28     |
-
-
 
 ----------
 
@@ -79,9 +69,7 @@ provider: Vultr
 
 ## Reserved IP
 
-provider: Vultr
-
-![image](https://github.com/user-attachments/assets/99b79296-5877-473d-8f79-f1c91a1e3b33)
+<img src="https://github.com/user-attachments/assets/f4a994e6-6bf6-4872-a7c8-936e44ba2634" alt="Vultr" height="100"/>
 
 
 | label            | address          | IP Type	| location	     | cost/mo |
@@ -91,9 +79,7 @@ provider: Vultr
 
 ## LLM as a Service
 
-provider: Mistral
-
-![image](https://github.com/user-attachments/assets/fd98a2af-db5e-4617-a2b9-77c56ec46e90)
+<img src="https://github.com/user-attachments/assets/f737c360-0313-48d0-9096-255d92f3fde4" alt="Mistral" height="100"/>
 
 Useful links:
 * [Manage Credentials](https://docs.mistral.ai/getting-started/quickstart/)
