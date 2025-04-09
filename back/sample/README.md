@@ -82,7 +82,7 @@ quick test
 curl http://127.0.0.1:8000/recommend -X POST
 ```
 
-### Run the server in detached mode
+### Run as a background service
 
 ```shell
 # Install screen if not already available
