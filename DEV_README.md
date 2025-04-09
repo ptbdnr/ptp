@@ -73,7 +73,9 @@ provider: Vultr
 
 ----------
 
+
 # 🤝 Service
+
 
 ## Reserved IP
 
@@ -83,7 +85,10 @@ provider: Vultr
 |---	             |---	              |---	    |---	           |--:      |
 | `ptpriptstnl001` | `199.247.26.104`	| v4 	    | Amsterdam, NL  | $3      |
 
-## Mistral
+
+## LLM as a Service
+
+provider: Mistral
 
 Useful links:
 * [Manage Credentials](https://docs.mistral.ai/getting-started/quickstart/)
