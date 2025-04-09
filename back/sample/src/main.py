@@ -8,7 +8,7 @@ from fastapi import FastAPI, Form, HTTPException, Path
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-DEFAULT_USER_ID = "joedoe"
+DEFAULT_USER_ID = "kxsb"
 
 # Define the models based on the OpenAPI specification
 class Ingredient(BaseModel):
@@ -52,6 +52,7 @@ class Recipe(BaseModel):
 class RecommendedRecipes(BaseModel):
     """Model for recommended recipes."""
 
+    
     recipes: list[Recipe]
     missing_ingredients: list[str]
     missing_equipment: list[str]
