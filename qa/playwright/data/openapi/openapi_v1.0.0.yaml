@@ -1,0 +1,237 @@
+openapi: 3.0.0
+info:
+  title: Picture-to-Palatable API
+  description: AI-Powered Home Cooking Assistant API
+  version: 1.0.0
+  contact:
+    name: Team Picture-to-Palatable
+    url: https://github.com/ptbdnr/ptp
+  license:
+    name: GNU GPLv3
+    url: https://choosealicense.com/licenses/gpl-3.0/
+
+servers:
+  - url: https://example.ai/v1
+    description: Some Server
+
+paths:
+  /recommend:
+    post:
+      summary: Generate recipe recommendations
+      description: Return multi-modal recipe suggestions
+      operationId: recommendRecipe
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: User identifier for personalized recommendations
+                text:
+                  type: string
+                  description: Text description of desired recipe or ingredients
+      responses:
+        '200':
+          description: Successful recommendation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendedRecipes'
+
+  /users/{userId}/ingredients:
+    get:
+      summary: Get user's ingredient inventory
+      operationId: getInventory
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User's ingredient inventory
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredients'
+    post:
+      summary: Upsert user's ingredient inventory
+      operationId: upsertInventory
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/Ingredients'
+      responses:
+        '200':
+          description: Inventory updated successfully
+
+  /users/{userId}/equipments:
+    get:
+      summary: Get user's kitchen equipment
+      operationId: getEquipment
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User's kitchen equipment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Equipments'
+    post:
+      summary: Upsert user's kitchen equipment
+      operationId: upsertEquipment
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Equipments'
+      responses:
+        '200':
+          description: Equipment updated successfully
+
+  /users/{userId}/preferences:
+    get:
+      summary: Get user's dietary preferences and restrictions
+      operationId: getDietary
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User's dietary preferences and restrictions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPreferences'
+    post:
+      summary: Upsert user's dietary preferences and restrictions
+      operationId: upsertDietary
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPreferences'
+      responses:
+        '200':
+          description: Dietary preferences updated successfully
+        '400':
+          description: Invalid input
+        '404':
+          description: User not found
+
+components:
+  schemas:
+    RecommendedRecipes:
+      type: object
+      properties:
+        recipes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recipe'
+        missingIngredients:
+          type: array
+          items:
+            type: string
+        missingEquipment:
+          type: array
+          items:
+            type: string
+
+    Recipe:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        requiredEquipment:
+          type: array
+          items:
+            type: string
+
+    Ingredients:
+      type: object
+      properties:
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+
+    Ingredient:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: number
+        unit:
+          type: string
+        expiryDate:
+          type: string
+          format: date
+
+    Equipments:
+      type: object
+      properties:
+        equipments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Equipment'
+
+    Equipment:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: number
+        
+
+    UserPreferences:
+      type: object
+      properties:
+        preferences:
+          type: array
+          items:
+            type: string
+            enum: [keto, paleo, low-carb, low-fat, high-protein, mediterranean, vegetarian, vegan, gluten-free, dairy-free, nut-free]
