@@ -61,6 +61,7 @@ sudo apt install -y python3-pytest
 ## Create Python environment and install dependencies
 
 ```shell
+cd /path/to/project
 python3 -m venv .venv
 source .venv/bin/activate
 pip3 install -r requirements.txt
@@ -69,6 +70,7 @@ pip3 install -r requirements.txt
 ## Run the server
 
 ```shell
+cd /path/to/project
 cd ./src
 uvicorn main:app --reload
 ```
@@ -78,4 +80,21 @@ Access the interactive API documentation at `http://localhost:8000/docs`
 quick test
 ```shell
 curl http://127.0.0.1:8000/recommend -X POST
+```
+
+### Run the server in detached mode
+
+```shell
+# Install screen if not already available
+sudo apt-get install screen
+
+# Start a new screen session
+screen -S fastapi_app
+
+# Start your FastAPI app
+cd /path/to/project
+cd ./src
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+# Detach from screen with Ctrl+A followed by D
 ```
