@@ -44,7 +44,7 @@ test.describe('PTP', () => {
     });
 
 
-    test.describe('auto-generater', () => {
+    test.describe('auto-generated', () => {
         // Load OpenAPI spec from file
         const openApiSpecPath = filepath_to_openapi;
         const openApiSpec =  load(fs.readFileSync(openApiSpecPath, "utf8"))
