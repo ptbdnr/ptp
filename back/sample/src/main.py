@@ -1,43 +1,60 @@
+from __future__ import annotations
+
 import uuid
 from datetime import date
-from typing import List, Optional
+from typing import Annotated, Optional, cast
 
 from fastapi import FastAPI, Form, HTTPException, Path
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+DEFAULT_USER_ID = "joedoe"
 
 # Define the models based on the OpenAPI specification
 class Ingredient(BaseModel):
+    """Model for an ingredient."""
+
     name: str
     quantity: float
     unit: str
-    expiryDate: Optional[date] = None
+    expiry_date: Optional[date] = None
 
 class Ingredients(BaseModel):
-    ingredients: List[Ingredient]
+    """Model for a list of ingredients."""
+
+    ingredients: list[Ingredient]
 
 class Equipment(BaseModel):
+    """Model for a kitchen equipment."""
+
     name: str
     quantity: float
 
 class Equipments(BaseModel):
-    equipments: List[Equipment]
+    """Model for a list of kitchen equipments."""
+
+    equipments: list[Equipment]
 
 class UserPreferences(BaseModel):
-    preferences: List[str]
+    """Model for user dietary and budget preferences."""
+
+    preferences: list[str]
 
 class Recipe(BaseModel):
+    """Model for a recipe."""
+
     id: str
     name: str
     description: str
-    ingredients: List[Ingredient]
-    requiredEquipment: List[str]
+    ingredients: list[Ingredient]
+    required_equipment: list[str]
 
 class RecommendedRecipes(BaseModel):
-    recipes: List[Recipe]
-    missingIngredients: List[str]
-    missingEquipment: List[str]
+    """Model for recommended recipes."""
+
+    recipes: list[Recipe]
+    missing_ingredients: list[str]
+    missing_equipment: list[str]
 
 # Create FastAPI app
 app = FastAPI(
@@ -62,8 +79,8 @@ db = {
         # Sample user data
         "user123": {
             "ingredients": Ingredients(ingredients=[
-                Ingredient(name="Tomato", quantity=5, unit="pieces", expiryDate=date(2025, 4, 15)),
-                Ingredient(name="Onion", quantity=3, unit="pieces", expiryDate=date(2025, 4, 20)),
+                Ingredient(name="Tomato", quantity=5, unit="pieces", expiry_date=date(2025, 4, 15)),
+                Ingredient(name="Onion", quantity=3, unit="pieces", expiry_date=date(2025, 4, 20)),
             ]),
             "equipments": Equipments(equipments=[
                 Equipment(name="Knife", quantity=2),
@@ -77,9 +94,10 @@ db = {
 # Routes implementation
 @app.post("/recommend", response_model=RecommendedRecipes)
 async def recommend_recipe(
-    userId: str = Form(...),
-    text: str = Form(...),
-):
+    userId: Annotated[str, Form()] = DEFAULT_USER_ID,
+    text: Annotated[str, Form()] = "foo",
+) -> RecommendedRecipes:
+    """Recommend recipes based on user inventory and preferences."""
     # In a real application, this would call an AI model for recommendations
     # For demo purposes, return mock data
 
@@ -104,21 +122,29 @@ async def recommend_recipe(
                     Ingredient(name="Pasta", quantity=200, unit="grams"),
                     Ingredient(name="Olive oil", quantity=2, unit="tablespoons"),
                 ],
-                requiredEquipment=["Pot", "Pan", "Knife"],
+                required_equipment=["Pot", "Pan", "Knife"],
             ),
         ],
-        missingIngredients=["Pasta", "Olive oil"],
-        missingEquipment=["Pot"],
+        missing_ingredients=["Pasta", "Olive oil"],
+        missing_equipment=["Pot"],
     )
 
 @app.get("/users/{userId}/ingredients", response_model=Ingredients)
-async def get_inventory(userId: str = Path(...)):
+async def get_inventory(
+    userId: Annotated[str, Path()] = DEFAULT_USER_ID,
+) -> Ingredients:
+    """Get user inventory."""
     if userId not in db["users"]:
         raise HTTPException(status_code=404, detail="User not found")
-    return db["users"][userId]["ingredients"]
+    ingredients: Ingredients = cast(Ingredients, db["users"][userId]["ingredients"])
+    return ingredients
 
 @app.post("/users/{userId}/ingredients")
-async def upsert_inventory(ingredients: Ingredients, userId: str = Path(...)):
+async def upsert_inventory(
+    ingredients: Ingredients,
+    userId: Annotated[str, Path()] = DEFAULT_USER_ID,
+) -> dict:
+    """Update user inventory."""
     if userId not in db["users"]:
         db["users"][userId] = {
             "ingredients": ingredients,
@@ -130,13 +156,21 @@ async def upsert_inventory(ingredients: Ingredients, userId: str = Path(...)):
     return {"message": "Inventory updated successfully"}
 
 @app.get("/users/{userId}/equipments", response_model=Equipments)
-async def get_equipment(userId: str = Path(...)):
+async def get_equipment(
+    userId: str = Path(...)
+) -> Equipments:
+    """Get user kitchen equipment."""
     if userId not in db["users"]:
         raise HTTPException(status_code=404, detail="User not found")
-    return db["users"][userId]["equipments"]
+    equipments: Equipments = cast(Equipments, db["users"][userId]["equipments"])
+    return equipments
 
 @app.post("/users/{userId}/equipments")
-async def upsert_equipment(equipments: Equipments, userId: str = Path(...)):
+async def upsert_equipment(
+    equipments: Equipments,
+    userId: Annotated[str, Path()] = DEFAULT_USER_ID,
+) -> dict:
+    """Update user kitchen equipment."""
     if userId not in db["users"]:
         db["users"][userId] = {
             "ingredients": Ingredients(ingredients=[]),
@@ -148,13 +182,20 @@ async def upsert_equipment(equipments: Equipments, userId: str = Path(...)):
     return {"message": "Equipment updated successfully"}
 
 @app.get("/users/{userId}/preferences", response_model=UserPreferences)
-async def get_dietary(userId: str = Path(...)):
+async def get_dietary(
+    userId: str = Path(...)
+) -> UserPreferences:
+    """Get user dietary and budget preferences."""
     if userId not in db["users"]:
         raise HTTPException(status_code=404, detail="User not found")
-    return db["users"][userId]["preferences"]
+    user_preferences: UserPreferences = cast(UserPreferences, db["users"][userId]["preferences"])
+    return user_preferences
 
 @app.post("/users/{userId}/preferences")
-async def upsert_dietary(preferences: UserPreferences, userId: str = Path(...)):
+async def upsert_dietary(
+    preferences: UserPreferences, userId: str = Path(...)
+) -> dict:
+    """Update user dietary and budget preferences."""
     if userId not in db["users"]:
         db["users"][userId] = {
             "ingredients": Ingredients(ingredients=[]),
