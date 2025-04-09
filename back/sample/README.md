@@ -105,6 +105,7 @@ docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
 
 # [OPTIONAL] Pull yout latest image if not already on the machine
 docker pull ptp/$IMAGE_NAME:latest
+# on macOS you might need the suffix `--platform linux/x86_64`
 
 # Tag and Push your image to Vults Container Registry
 docker tag $IMAGE_NAME:latest ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
@@ -129,6 +130,7 @@ docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
 
 # Pull yout latest image
 docker pull ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+# on macOS you might need the suffix `--platform linux/x86_64`
 
 # Run image in detached mode
 docker run -d --name $CONTAINER_NAME -p 80:80 ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME
