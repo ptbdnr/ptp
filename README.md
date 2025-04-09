@@ -14,12 +14,16 @@ Hackaton: [The Ultimate, Multi-modal, AI Acceleration Event LPB 25](https://www.
 PtP DEMO: TBC
 
 Partners:
-<div style="width: 80%; margin: 0 auto;">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
-    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/mistral.svg" alt="Mistral" height="100"/>
-    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/pinecone.svg" alt="Pinecone" height="100"/>
-  </div>
+<div align="center">
+  <p style="width: 80%; margin: 0 auto;">
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100" valign="middle" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/mistral.svg" alt="Mistral" height="100" valign="middle" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/pinecone.svg" alt="Pinecone" height="100" valign="middle" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/lumalabs.svg" alt="LumaLab" height="40" valign="middle" />
+  </p>
 </div>
 
 ## 🌟 Features
