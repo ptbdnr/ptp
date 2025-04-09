@@ -103,7 +103,7 @@ docker build -t ptp/$IMAGE_NAME:$TAG .
 # Log into Vultr Container Registry 
 docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
 
-# Pull yout latest image
+# [OPTIONAL] Pull yout latest image if not already on the machine
 docker pull ptp/$IMAGE_NAME:latest
 
 # Tag and Push your image to Vults Container Registry
@@ -113,6 +113,12 @@ docker push ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
 
 On the server run
 ```shell
-docker pull ptp/$IMAGE_NAME:latest
-docker run -d --name mycontainer -p 80:80 myimage
+# Log into Vultr Container Registry 
+docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
+
+# Pull yout latest image
+docker pull ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+
+# Run image in detached mode
+docker run -d --name $CONTAINER_NAME -p 80:80 ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME
 ```
