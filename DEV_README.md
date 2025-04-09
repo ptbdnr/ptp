@@ -15,7 +15,7 @@ Useful links:
 
 ## Vector Storage
 
-<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
+<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/pinecone.svg" alt="Pinecone" height="100"/>
 
 Useful links:
 * [Manage Credentials](https://docs.pinecone.io/reference/api/authentication)
