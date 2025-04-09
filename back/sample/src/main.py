@@ -131,7 +131,7 @@ async def recommend_recipe(
 
 @app.get("/users/{userId}/ingredients", response_model=Ingredients)
 async def get_inventory(
-    userId: Annotated[str, Path()] = DEFAULT_USER_ID,
+    userId: Annotated[str, Path()],
 ) -> Ingredients:
     """Get user inventory."""
     if userId not in db["users"]:
@@ -141,8 +141,8 @@ async def get_inventory(
 
 @app.post("/users/{userId}/ingredients")
 async def upsert_inventory(
+    userId: Annotated[str, Path()],
     ingredients: Ingredients,
-    userId: Annotated[str, Path()] = DEFAULT_USER_ID,
 ) -> dict:
     """Update user inventory."""
     if userId not in db["users"]:
@@ -157,7 +157,7 @@ async def upsert_inventory(
 
 @app.get("/users/{userId}/equipments", response_model=Equipments)
 async def get_equipment(
-    userId: str = Path(...)
+    userId: str = Path(...),
 ) -> Equipments:
     """Get user kitchen equipment."""
     if userId not in db["users"]:
@@ -167,8 +167,8 @@ async def get_equipment(
 
 @app.post("/users/{userId}/equipments")
 async def upsert_equipment(
+    userId: Annotated[str, Path()],
     equipments: Equipments,
-    userId: Annotated[str, Path()] = DEFAULT_USER_ID,
 ) -> dict:
     """Update user kitchen equipment."""
     if userId not in db["users"]:
@@ -193,8 +193,8 @@ async def get_dietary(
 
 @app.post("/users/{userId}/preferences")
 async def upsert_dietary(
+    userId: Annotated[str, Path()],
     preferences: UserPreferences,
-    userId: Annotated[str, Path()] = DEFAULT_USER_ID,
 ) -> dict:
     """Update user dietary and budget preferences."""
     if userId not in db["users"]:
