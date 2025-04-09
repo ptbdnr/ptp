@@ -8,8 +8,12 @@ import { generateTests } from './openapi_parser';
 let apiContext: APIRequestContext;
 const baseURL = process.env.PTP_BACK_API_BASE_URL;
 const baseApiKey = process.env.PTP_BACK_API_KEY;
-const defaultUserId = process.env.PTP_BACK_API_USER_ID || 'kxsb';
 const filepath_to_openapi = process.env.OPENAPI_FILEPATH || path.join(__dirname, '..', 'data', 'openapi', 'openapi_v1.0.0.yaml');
+
+const defaultUserId = process.env.PTP_BACK_API_USER_ID || 'kxsb';
+const mockupIngredients = {"ingredients": [{"name": "ingred1", "quantity": 1, "unit": "kg"}]}
+const mockupEquipments = {"equipments": [{"name": "equip1", "quantity": 1}]}
+const mockupPreferences = {"preferences": ["pref1", "pref2"]}
 
 test('environment variables', async () => {
   console.log(`baseURL: ${baseURL}`);
@@ -46,7 +50,7 @@ test.describe('PTP', () => {
         const openApiSpec =  load(fs.readFileSync(openApiSpecPath, "utf8"))
 
         // Example function to generate tests for each endpoint
-        generateTests(openApiSpec, baseURL, baseApiKey, defaultUserId);
+        generateTests(openApiSpec, baseURL, baseApiKey, defaultUserId, mockupIngredients, mockupEquipments, mockupPreferences);
     }
     );
 });

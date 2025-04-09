@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 // Example function to generate tests for each endpoint
-export function generateTests(openApiSpec, baseURL, baseApiKey, defaultUserId) {
+export function generateTests(openApiSpec, baseURL, baseApiKey, defaultUserId, mockupIngredients, mockupEquipments, mockupPreferences) {
     for (const path in openApiSpec.paths) {
         for (const method in openApiSpec.paths[path]) {
             const endpoint = openApiSpec.paths[path][method];
@@ -16,12 +16,21 @@ export function generateTests(openApiSpec, baseURL, baseApiKey, defaultUserId) {
                 });
                 const url = `${baseURL}${compiled_path}`;
                 const headers = endpoint.security ? {} : { 'Content-Type': 'application/json' };
-                const body = endpoint.requestBody ? {} : null;
+                let request_body: string | null = null;
+                if (endpoint.requestBody) {
+                    if (compiled_path.includes('ingredients')) {
+                        request_body = JSON.stringify(mockupIngredients);
+                    } else if (compiled_path.includes('equipments')) {
+                        request_body = JSON.stringify(mockupEquipments);
+                    } else if (compiled_path.includes('preferences')) {
+                        request_body = JSON.stringify(mockupPreferences);
+                    }
+                }
                 console.log(`Request URL: ${url}`);
                 console.log(`Request Headers: ${JSON.stringify(headers)}`);
-                console.log(`Request Body: ${JSON.stringify(body)}`);
+                console.log(`Request Body: ${JSON.stringify(request_body)}`);
                 
-                const response = await request[method.toLowerCase()](url, { headers, data: body });
+                const response = await request[method.toLowerCase()](url, { headers, data: request_body });
                 console.log(`Response Status: ${response.status()}`);
 
                 expect(response.ok()).toBeTruthy();
