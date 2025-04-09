@@ -193,7 +193,8 @@ async def get_dietary(
 
 @app.post("/users/{userId}/preferences")
 async def upsert_dietary(
-    preferences: UserPreferences, userId: str = Path(...)
+    preferences: UserPreferences,
+    userId: Annotated[str, Path()] = DEFAULT_USER_ID,
 ) -> dict:
     """Update user dietary and budget preferences."""
     if userId not in db["users"]:
