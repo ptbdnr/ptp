@@ -65,8 +65,8 @@ Useful links:
 
 provider: Vultr
 
-| label           | IPv4            | user	    | spec                                | OS         | location	     | cost/mo |
-|---	            |---	            |---	      |---	                                |---         |---	           |--:	     |
+| label           | IPv4            | user	    | spec                                | OS         | location	      | cost/mo |
+|---	            |---	            |---	      |---	                                |---         |---	            |--:	    |
 | `ptpvmtstnl001` | `95.179.135.1`	| `root` 	  | 1 vCPU, 2GB RAM, 25GB NVMe, 4TB/mo  | Ubuntu 24  | Amsterdam, NL  | $28     |
 
 
@@ -74,6 +74,14 @@ provider: Vultr
 ----------
 
 # 🤝 Service
+
+## Reserved IP
+
+provider: Vultr
+
+| label            | address          | IP Type	| location	     | cost/mo |
+|---	             |---	              |---	    |---	           |--:      |
+| `ptpriptstnl001` | `199.247.26.104`	| v4 	    | Amsterdam, NL  | $3      |
 
 ## Mistral
 
