@@ -111,7 +111,18 @@ docker tag $IMAGE_NAME:latest ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
 docker push ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
 ```
 
-On the server run
+On the server ensure docker is installed
+
+```shell
+apt  install docker.io
+
+# create a docker group
+usermod --append --groups docker $ADMIN_USER
+
+# switch to the `docker` user
+su - docker
+```
+
 ```shell
 # Log into Vultr Container Registry 
 docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
