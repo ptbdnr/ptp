@@ -60,6 +60,7 @@ Useful links:
 | label           | IPv4            | user	    | spec                                | OS         | location	      | cost/mo |
 |---	            |---	            |---	      |---	                                |---         |---	            |--:	    |
 | `ptpvmtstnl001` | `95.179.135.1`	| `root` 	  | 1 vCPU, 2GB RAM, 25GB NVMe, 4TB/mo  | Ubuntu 24  | Amsterdam, NL  | $28     |
+| `ptpvmtstnl002` | `95.179.158.91`	| `root` 	  | 2 vCPU, 8GB RAM, 50GB NVMe, 5TB/mo  | Ubuntu 22  | Amsterdam, NL  | $50     |
 
 ----------
 
