@@ -65,17 +65,10 @@ Useful links:
 
 provider: Vultr
 
-name: `ptpvmtstde001`
+| label           | IPv4            | user	    | spec                                | location	     | cost/mo |
+|---	            |---	            |---	      |---	                                |---	           |--:	     |
+| `ptpvmtstde001` | `95.179.135.1`	| `root` 	  | 1 vCPU, 2GB RAM, 25GB NVMe, 4TB/mo  | Amsterdam, NL  | $28     |
 
-IP address: `95.179.135.1`
-
-user: `root`
-
-spec: 1 vCPU, 2GB RAM, 25GB NVMe, 4TB/mo
-
-location: Amserdam, NL
-
-cost: $28/mo
 
 
 ----------
