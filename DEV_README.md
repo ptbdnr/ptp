@@ -2,7 +2,7 @@
 
 ## Blob Storage
 
-<img src="https://github.com/user-attachments/assets/f4a994e6-6bf6-4872-a7c8-936e44ba2634" alt="Vultr" height="100"/>
+<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
 
 | name              | hostname                | tier	  | location	     | cost/mo           |
 |---	              |---                      |---	    |---	           |--:                |
@@ -15,7 +15,7 @@ Useful links:
 
 ## Vector Storage
 
-<img src="https://github.com/user-attachments/assets/a199e69e-01bb-42e8-b6fe-47dbd0c0b0ec" alt="Pinecone" height="100"/>
+<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
 
 Useful links:
 * [Manage Credentials](https://docs.pinecone.io/reference/api/authentication)
@@ -23,7 +23,7 @@ Useful links:
 
 ## Container Registry
 
-<img src="https://github.com/user-attachments/assets/f4a994e6-6bf6-4872-a7c8-936e44ba2634" alt="Vultr" height="100"/>
+<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
 
 | url                                     | visibility  | tier	          | location	     | cost/mo |
 |---	                                    |---          |---	            |---	           |--:      |
@@ -55,7 +55,7 @@ Useful links:
 
 ## Virtual Machine
 
-<img src="https://github.com/user-attachments/assets/f4a994e6-6bf6-4872-a7c8-936e44ba2634" alt="Vultr" height="100"/>
+<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
 
 | label           | IPv4            | user	    | spec                                | OS         | location	      | cost/mo |
 |---	            |---	            |---	      |---	                                |---         |---	            |--:	    |
@@ -69,7 +69,7 @@ Useful links:
 
 ## Reserved IP
 
-<img src="https://github.com/user-attachments/assets/f4a994e6-6bf6-4872-a7c8-936e44ba2634" alt="Vultr" height="100"/>
+<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
 
 
 | label            | address          | IP Type	| location	     | cost/mo |
@@ -77,11 +77,24 @@ Useful links:
 | `ptpriptstnl001` | `199.247.26.104`	| v4 	    | Amsterdam, NL  | $3      |
 
 
-## LLM as a Service
+## Model as a Service
 
-<img src="https://github.com/user-attachments/assets/f737c360-0313-48d0-9096-255d92f3fde4" alt="Mistral" height="100"/>
+### Mistral
+
+<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/mistral.svg" alt="Mistral" height="100"/>
 
 Useful links:
 * [Manage Credentials](https://docs.mistral.ai/getting-started/quickstart/)
 * [Console Access](https://console.mistral.ai)
 * [Mistral AI Embeddings with Python SDK](https://docs.mistral.ai/capabilities/embeddings/)
+
+### Luma Labs
+
+<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/lumalabs.svg" alt="Mistral" height="40"/>
+
+Useful links:
+* [Dev Docs](https://docs.lumalabs.ai/docs/welcome)
+* [Manage Credentials](https://lumalabs.ai/api/keys)
+* [FinOps](https://lumalabs.ai/api/billing/overview)
+* [Text-to-Image Python SDK](https://docs.lumalabs.ai/docs/python-image-generation)
+* [Text-to-Video Python SDK](https://docs.lumalabs.ai/docs/python-video-generation)
