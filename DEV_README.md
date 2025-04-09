@@ -66,11 +66,15 @@ Useful links:
 provider: Vultr
 
 name: `ptpvmtstde001`
+
 IP address: `95.179.135.1`
+
 user: `root`
 
 spec: 1 vCPU, 2GB RAM, 25GB NVMe, 4TB/mo
+
 location: Amserdam, NL
+
 cost: $28/mo
 
 
