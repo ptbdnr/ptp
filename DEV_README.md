@@ -29,13 +29,9 @@ Useful links:
 
 provider: Vultr
 
-url: `https://ams.vultrcr.com/ptpcrtstnl001`
-
-location: Amsterdam, NL
-
-visibility: public
-
-tier: 20480MB Storage
+| url                                     | visibility  | tier	          | location	     | cost/mo |
+|---	                                    |---          |---	            |---	           |--:      |
+| `https://ams.vultrcr.com/ptpcrtstnl001` | public	    | 20480MB Storage	| Amsterdam, NL  | $5      |
 
 You can log into your container registry with docker in the following way:
 
