@@ -49,9 +49,11 @@ Partners:
 ## 🛠️ Architecture
 
 Picture-to-Palatable leverages a modular architecture:
-
-![High Level Design](https://github.com/ptbdnr/ptp/blob/main/assets/hld_v1.0.1.png)
-
+<div align="center">
+  <p style="width: 80%; margin: 0 auto;">
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/hld_v1.0.1.png" alt="High Level Design" height="1000" valign="middle" />
+  </p>
+</div>
 
 1. **Input Processing Module**:
    - Text processing
