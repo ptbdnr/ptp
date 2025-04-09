@@ -80,7 +80,7 @@ Picture-to-Palatable leverages a modular architecture:
    - Real-time feedback system
 
 
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/openapi/openapi-original-wordmark.svg" width="240"/>
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/openapi/openapi-original-wordmark.svg" width="150"/>
 
 [OpenAPI](https://swagger.io/specification/) specification is available [here](https://github.com/ptbdnr/ptp/blob/main/assets/openapi_v1.0.0.yaml).
 To review, use an editor like [SwaggerEditor](https://editor.swagger.io/).
