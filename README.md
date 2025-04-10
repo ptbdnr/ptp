@@ -2,7 +2,7 @@
 
 ## AI-Powered Home Cooking Assistant
 
-[![License: GNU GPLv3](https://img.shields.io/badge/License-GPLv3-yellow.svg)](https://choosealicense.com/licenses/gpl-3.0/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![Hackathon Project](https://img.shields.io/badge/Project-Hackathon-blueviolet)](https://github.com/yourusername/picture-to-palatable)
 
 Picture-to-Palatable is a multi-modal AI application that transforms the way you approach home cooking. By accepting inputs in various formats (text, speech, images, and videos), it provides personalized recipe recommendations tailored to your specific dietary needs, available ingredients, kitchen tools, and meal plans.
@@ -135,7 +135,7 @@ Picture-to-Palatable helps you answer critical cooking questions:
 
 ## 📄 License
 
-This project is licensed under the GNU GPLv3 License - see the see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
