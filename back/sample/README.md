@@ -45,7 +45,7 @@ Connect your host to GitHub
 git clone git@github.com:ptbdnr/ptp.git
 ```
 
-## Copy the environment variables to the project root (next to .gitignore)
+## Copy the environment variables to the project root
 
 source: ask!
 
@@ -54,6 +54,13 @@ cat << EOF > .env.local
 KEY1=VALUE1
 KEY2=VALUE2
 EOF
+```
+
+### Evaluate dependencies
+
+```shell
+(ls .env.local && echo 'INFO: Found .env.local') || echo 'CRITICAL: Missing .env.local'
+(ls requirements.txt && echo 'INFO: Found requirements.txt') || echo 'CRITICAL: Missing requirements.txt'
 ```
 
 ## Ensure you have python3-venv
@@ -66,6 +73,7 @@ sudo apt install -y python3.12-venv
 sudo apt install -y python3-pytest
 ```
 
+
 ## Create Python environment and install dependencies
 
 ```shell
@@ -75,7 +83,8 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-## Run the server
+
+### 🏃 Running Locally
 
 ```shell
 cd /path/to/project
@@ -90,6 +99,7 @@ quick test
 curl http://127.0.0.1:8000/recommend -X POST
 ```
 
+
 ### Deploy to VM with Docker
 
 Ensure Docker daemon is running on your machine.
@@ -97,6 +107,8 @@ Ensure Docker daemon is running on your machine.
 ```shell
 # Build the image
 docker build -t ptp/$IMAGE_NAME:$TAG .
+# Quick test
+docker run -p 3000:3000 ptp/$IMAGE_NAME:$TAG
 ```
 
 ```shell
@@ -117,8 +129,15 @@ On the server ensure docker is installed
 ```shell
 apt  install docker.io
 
-# create a docker group
-usermod --append --groups docker $ADMIN_USER
+# create user `docker`
+useradd -m -g users docker
+
+# create user group `dockergroup`
+sudo addgroup dockergroup
+
+# add users to user group
+usermod --append --groups dockergroup docker
+usermod --append --groups dockergroup $ADMIN_USER
 
 # switch to the `docker` user
 su - docker
@@ -131,6 +150,9 @@ docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
 # Pull yout latest image
 docker pull ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
 # on macOS you might need the suffix `--platform linux/x86_64`
+
+# List all images available locally
+docker images
 
 # Run image in detached mode
 docker run -d --name $CONTAINER_NAME -p 80:80 ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME

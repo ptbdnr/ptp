@@ -8,7 +8,7 @@
 ref: https://nodejs.org/en/download
 
 
-## Copy the environment variables to the project root (next to .gitignore)
+## Copy the environment variables to the project root
 
 source: ask!
 
@@ -21,8 +21,9 @@ EOF
 
 
 ### Change directory to correct folder and evaluate dependencies
+
 ```shell
-cd front
+cd playwright
 (ls .env.local && echo 'INFO: Found .env.local') || echo 'CRITICAL: Missing .env.local'
 (ls package.json && echo 'INFO: Found package.json') || echo 'CRITICAL: Missing package.json'
 ```
@@ -34,7 +35,7 @@ cd front
 npm install
 ```
 
-### 🏃 Running
+### 🏃 Running Locallys
 
 ```shell
 npm run test-ui

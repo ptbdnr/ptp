@@ -1,30 +1,88 @@
 # With Docker
 
-This examples shows how to use Docker with Next.js based on the [deployment documentation](https://nextjs.org/docs/deployment#docker-image). Additionally, it contains instructions for deploying to Google Cloud Run. However, you can use any container-based deployment host.
+This examples shows how to use Docker with Next.js based on the [deployment documentation](https://nextjs.org/docs/deployment#docker-image).
 
-## How to use
+# Developer Guide
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+## Requirements
 
-```bash
-npx create-next-app --example with-docker nextjs-docker
-# or
-yarn create next-app --example with-docker nextjs-docker
-# or
-pnpm create next-app --example with-docker nextjs-docker
+* node v18 or later: https://nodejs.org/en/download
+* Docker: https://docs.docker.com/get-docker/
+* Vultr account with:
+    * Container Registry
+    * Compute instance
+
+
+## Clone the repo
+
+Connect your host to GitHub
+1. [Create a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+    * `ssh-keygen -t ed25519 -C "your_email@example.com"`
+    * `eval "$(ssh-agent -s)"`
+    * `ssh-add ~/.ssh/id_ed25519`
+2. [Add a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
+    * `cat ~/.ssh/id_ed25519.pub`
+    * In GitHub, Settings / Access section, click  SSH and GPG keys. Click New SSH key or Add SSH key. In the "Title" field be creative. In the "Key" field, paste your public key.
+
+```shell
+git clone git@github.com:ptbdnr/ptp.git
 ```
 
-## Using Docker
 
-1. [Install Docker](https://docs.docker.com/get-docker/) on your machine.
-1. Build your container: `docker build -t nextjs-docker .`.
-1. Run your container: `docker run -p 3000:3000 nextjs-docker`.
+## Copy the environment variables to the project root
 
-You can view your images created with `docker images`.
+source: ask!
 
-### In existing projects
+```shell
+cat << EOF > .env.local
+KEY1=VALUE1
+KEY2=VALUE2
+EOF
+```
 
-To add support for Docker to an existing project, just copy the [`Dockerfile`](https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile) into the root of the project and add the following to the `next.config.js` file:
+
+### Evaluate dependencies
+
+```shell
+cd nextjs_js
+(ls .env.local && echo 'INFO: Found .env.local') || echo 'CRITICAL: Missing .env.local'
+(ls package.json && echo 'INFO: Found package.json') || echo 'CRITICAL: Missing package.json'
+```
+
+
+### Install dependencies
+
+```shell
+npm install
+# or
+pnpm install
+```
+
+
+### 🏃 Running Locally
+
+```shell
+npm run dev
+# or
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+
+# Contribution
+
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+
+
+### Deploy to VM with Docker
+
+
+Ensure the following is in the `next.config.js` file:
 
 ```js
 // next.config.js
@@ -34,33 +92,61 @@ module.exports = {
 };
 ```
 
-This will build the project as a standalone app inside the Docker image.
+Ensure Docker daemon is running on your machine.
 
-## Deploying to Google Cloud Run
-
-1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) so you can use `gcloud` on the command line.
-1. Run `gcloud auth login` to log in to your account.
-1. [Create a new project](https://cloud.google.com/run/docs/quickstarts/build-and-deploy) in Google Cloud Run (e.g. `nextjs-docker`). Ensure billing is turned on.
-1. Build your container image using Cloud Build: `gcloud builds submit --tag gcr.io/PROJECT-ID/helloworld --project PROJECT-ID`. This will also enable Cloud Build for your project.
-1. Deploy to Cloud Run: `gcloud run deploy --image gcr.io/PROJECT-ID/helloworld --project PROJECT-ID --platform managed --allow-unauthenticated`. Choose a region of your choice.
-
-   - You will be prompted for the service name: press Enter to accept the default name, `helloworld`.
-   - You will be prompted for [region](https://cloud.google.com/run/docs/quickstarts/build-and-deploy#follow-cloud-run): select the region of your choice, for example `us-central1`.
-
-## Running Locally
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
+```shell
+# Build the image
+docker build -t ptp/$IMAGE_NAME:$TAG .
+# Quick test
+docker run -p 3000:3000 ptp/$IMAGE_NAME:$TAG
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```shell
+# [OPTIONAL] Pull yout latest image if not already on the machine
+docker pull ptp/$IMAGE_NAME:latest
+# on macOS you might need the suffix `--platform linux/x86_64`
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+# List all images available locally
+docker images
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+# Log into Vultr Container Registry 
+docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+# Tag and Push your image to Vults Container Registry
+docker tag $IMAGE_NAME:latest ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+docker push ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+```
+
+On the server ensure docker is installed
+
+```shell
+apt  install docker.io
+
+# create user `docker`
+useradd -m -g users docker
+
+# create user group `dockergroup`
+sudo addgroup dockergroup
+
+# add users to user group
+usermod --append --groups dockergroup docker
+usermod --append --groups dockergroup $ADMIN_USER
+
+# switch to the `docker` user
+su - docker
+```
+
+```shell
+# Log into Vultr Container Registry 
+docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
+
+# Pull yout latest image
+docker pull ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+# on macOS you might need the suffix `--platform linux/x86_64`
+
+# List all images available locally
+docker images
+
+# Run image in detached mode
+docker run -d --name $CONTAINER_NAME -p 3000:3000 ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME
+```
