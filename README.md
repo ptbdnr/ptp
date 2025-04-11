@@ -157,3 +157,4 @@ This project is licensed under the MIT License - see the see the [LICENSE](LICEN
 Members (in alphabetical order):
 * ptbdnr [GitHub](https://github.com/ptbdnr)
 * [Stefania Liashuk](mailto:stefanialiashuk@gmail.com)
+* Zain Rehman
