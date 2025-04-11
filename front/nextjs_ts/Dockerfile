@@ -1,13 +1,9 @@
-FROM node:18-alpine AS base
-RUN echo "====================="
-RUN echo "Base stage"
-RUN echo "====================="
+FROM node:22-alpine AS base
+RUN echo "===================== Base stage ====================="
 
 # Install dependencies only when needed
 FROM base AS dependencies
-RUN echo "====================="
-RUN echo "Dependencies stage"
-RUN echo "====================="
+RUN echo "===================== Dependencies stage ====================="
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /build
@@ -18,16 +14,15 @@ RUN ls -lah
 # Disable telemetry
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Copy package and package-lock 
+COPY package.json ./
+COPY yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+
 # Ensure at least one lock file exists before proceeding
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN \
   test -f yarn.lock || test -f package-lock.json || test -f pnpm-lock.yaml || \
   (echo "No lock file found. Please provide one of yarn.lock, package-lock.json, or pnpm-lock.yaml." && exit 1)
 RUN ls -lah
-
-# Copy package and package-lock 
-COPY package.json ./
-COPY yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 
 # Clean install dependencies based package-lock
 # Note: We also install dev deps as typeScript may be needed
@@ -38,15 +33,13 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-RUN echo "====================="
-RUN echo "END of Dependencies stage"
-RUN echo "====================="
+RUN ls -lah
+
+RUN echo "===================== END of Dependencies stage ====================="
 
 # Rebuild the source code only when needed
 FROM base AS builder
-RUN echo "====================="
-RUN echo "Build stage"
-RUN echo "====================="
+RUN echo "===================== Build stage ====================="
 
 WORKDIR /build
 RUN ls -lah
@@ -69,15 +62,11 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-RUN echo "====================="
-RUN echo "END of Builder stage"
-RUN echo "====================="
+RUN echo "===================== END of Builder stage ====================="
 
 # Production image, copy all the files and run next
 FROM base AS runner
-RUN echo "====================="
-RUN echo "Runner stage"
-RUN echo "====================="
+RUN echo "===================== Runner stage ====================="
 
 WORKDIR /dependencies
 RUN dir -s 
@@ -86,18 +75,31 @@ RUN dir -s
 ENV NODE_ENV=production
 
 # Copy package and package-lock 
-COPY --from=builder /build/package.json .
-COPY --from=builder /build/package-lock.json ./
+COPY --from=builder /build/package.json ./
+COPY --from=builder /build/yarn.lock* /build/package-lock.json* /build/pnpm-lock.yaml* ./
+
+# Ensure at least one lock file exists before proceeding
+RUN \
+  test -f yarn.lock || test -f package-lock.json || test -f pnpm-lock.yaml || \
+  (echo "No lock file found. Please provide one of yarn.lock, package-lock.json, or pnpm-lock.yaml." && exit 1)
+RUN ls -lah
 
 # Clean install dependencies based package-lock
-RUN npm ci --production
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile --production=true; \
+  elif [ -f package-lock.json ]; then npm ci --production; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile --prod; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
-RUN echo "====================="
-RUN echo "END of Runner stage"
-RUN echo "====================="
+RUN ls -lah
+
+RUN echo "===================== END of Runner stage ====================="
 
 # Final image, run next
-FROM gcr.io/distroless/nodejs:14
+FROM base AS final
+# base supports npm, yarn and pnpm
+# gcr.io/distroless/nodejs:14 is smaller than alpine and has no package manager, shell
 
 # Mark as prod, disable telemetry, set port
 ENV NODE_ENV=production
@@ -107,10 +109,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
 # Copy from build
-COPY --from=builder /build/next.config.js .
+COPY --from=builder /build/next.config.ts .
 COPY --from=builder /build/public/ ./public
 COPY --from=builder /build/.next ./.next
-COPY --from=dependencies /dependencies/node_modules ./node_modules
+COPY --from=dependencies /build/node_modules ./node_modules
 
 EXPOSE 3000
 
