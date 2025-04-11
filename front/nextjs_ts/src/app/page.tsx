@@ -23,9 +23,9 @@ export default function Home() {
         </p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
+          <a href="https://github.com/ptbdnr/ptp" className={styles.card}>
             <h3>Documentation &rarr;</h3>
-            <p>Find <a href="https://github.com/ptbdnr/ptp" target="_blank">ptp</a> documentation and learn about the project.</p>
+            <p>Find more documentation and learn about the project.</p>
           </a>
 
           <a
