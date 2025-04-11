@@ -1,8 +1,6 @@
-# With Docker
+This is a [Next.js](https://nextjs.org) project, based on the [deployment documentation](https://nextjs.org/docs/deployment#docker-image).
 
-This examples shows how to use Docker with Next.js based on the [deployment documentation](https://nextjs.org/docs/deployment#docker-image).
-
-# Developer Guide
+# :wrench: Developer Guide
 
 ## Requirements
 
@@ -50,16 +48,13 @@ cd nextjs_js
 ```
 
 
-### Install dependencies
+### 🏃 Running Locally
 
 ```shell
 npm install
 # or
 pnpm install
 ```
-
-
-### 🏃 Running Locally
 
 ```shell
 npm run dev
@@ -81,7 +76,6 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 ### Deploy to VM with Docker
 
-
 Ensure the following is in the `next.config.js` file:
 
 ```js
@@ -95,8 +89,9 @@ module.exports = {
 Ensure Docker daemon is running on your machine.
 
 ```shell
-# Build the image
-docker build -t ptp/$IMAGE_NAME:$TAG .
+# Build the image, 
+# optionally add `--no-cache` to force a fresh build
+docker build --progress=plain -t ptp/$IMAGE_NAME:$TAG .
 # Quick test
 docker run -p 3000:3000 ptp/$IMAGE_NAME:$TAG
 ```
