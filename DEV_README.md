@@ -29,6 +29,7 @@ mongosh "mongodb://mongoadmin:$pass@78.141.223.247:27017/defaultdb" --authentica
 
 Useful links:
 * [Deployment](https://www.vultr.com/marketplace/apps/mongodb/?slug=mongodb&utm_source=performance-max-emea&utm_medium=paidmedia&obility_id=17097441281&&utm_campaign=EMEA_-_UK_-_Performance_Max_-_1001&utm_term=&utm_content=&gad_source=1&gclid=CjwKCAjw--K_BhB5EiwAuwYoymUWBk46fD7yR9pQ8C15mmc4I4pH9sGrYCVE4VtpqaQe0zqX3ZJVkxoCTE8QAvD_BwE#general-information)
+* [How to use MongoDB in Python with mongoengine](https://docs.vultr.com/how-to-use-mongodb-in-python-with-mongoengine)
 * [How to use Python with MongoDB](https://www.mongodb.com/resources/languages/python)
 
 ## Vector Storage
