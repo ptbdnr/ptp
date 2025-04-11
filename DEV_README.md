@@ -64,6 +64,14 @@ Useful links:
 | `ptpvmtstnl003` | `136.244.104.56`	| `root` 	  | 2 vCPU, 8GB RAM, 50GB NVMe, 5TB/mo  | Ubuntu 22  | Amsterdam, NL  | $70     |
 
 
+## AMD
+
+Useful links:
+* [text-to-image](https://docs.vultr.com/spinning-up-image-generation-inference-endpoint-using-xdit-lpb25?revision=4573)
+* [LLM server](https://docs.vultr.com/spinning-up-large-language-model-llm-inference-endpoint-using-vllm-lpb25?revision=4575)
+* [local connect to LLM server](https://docs.vultr.com/spinning-up-an-open-webui-environment-on-local-machine-lpb25?revision=4577)
+
+
 ----------
 
 
