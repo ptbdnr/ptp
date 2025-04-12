@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 1.5rem 1rem;
+  background-color: #ff7043;
+  color: white;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-top: 50;
+}
+
+.mealSuggestion {
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+.progressIndicator {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: auto;
+  margin-bottom: 70px;
+}
+
+.priceIndicator {
+  color: #4caf50;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}

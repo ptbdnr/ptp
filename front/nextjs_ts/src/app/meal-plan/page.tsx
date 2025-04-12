@@ -1,11 +1,18 @@
-import { MealPlanLayout } from './MealPlanLayout';
+'use client'
+
+import MealPlanLayout from './meal-plan-layout';
+
 import { BudgetOverview } from '@/components/meal-plan/BudgetOverview';
 import { WeekSelector } from '@/components/meal-plan/WeekSelector';
 import { MealCard } from '@/components/meal-plan/MealCard';
 import { ProgressIndicators } from '@/components/meal-plan/ProgressIndicators';
-import { meals } from '@/data/meals';
+
+import { mockupRecipes } from '@/data/recipes';
 
 export default function MealPlanPage() {
+
+  const recipes = mockupRecipes;
+
   return (
     <MealPlanLayout>
       <div className="flex-1 bg-gray-50 p-5 space-y-6 overflow-auto">
@@ -22,8 +29,8 @@ export default function MealPlanPage() {
         </h3>
 
         <div className="space-y-4">
-          {meals.map((meal, index) => (
-            <MealCard key={index} {...meal} />
+          {recipes.map((recipe, index) => (
+            <MealCard key={index} {...recipe} />
           ))}
         </div>
 

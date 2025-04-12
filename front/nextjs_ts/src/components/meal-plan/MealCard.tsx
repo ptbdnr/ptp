@@ -1,35 +1,22 @@
-export function MealCard({ 
-    icon, 
-    name, 
-    type, 
-    time, 
-    price, 
-    uses 
-  }: {
-    icon: string;
-    name: string;
-    type: string;
-    time: string;
-    price: number;
-    uses: string[];
-  }) {
+import { Recipe } from '@/types/recipes';
+import { Ingredient } from '@/types/ingredients';
+
+export function MealCard( recipe: Recipe ) {
+
+  const ingredients : Array<Ingredient> = recipe.ingredients.ingredients;
+  
     return (
       <div className="bg-white rounded-2xl flex overflow-hidden shadow-sm">
         <div className="w-20 bg-gray-50 flex items-center justify-center text-3xl">
-          {icon}
+          {recipe.thumbnail_url}
         </div>
         <div className="flex-1 p-4">
           <div className="flex justify-between items-start">
             <div>
-              <h4 className="text-gray-800 font-semibold mb-2">{name}</h4>
+              <h4 className="text-gray-800 font-semibold mb-2">{recipe.name}</h4>
               <div className="flex items-center gap-2 text-sm">
-                <span className="bg-gray-100 text-gray-500 px-3 py-1 rounded-full">
-                  {type}
-                </span>
                 <span className="text-gray-500">•</span>
-                <span className="text-gray-500">{time}</span>
                 <span className="text-gray-500">•</span>
-                <span className="text-gray-500">${price.toFixed(2)}</span>
               </div>
             </div>
             <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500">
@@ -37,7 +24,7 @@ export function MealCard({
             </button>
           </div>
           <p className="text-sm text-gray-500 mt-2">
-            Uses: {uses.join(", ")}
+            Uses: {ingredients.map((ingredient: Ingredient) => ingredient.name).join(', ')}
           </p>
         </div>
       </div>
