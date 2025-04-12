@@ -1,0 +1,143 @@
+.header {
+    background-color: #ff7043;
+    color: white;
+    padding: 2rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem;
+  }
+  
+  .tagline {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 1.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem;
+    color: #333;
+  }
+  
+  .preferencesSection {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .preferencesTitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 1.5rem;
+    color: #333;
+  }
+  
+  .sliderContainer {
+    margin-bottom: 2rem;
+  }
+  
+  .sliderLabel {
+    display: block;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  .sliderWithValues {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .minValue, .maxValue {
+    font-size: 0.85rem;
+    color: #999;
+    flex: 0 0 auto;
+  }
+  
+  .slider {
+    flex: 1;
+    margin: 0 1rem;
+    height: 4px;
+    appearance: none;
+    background: linear-gradient(to right, #ff7043, #ff7043);
+    outline: none;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #ff7043;
+    cursor: pointer;
+  }
+  
+  .currentValueContainer {
+    text-align: right;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ff7043;
+  }
+  
+  .dollarSign {
+    color: #ff7043;
+    font-weight: 400;
+    margin-right: 2px;
+  }
+  
+  .unit {
+    font-weight: 400;
+    color: #666;
+  }
+  
+  .dietaryPrefsContainer {
+    margin-top: 2rem;
+  }
+  
+  .dietaryLabel {
+    display: block;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  .dietaryButton {
+    width: 100%;
+    padding: 1rem;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    background: none;
+    text-align: left;
+    color: #999;
+    font-size: 0.95rem;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .plusIcon {
+    position: absolute;
+    right: 1rem;
+    color: #ff7043;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      border-radius: 0;
+    }
+  }

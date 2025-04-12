@@ -1,8 +1,14 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/landing.module.css";
 
 
-export default function Home() {
+export default function Page() {
+  const router = useRouter();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -28,13 +34,13 @@ export default function Home() {
             <p>Find more documentation and learn about the project.</p>
           </a>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
+          <div
+            onClick={() => {router.push('/home')}}
             className={styles.card}
           >
-            <h3>NextJS Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+            <h3>Try it &rarr;</h3>
+            <p>Discover and cook something delicious.</p>
+          </div>
 
         </div>
       </main>

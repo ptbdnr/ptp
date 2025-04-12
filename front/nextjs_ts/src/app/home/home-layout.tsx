@@ -6,7 +6,6 @@ import styles from '@/styles/plato.module.css';
 export default function HomeLayout({ children }: { children: React.ReactNode }) {
     return (
       <div className={styles.container}>
-          <Header />
           {children}
           <Navigation />
       </div>
