@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-import RecipeDiscoveryLayout from './recipe_discovery-layout';
+import RecipeDiscoveryLayout from './recipe-discovery-layout';
 
 import { Recipe } from '@/types/recipes';
 import { Ingredients, Ingredient } from '@/types/ingredients';
