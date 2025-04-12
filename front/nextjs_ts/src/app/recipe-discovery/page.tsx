@@ -9,7 +9,7 @@ import { Ingredients, Ingredient } from '@/types/ingredients';
 
 import MealCard from '@/components/meal-card/MealCard';
 
-import styles from './recipe_discovery.module.css';
+import styles from './recipe-discovery.module.css';
 
 import { mockupRecipes } from '@/data/recipes';
 import { mockupIngredients } from '@/data/ingredients';

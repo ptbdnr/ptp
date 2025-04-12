@@ -1,6 +1,6 @@
 import Header from '@/components/header/Header';
 import Navigation from '@/components/navigation/Navigation';
-import styles from './recipe_discovery.module.css';
+import styles from './recipe-discovery.module.css';
 
 export default function RecipeDiscoveryLayout({ children }: { children: React.ReactNode }) {
     return (
