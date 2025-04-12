@@ -22,20 +22,25 @@ export default function Page() {
 
         <p className={styles.description}>
           Plato is a multi-modal AI application that transforms the way you approach home cooking. By accepting inputs in various formats (text, speech, images, and videos), it provides personalized recipe recommendations tailored to your specific dietary needs, available ingredients, kitchen tools, and meal plans.
-          <br></br>
+        </p>
+        <p className={styles.description}>
           Developed during a 2-week hackathon to bring AI innovation into your kitchen.
-          <br></br>
+        </p>
+        <p className={styles.description}>
           Hackaton: <a href="https://www.kxsb.org/lpb25" target="_blank">The Ultimate, Multi-modal, AI Acceleration Event LPB 25</a>
         </p>
 
         <div className={styles.grid}>
-          <a href="https://github.com/ptbdnr/ptp" className={styles.card}>
+          <a href="https://github.com/ptbdnr/ptp" 
+            target="_blank" 
+            className={styles.card}
+          >
             <h3>Documentation &rarr;</h3>
             <p>Find more documentation and learn about the project.</p>
           </a>
 
           <div
-            onClick={() => {router.push('/home')}}
+            onClick={() => {router.push('/login')}}
             className={styles.card}
           >
             <h3>Try it &rarr;</h3>

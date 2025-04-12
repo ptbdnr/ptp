@@ -1,0 +1,42 @@
+.weekSelector {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem; /* equivalent to Tailwind's gap-2 */
+  }
+  
+  .button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem; /* equivalent to Tailwind's p-3 */
+    border-radius: 1rem; /* equivalent to Tailwind's rounded-xl */
+    cursor: pointer;
+  }
+  
+  .activeButton {
+    background-color: var(--primary-color);
+    color: black;
+  }
+  
+  .inactiveButton {
+    background-color: #f3f4f6; /* equivalent to Tailwind's bg-gray-100 */
+    color: #6b7280; /* equivalent to Tailwind's text-gray-500 */
+  }
+  
+  .day {
+    font-size: 0.875rem; /* equivalent to Tailwind's text-sm */
+    font-weight: 500; /* equivalent to Tailwind's font-medium */
+  }
+  
+  .date {
+    font-size: 0.75rem; /* equivalent to Tailwind's text-xs */
+  }
+  
+  .activeDate {
+    color: black;
+  }
+  
+  .inactiveDate {
+    color: #9ca3af; /* equivalent to Tailwind's text-gray-400 */
+  }

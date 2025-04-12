@@ -23,7 +23,6 @@ export default function Page() {
 
   return (
     <MealDiscoveryLayout>
-      <main className={styles.main}>
         
         <div className={styles.mealSuggestion} >
           <MealCard recipe={currentRecipe}/>
@@ -35,7 +34,6 @@ export default function Page() {
             ${totalPrice.current} / ${totalPrice.total}
           </div>
         </div>
-      </main>
     </MealDiscoveryLayout>
   );
 }

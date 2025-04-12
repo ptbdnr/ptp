@@ -42,7 +42,6 @@ export default function Page() {
   
     return (
         <PantryLayout>
-        <main className={styles.main}>
   
           <div className={styles.actionButtons}>
             <button className={`${styles.actionButton} ${styles.scanButton}`}>
@@ -99,7 +98,6 @@ export default function Page() {
               })}
             </div>
           </section>
-        </main>
         </PantryLayout>
     );
 }

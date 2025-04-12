@@ -7,7 +7,9 @@ export default function PantryLayout({ children }: { children: React.ReactNode }
     return (
       <div className={styles.container}>
           <Header />
-          {children}
+          <main className={styles.main}>
+            {children}
+          </main>
           <Navigation />
       </div>
     );

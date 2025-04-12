@@ -3,7 +3,7 @@
 import MealPlanLayout from './meal-plan-layout';
 
 import { BudgetOverview } from '@/components/meal-plan/BudgetOverview';
-import { WeekSelector } from '@/components/meal-plan/WeekSelector';
+import { WeekSelector } from '@/components/week-selector/WeekSelector';
 import { MealCard } from '@/components/meal-plan/MealCard';
 import { ProgressIndicators } from '@/components/meal-plan/ProgressIndicators';
 
@@ -15,7 +15,6 @@ export default function Page() {
 
   return (
     <MealPlanLayout>
-      <div className="flex-1 bg-gray-50 p-5 space-y-6 overflow-auto">
         <BudgetOverview 
           current={15.25} 
           total={44.00} 
@@ -40,7 +39,6 @@ export default function Page() {
           spent={15.25}
           budget={44}
         />
-      </div>
     </MealPlanLayout>
   );
 }

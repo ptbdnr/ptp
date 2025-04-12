@@ -7,7 +7,9 @@ export default function MealDiscoveryLayout({ children }: { children: React.Reac
     return (
         <div className={styles.container}>
             <Header />
-            {children}
+            <main className={styles.main}>
+                {children}
+            </main>
             <Navigation />
         </div>
     );

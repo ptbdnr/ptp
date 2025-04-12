@@ -23,7 +23,6 @@ export default function Page() {
 
     return (
     <HomeLayout>
-        <main className={styles.main}>
         <div className={styles.header}>
             <h1 className={styles.logo}>Plato</h1>
             <p className={styles.tagline}>Smart meal planning that adapts to you</p>
@@ -84,7 +83,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-      </main>
     </HomeLayout>
     );
 }
