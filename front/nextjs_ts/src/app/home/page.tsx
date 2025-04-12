@@ -25,7 +25,7 @@ export default function Page() {
     <HomeLayout>
         <main className={styles.main}>
         <div className={styles.header}>
-            <h1 className={styles.logo}>palatable</h1>
+            <h1 className={styles.logo}>Plato</h1>
             <p className={styles.tagline}>Smart meal planning that adapts to you</p>
         </div>
 
