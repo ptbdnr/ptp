@@ -1,41 +1,41 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from 'react';
 
-import RecipeDiscoveryLayout from './recipe-discovery-layout';
+import MealDiscoveryLayout from './meal-discovery-layout';
 
-import { Recipe } from '@/types/recipes';
+import { Meal } from '@/types/meals';
 import { Ingredients, Ingredient } from '@/types/ingredients';
 
 import MealCard from '@/components/meal-card/MealCard';
 
-import styles from './recipe-discovery.module.css';
+import styles from './meal-discovery.module.css';
 
-import { mockupRecipes } from '@/data/recipes';
+import { mockupMeals } from '@/data/meals';
 import { mockupIngredients } from '@/data/ingredients';
 
 
-export default function Home() {
+export default function Page() {
   const [currentIngredients, setCurrentIngredients] = useState<Ingredients>({ingredients: mockupIngredients});
-  const [currentRecipe, setCurrentRecipe] = useState<Recipe>(mockupRecipes[0]);
-  const [recipeProgress, setRecipeProgress] = useState({current: 2, total: mockupRecipes.length});
+  const [currentRecipe, setCurrentRecipe] = useState<Meal>(mockupMeals[0]);
+  const [progress, setProgress] = useState({current: 2, total: mockupMeals.length});
   const [totalPrice, setTotalPrice] = useState({current: 15.25, total: 44});
-  
+
   return (
-    <RecipeDiscoveryLayout>
+    <MealDiscoveryLayout>
       <main className={styles.main}>
         
-        <div className={styles.mealSuggestion}>
-          <MealCard recipe={currentRecipe} />
+        <div className={styles.mealSuggestion} >
+          <MealCard recipe={currentRecipe}/>
         </div>
         
         <div className={styles.progressIndicator}>
-          {recipeProgress.current} / {recipeProgress.total} meals
+          {progress.current} / {progress.total} meals
           <div className={styles.priceIndicator}>
             ${totalPrice.current} / ${totalPrice.total}
           </div>
         </div>
       </main>
-    </RecipeDiscoveryLayout>
+    </MealDiscoveryLayout>
   );
 }

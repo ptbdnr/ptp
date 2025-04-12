@@ -1,11 +1,13 @@
+'use client';
+
 import { useState } from 'react';
 
-import { Recipe } from '@/types/recipes';
+import { Meal } from '@/types/meals';
 
 import styles from './MealCard.module.css';
 
 type MealCardProps = {
-  recipe: Recipe;
+  recipe: Meal;
 };
 
 export default function MealCard({ recipe: recipe }: MealCardProps) {
@@ -13,7 +15,7 @@ export default function MealCard({ recipe: recipe }: MealCardProps) {
   const difficulty = ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)];
   const price = 3 + Math.floor(Math.random() * 18) + [0.0, 0.50, 0.75][Math.floor(Math.random() * 3)];
   const prepTime = 10 + Math.floor(Math.random() * 60);
-  
+
   return (
     <div className={styles.card}>
       <div className={styles.aiTag}>
@@ -22,19 +24,25 @@ export default function MealCard({ recipe: recipe }: MealCardProps) {
       </div>
       
       <div className={styles.mealImage} style={{ fontSize: '150px', lineHeight: '150px', textAlign: 'center' }}>
-        {recipe.thumbnail_url}
+        {recipe.images.thumbnail_url}
       </div>
       
       <div className={styles.actionButtons}>
         <button 
           className={`${styles.actionButton} ${styles.dislikeButton}`}
-          onClick={() => setIsLiked(false)}
+          onClick={() => {
+            console.log("Disliked");
+            setIsLiked(false);
+          }}
         >
           ✕
         </button>
         <button 
           className={`${styles.actionButton} ${styles.likeButton}`}
-          onClick={() => setIsLiked(true)}
+          onClick={() => {
+            console.log("Liked");
+            setIsLiked(true)
+          }}
         >
           ✓
         </button>

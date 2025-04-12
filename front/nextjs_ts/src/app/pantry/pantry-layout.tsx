@@ -3,7 +3,7 @@ import Navigation from '@/components/navigation/Navigation';
 
 import styles from '@/styles/plato.module.css';
 
-export default function MealPlanLayout({ children }: { children: React.ReactNode }) {
+export default function PantryLayout({ children }: { children: React.ReactNode }) {
     return (
       <div className={styles.container}>
           <Header />

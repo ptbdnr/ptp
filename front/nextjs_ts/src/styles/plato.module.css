@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f8f8;
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+}  
+
+/* .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 1.5rem 1rem;
+    background-color: #ff7043;
+    color: white;
+}
+ */
+    
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-top: 50;
+}
+  

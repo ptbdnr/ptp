@@ -7,11 +7,11 @@ import { WeekSelector } from '@/components/meal-plan/WeekSelector';
 import { MealCard } from '@/components/meal-plan/MealCard';
 import { ProgressIndicators } from '@/components/meal-plan/ProgressIndicators';
 
-import { mockupRecipes } from '@/data/recipes';
+import { mockupMeals } from '@/data/meals';
 
-export default function MealPlanPage() {
+export default function Page() {
 
-  const recipes = mockupRecipes;
+  const recipes = mockupMeals;
 
   return (
     <MealPlanLayout>

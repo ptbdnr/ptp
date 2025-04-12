@@ -1,12 +1,13 @@
-import { Recipe } from "@/types/recipes";
+import { Meal } from "@/types/meals";
 
-export const mockupRecipes : Recipe[] = [
+export const mockupMeals : Meal[] = [
     {
       id: "1",
       name: "Simple Veggie Frittata",
       desciption: "A quick and easy frittata packed with veggies.",
-      thumbnail_url: "🍳",
-      image_url: "TODO",
+      images: {
+        thumbnail_url: "🍳",
+      },
       ingredients: { 
         ingredients: [
           { id: "1", name: "Eggs", quantity: 4, unit: "pieces" },
@@ -25,8 +26,9 @@ export const mockupRecipes : Recipe[] = [
     {
       id: "2",
       name: "Turkey Avocado Wrap",
-      thumbnail_url: "🌯",
-      image_url: "TODO",
+      images: {
+        thumbnail_url: "🌯",
+      },
       desciption: "A healthy wrap with turkey and avocado.",
       ingredients: {
         ingredients: [
@@ -46,8 +48,9 @@ export const mockupRecipes : Recipe[] = [
     {
       id: "3",
       name: "Lemon Herb Chicken",
-      thumbnail_url: "🍗",
-      image_url: "TODO",
+      images: {
+        thumbnail_url: "🍗",
+      },
       desciption: "Juicy chicken marinated in lemon and herbs.",
       ingredients: {
         ingredients: [
