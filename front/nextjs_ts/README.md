@@ -94,7 +94,7 @@ Ensure Docker daemon is running on your machine.
 # optionally add `--no-cache` to force a fresh build
 docker build --progress=plain -t ptp/$IMAGE_NAME:$TAG .
 # Quick test
-docker run -p 3000:3000 ptp/$IMAGE_NAME:$TAG
+docker run -p 3000:3000 ptp/$IMAGE_NAME:latest
 ```
 
 ```shell
@@ -141,7 +141,7 @@ docker pull ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
 # List all images available locally
 docker images
 
-# Run image in detached mode
-docker run -d --name $CONTAINER_NAME -p 3000:3000 ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME
+# Run image in detached mode, optionally add `--name $CONTAINER_NAME`
+docker run -d -p 3000:3000 ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME
 ```
 
