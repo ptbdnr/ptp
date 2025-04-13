@@ -24,7 +24,7 @@ type ResponseData = {
     content?: string;
 }
  
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
@@ -39,14 +39,16 @@ export default function handler(
                 res.status(400).send({ error: errorMessage });
                 return;
             }
-            // res.status(200).send({ content: 'a lollipop' });
-            byte64_to_s3(req.body.image).then((url) => {
-                console.log("Image URL:", url);
-                mistral_vision(url).then((message_content) => {
-                    console.log("Content:", message_content);
-                    res.status(200).send({ content: message_content });
-                })
-            });
+            
+            // Upload image to S3 and get the URL  
+            const url = await byte64_to_s3(req.body.image);  
+            console.log("Image URL:", url);  
+            
+            // Process the image URL with Mistral  
+            const message_content = await mistral_vision(url);  
+            console.log("Content:", message_content);  
+            
+            res.status(200).send({ content: message_content });  
             return;
         } catch (err) {
             console.error('Error fetching data:', err);
