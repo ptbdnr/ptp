@@ -43,14 +43,14 @@ export default function Page() {
         <PantryLayout>
   
           <div className={styles.actionButtons}>
-            <button className={`${styles.actionButton} ${styles.scanButton}`}>
-                📸 Take<br/>Picture
+            <button className={`${styles.actionButton} ${styles.scanButton}`} disabled>
+              📸 Take<br/>Picture
             </button>
-            <button className={`${styles.actionButton} ${styles.addButton}`}>
-                🎙️ Dictate 
+            <button className={`${styles.actionButton} ${styles.addButton}`} disabled>
+              🧾 Scan<br/>Receipt
             </button>
-            <button className={`${styles.actionButton} ${styles.importButton}`}>
-                🖮 Add<br/>Manually
+            <button className={`${styles.actionButton} ${styles.importButton}`} disabled>
+              🎙️ Dictate 
             </button>
           </div>
   
