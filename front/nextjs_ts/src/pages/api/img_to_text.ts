@@ -3,8 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { Mistral } from "@mistralai/mistralai";
 import { S3Client, PutObjectCommand, ObjectCannedACL } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
-import { access } from 'fs';
-import { permission } from 'process';
 
 const mistralModelName = process.env["MISTRAL_MODEL_NAME"];
 const mistralApiKey = process.env["MISTRAL_API_KEY"];
@@ -35,7 +33,6 @@ export default function handler(
         console.log(`POST API /${func_name}`);
         try {
             // Validate that req.body.image is provided and not null
-            console.info(`req: ${JSON.stringify(req.body)}`);
             if (!req.body.image) {
                 const errorMessage = `No image data provided for ${func_name}`;
                 console.error(errorMessage);
@@ -45,11 +42,12 @@ export default function handler(
             // res.status(200).send({ content: 'a lollipop' });
             byte64_to_s3(req.body.image).then((url) => {
                 console.log("Image URL:", url);
-                mistral_vision(url).then((content) => {
-                    console.log("Content:", content);
-                    res.status(200).send({ content: content });
+                mistral_vision(url).then((message_content) => {
+                    console.log("Content:", message_content);
+                    res.status(200).send({ content: message_content });
                 })
             });
+            return;
         } catch (err) {
             console.error('Error fetching data:', err);
             res.status(500).send({ error: 'failed to fetch data' });
