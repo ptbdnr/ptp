@@ -31,6 +31,11 @@ export default function handler(
     if (req.method === 'POST') {
         console.log(`POST API /${func_name}`);
         try {
+            // Validate that req.body.image is provided and not null
+            if (!req.body.image) {
+                res.status(400).send({ error: 'No image data provided.' });
+                return;
+            }
             // res.status(200).send({ content: 'a lollipop' });
             byte64_to_s3(req.body.image).then((url) => {
                 console.log("Image URL:", url);
@@ -51,8 +56,13 @@ export default function handler(
 }
 
 async function byte64_to_s3(image: string) {
+    // Validate the image explicitely to ensure it's not null
+    if (!image) {
+        throw new Error("No image data provided.");
+    }
+
     const s3_client = new S3Client({
-        endpoint: s3Hostname,
+        endpoint: `https://${s3Hostname}`,
         credentials: {
             accessKeyId: s3AccessKey!,
             secretAccessKey: s3SecretAccessKey!,
