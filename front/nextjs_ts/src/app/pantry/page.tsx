@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 import { Ingredient } from '@/types/ingredients';
 
@@ -54,17 +53,58 @@ export default function Page() {
         throw new Error('Failed to fetch meals');
       }
       const data = await res.json();
-      console.log('Response from server:', data);
-      setInputText(data.content);
+      console.log('Response from API img_to_text:', data);
+      handleDictation(data.content);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleDictation = (text: string) => {
+  async function handleDictation (text: string) {
     setInputText(text);
     setDictationOpen(false);
+    try {
+      const url = `/api/text_to_ingredients?content=${text}`;
+      console.log('GET URL:', url);
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+      );
+      if (!res.ok) {
+        throw new Error('Failed to fetch meals');
+      }
+      const data = await res.json();
+      console.log('Response from API text_to_ingredients:', data);
+      const updatedPantryItems = pantryItems.concat(data.ingredients);
+      upsertPantry(updatedPantryItems);
+    } catch (error) {
+      console.error(error);
+    }    
   };
+
+  async function upsertPantry(items: Ingredient[]) {
+    try {
+      const res = await fetch('/api/ingredients', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ingredients: items }),
+      });
+      if (!res.ok) {
+        throw new Error('Failed to upsert pantry items');
+      }
+      const data = await res.json();
+      console.log('Response from API upsert:', data);
+      setPantryItems(items);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
 
   // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   setSearchTerm(e.target.value);
@@ -116,10 +156,10 @@ export default function Page() {
         </div>
 
         <ModalCamera open={isCameraOpen} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
-        {capturedImage && <img src={capturedImage} alt="Captured" />}
+        {/* {capturedImage && <img src={capturedImage} alt="Captured" />} */}
 
         <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
-        {inputText && <p style={{ color: 'black' }}>Input Text: {inputText}</p>}
+        {/* {inputText && <p style={{ color: 'black' }}>Input Text: {inputText}</p>} */}
 
         {/* 
         <div className={styles.searchContainer}>
