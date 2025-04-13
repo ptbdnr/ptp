@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import type { Meal } from "@/types/meals";
 
@@ -14,8 +14,24 @@ import { mockupMeals, mockupSupriseMeal } from '@/data/meals';
 
 
 export default function Page() {
-  const [meals, setMeals] = useState(mockupMeals);
+  const [meals, setMeals] = useState<Meal[]>([]);
   const surpriseMeal: Meal = mockupSupriseMeal;
+
+  useEffect(() => {
+    const fetchMeals = async () => {
+      try {
+        const res = await fetch('/api/meals');
+        if (!res.ok) {
+          throw new Error('Failed to fetch meals');
+        }
+        const data = await res.json();
+        setMeals(data.meals);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchMeals();
+  }, []);
 
   const handleSwipe = (direction: "left" | "right") => {
     console.log(`Swiped ${direction}`);
