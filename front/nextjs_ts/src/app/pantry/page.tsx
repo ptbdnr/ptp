@@ -1,18 +1,24 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 import { Ingredient } from '@/types/ingredients';
 
 import PantryLayout from './pantry-layout';
 
 import ModalCamera from '@/components/modal-camera/ModalCamera';
+import ModalDictation from '@/components/modal-dictation/ModalDictation';
 
 import styles from './pantry.module.css';
 
 export default function Page() {
+  // input modalities
   const [isCameraOpen, setCameraOpen] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [isDictationOpen, setDictationOpen] = useState(false);
+  const [dictatedText, setDictatedText] = useState<string | null>(null);
+
   const [pantryItems, setPantryItems] = useState<Ingredient[]>([]);
   // const [searchTerm, setSearchTerm] = useState('');
 
@@ -35,6 +41,11 @@ export default function Page() {
   const handleCapture = (imageData: string) => {
     setCapturedImage(imageData);
     setCameraOpen(false);
+  };
+
+  const handleDictation = (text: string) => {
+    setDictatedText(text);
+    setDictationOpen(false);
   };
 
   // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,14 +91,17 @@ export default function Page() {
           </button>
           <button 
             className={`${styles.actionButton} ${styles.importButton}`} 
-            disabled
+            onClick={() => setDictationOpen(true)}
           >
             🎙️ Dictate 
           </button>
         </div>
 
         <ModalCamera open={isCameraOpen} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
-        {capturedImage && <img src={capturedImage} alt="Captured" />}
+        {capturedImage && <Image src={capturedImage} alt="Captured" />}
+
+        <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
+        {dictatedText && <p>Dictated Text: {dictatedText}</p>}
 
         {/* 
         <div className={styles.searchContainer}>
