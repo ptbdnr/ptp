@@ -30,8 +30,8 @@ export default function Page() {
     return (
     <HomeLayout>
         <div className={styles.header}>
-            <h1 className={styles.logo}>Plato</h1>
-            <p className={styles.tagline}>Smart meal planning that adapts to you</p>
+            <h1 className={styles.logo}>PLATO</h1>
+            <p className={styles.tagline}>Smarter cooking starts here</p>
         </div>
 
         <div className={styles.content}>
@@ -86,7 +86,9 @@ export default function Page() {
               className={dietaryPreferences.length > 0 ? styles.dietaryButton: styles.dietaryButtonEmpty}
               onClick={() => {
                 const newPreference = prompt('Enter your dietary preference (e.g., Vegan, Gluten-Free):');
-                newPreference && handleDiataryPreferenceChange(newPreference);
+                if (newPreference) {
+                  handleDiataryPreferenceChange(newPreference);
+                }
               }}
             >
               {
