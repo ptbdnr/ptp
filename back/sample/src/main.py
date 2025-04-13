@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import uuid
+import os
 from datetime import date
 from typing import Annotated, Optional, cast
 
@@ -63,10 +64,13 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Get allowed origins from environment variable or use default
+allowed_origins = os.environ.get("CORS_ORIGINS", "*").split(",")
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
