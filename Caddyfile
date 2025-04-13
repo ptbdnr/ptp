@@ -1,0 +1,47 @@
+{
+  # Debug mode for local development
+  debug
+  # Local development settings
+  local_certs
+  # Don't redirect HTTP to HTTPS for local dev
+  auto_https disable_redirects
+}
+
+localhost {
+  # Enable TLS with local self-signed certificates
+  tls internal
+
+  # Frontend Next.js API routes - Keep these on Next.js
+  handle /api/meals* {
+    reverse_proxy frontend:3000
+  }
+  
+  handle /api/ingredients* {
+    reverse_proxy frontend:3000
+  }
+  
+  handle /api/img_to_text* {
+    reverse_proxy frontend:3000
+  }
+
+  # Backend API routes - Forward to backend service
+  handle /api/backend/* {
+    uri strip_prefix /api/backend
+    reverse_proxy backend:80
+  }
+
+  # All other requests go to the frontend
+  handle {
+    reverse_proxy frontend:3000
+  }
+
+  # Enable compression
+  encode gzip zstd
+  
+  # Log requests for debugging
+  log {
+    output stderr
+    format console
+    level INFO
+  }
+}

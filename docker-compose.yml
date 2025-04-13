@@ -5,11 +5,11 @@ services:
     build:
       context: ./front/nextjs_ts
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://backend:80}
+      - NEXT_PUBLIC_API_URL=https://localhost/api/backend
     env_file:
       - .env
     depends_on:
@@ -22,19 +22,38 @@ services:
     build:
       context: ./back/sample
       dockerfile: Dockerfile
-    ports:
-      - "8000:80" # Map to 8000 externally to avoid conflicts
+    expose:
+      - "80"
     environment:
-      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://frontend:3000}
+      - CORS_ORIGINS=https://localhost
     env_file:
       - .env
     networks:
       - app-network
     restart: unless-stopped
 
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - app-network
+    depends_on:
+      - frontend
+      - backend
+
 networks:
   app-network:
     driver: bridge
 
 volumes:
-  app-data: # For any persistent data you might need 
+  app-data:
+  caddy_data:
+  caddy_config:
