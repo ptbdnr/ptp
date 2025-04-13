@@ -93,7 +93,7 @@ export default function Page() {
             className={`${styles.actionButton} ${styles.importButton}`} 
             onClick={() => setDictationOpen(true)}
           >
-            🎙️ Dictate 
+            🎙️ Dictate <br/> Type
           </button>
         </div>
 
@@ -101,7 +101,7 @@ export default function Page() {
         {capturedImage && <Image src={capturedImage} alt="Captured" />}
 
         <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
-        {dictatedText && <p>Dictated Text: {dictatedText}</p>}
+        {dictatedText && <p style={{ color: 'black' }}>Dictated Text: {dictatedText}</p>}
 
         {/* 
         <div className={styles.searchContainer}>

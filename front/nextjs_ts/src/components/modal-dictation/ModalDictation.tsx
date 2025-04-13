@@ -10,7 +10,7 @@ interface ModalDictationProps {
 export default function ModalDictation({ open, onClose, onCapture }: ModalDictationProps) {
   const [dictatedText, setDictatedText] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDictatedText(e.target.value);
   };
 
@@ -27,18 +27,19 @@ export default function ModalDictation({ open, onClose, onCapture }: ModalDictat
         <button className={styles.closeButton} onClick={onClose}>
           &times;
         </button>
-        <h2 className={styles.title}>Dictation</h2>
+        <h2 className={styles.title}>Dictate or Type</h2>
         <p className={styles.instructions}>
-          Use your device’s dictation service (tap the microphone icon on your keyboard, if available) to speak.
+          Tap the microphone icon on your keyboard, if available.
+          <br />
+          Or type your text in the input field.
         </p>
         <div className={styles.inputContainer}>
-          <input
-            type="text"
-            placeholder="Dictate here..."
+          <textarea
+            placeholder="Dictate/Type here..."
             value={dictatedText}
-            onChange={handleChange}
-            x-webkit-speech="true"
+            onChange={(e) => handleChange(e)}
             className={styles.textInput}
+            rows={4}
           />
         </div>
         <div className={styles.buttons}>
