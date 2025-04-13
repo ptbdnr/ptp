@@ -1,8 +1,23 @@
 .header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   padding: 2rem 1.5rem 1rem;
   background-color: #ff7043;
   color: white;
+}
+
+.titleLine {
+  display: flex;
+  flex-direction: row;;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 0 0.5rem;
+  gap: 0.5rem;
+}
+
+.tagline {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
 }

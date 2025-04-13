@@ -29,11 +29,6 @@ export default function Page() {
 
     return (
     <HomeLayout>
-        <div className={styles.header}>
-            <h1 className={styles.logo}>PLATO</h1>
-            <p className={styles.tagline}>Smarter cooking starts here</p>
-        </div>
-
         <div className={styles.content}>
         <h2 className={styles.sectionTitle}>Configure Your Meal Plan</h2>
 

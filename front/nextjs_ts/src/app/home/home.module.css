@@ -1,22 +1,4 @@
-.header {
-    background-color: #ff7043;
-    color: white;
-    padding: 2rem 1.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin: 0 0 0.5rem;
-  }
-  
-  .tagline {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 400;
-  }
+
   
   .content {
     flex: 1;
