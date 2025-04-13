@@ -129,3 +129,10 @@ Useful links:
 * [FinOps](https://lumalabs.ai/api/billing/overview)
 * [Text-to-Image Python SDK](https://docs.lumalabs.ai/docs/python-image-generation)
 * [Text-to-Video Python SDK](https://docs.lumalabs.ai/docs/python-video-generation)
+
+
+### Twelve Labs
+
+Useful links:
+* [Manage Credentials](https://playground.twelvelabs.io/dashboard/api-key)
+* [FinOps](https://playground.twelvelabs.io/dashboard/billing)
