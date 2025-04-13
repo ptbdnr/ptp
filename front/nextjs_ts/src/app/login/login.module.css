@@ -1,0 +1,35 @@
+.formcontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 3rem 2rem 2rem;
+    background-color: white;
+    border-color: #333;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+  
+.title {
+    font-weight: 600; /* font-semibold */
+    font-size: 1.5rem; /* text-2xl */
+    color: #333;
+}
+  
+  .loginUsername {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    color: #333;
+  }
+
+  .loginButton {
+    padding: 0.5rem 1rem;
+    background-color: #ff7043;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  .loginButton:hover {
+    background-color: #ff5522;
+  }

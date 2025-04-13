@@ -7,7 +7,9 @@ export default function LoginLayout({ children }: { children: React.ReactNode })
     return (
       <div className={styles.container}>
           <Header />
-          {children}
+          <main className={styles.main}>
+            {children}
+          </main>
       </div>
     );
 };
