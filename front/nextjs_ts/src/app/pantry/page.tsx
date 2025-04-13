@@ -14,9 +14,7 @@ import styles from './pantry.module.css';
 export default function Page() {
   // input modalities
   const [isCameraOpen, setCameraOpen] = useState(false);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isDictationOpen, setDictationOpen] = useState(false);
-  const [inputText, setInputText] = useState<string | null>(null);
 
   const [pantryItems, setPantryItems] = useState<Ingredient[]>([]);
   const [newPantryItems, setNewPantryItems] = useState<Ingredient[]>([]);
@@ -38,7 +36,6 @@ export default function Page() {
   }, []);
 
   async function handleCapture (imageData: string) {
-    setCapturedImage(imageData);
     setCameraOpen(false);
     try {
       const res = await fetch('/api/img_to_text', {
@@ -46,7 +43,7 @@ export default function Page() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ image: capturedImage }),
+        body: JSON.stringify({ image: imageData }),
       }
       );
       if (!res.ok) {
@@ -61,7 +58,6 @@ export default function Page() {
   };
 
   async function handleDictation (text: string) {
-    setInputText(text);
     setDictationOpen(false);
     try {
       const url = `/api/text_to_ingredients?content=${text}`;
