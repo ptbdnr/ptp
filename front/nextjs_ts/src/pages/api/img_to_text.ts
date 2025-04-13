@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
  
 type ResponseData = {
     error?: string;
-    message?: string;
+    content?: string;
 }
  
 export default function handler(
@@ -18,7 +18,7 @@ export default function handler(
     }
     try {
         // const result = await someAsyncOperation()
-        res.status(200).send({ message: 'a banana' })
+        res.status(200).send({ content: 'a banana' })
     } catch (err) {
         console.error('Error fetching data:', err)
         res.status(500).send({ error: 'failed to fetch data' })

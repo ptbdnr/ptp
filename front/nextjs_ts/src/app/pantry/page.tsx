@@ -17,7 +17,7 @@ export default function Page() {
   const [isCameraOpen, setCameraOpen] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isDictationOpen, setDictationOpen] = useState(false);
-  const [dictatedText, setDictatedText] = useState<string | null>(null);
+  const [inputText, setInputText] = useState<string | null>(null);
 
   const [pantryItems, setPantryItems] = useState<Ingredient[]>([]);
   // const [searchTerm, setSearchTerm] = useState('');
@@ -38,13 +38,31 @@ export default function Page() {
     fetchMeals();
   }, []);
 
-  const handleCapture = (imageData: string) => {
+  async function handleCapture (imageData: string) {
     setCapturedImage(imageData);
     setCameraOpen(false);
+    try {
+      const res = await fetch('/api/img_to_text', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: imageData }),
+      }
+      );
+      if (!res.ok) {
+        throw new Error('Failed to fetch meals');
+      }
+      const data = await res.json();
+      console.log('Response from server:', data);
+      setInputText(data.content);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleDictation = (text: string) => {
-    setDictatedText(text);
+    setInputText(text);
     setDictationOpen(false);
   };
 
@@ -101,7 +119,7 @@ export default function Page() {
         {capturedImage && <Image src={capturedImage} alt="Captured" />}
 
         <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
-        {dictatedText && <p style={{ color: 'black' }}>Dictated Text: {dictatedText}</p>}
+        {inputText && <p style={{ color: 'black' }}>Dictated Text: {inputText}</p>}
 
         {/* 
         <div className={styles.searchContainer}>
