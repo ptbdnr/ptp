@@ -68,3 +68,24 @@ export const mockupMeals : Meal[] = [
       },
     }
   ];
+
+  export const mockupSupriseMeal: Meal = {
+    id: "surprise",
+    name: "Surprise Meal",
+    desciption: "A surprise meal just for you!",
+    images: {
+      thumbnail_url: "🍽️",
+    },
+    ingredients: {
+      ingredients: [
+        { id: "1", name: "Surprise Ingredient 1", quantity: 1, unit: "g" },
+        { id: "2", name: "Surprise Ingredient 2", quantity: 2, unit: "g" },
+      ]
+    },
+    equipments: {
+      equipments: [
+        { id: "1", name: "Surprise Equipment 1", quantity: 1 },
+        { id: "2", name: "Surprise Equipment 2", quantity: 1 },
+      ]
+    },
+  };

@@ -1,32 +1,35 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Meal } from "@/types/meals";
 
+import MealCard from "../meal-card/MealCard";
+
+
+import styles from "./MealSwipeCard.module.css";
 
 interface MealSwipeCardProps {
-  content: string;
-  onSwipe: (direction: "left" | "right") => void;
+  meal: Meal;
+  onSwipe?: (direction: "left" | "right") => void;
 }
 
-const MealSwipeCard: React.FC<MealSwipeCardProps> = ({ content, onSwipe }) => {
+export default function MealSwipeCard({ meal, onSwipe }: MealSwipeCardProps) {
   const handleDragEnd = (event: any, info: any) => {
     if (info.offset.x > 100) {
-      onSwipe("right");
+      onSwipe && onSwipe("right");
     } else if (info.offset.x < -100) {
-      onSwipe("left");
+      onSwipe && onSwipe("left");
     }
   };
 
   return (
     <motion.div
-      className="w-64 h-96 bg-white shadow-lg rounded-lg flex items-center justify-center"
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={handleDragEnd}
       whileDrag={{ scale: 1.1 }}
+      className={styles.card}
     >
-      {content}
+      <MealCard meal={meal} />
     </motion.div>
   );
 };
-
-export default MealSwipeCard;
