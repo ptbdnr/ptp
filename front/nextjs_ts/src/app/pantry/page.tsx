@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Ingredient } from '@/types/ingredients';
-import { mockupIngredients } from '@/data/ingredients';
 
 import PantryLayout from './pantry-layout';
 
@@ -12,7 +11,23 @@ import styles from './pantry.module.css';
 export default function Page() {
 
     // const [searchTerm, setSearchTerm] = useState('');
-    const [pantryItems] = useState<Ingredient[]>(mockupIngredients);
+    const [pantryItems, setPantryItems] = useState<Ingredient[]>([]);
+
+    useEffect(() => {
+      const fetchMeals = async () => {
+        try {
+          const res = await fetch('/api/ingredients');
+          if (!res.ok) {
+            throw new Error('Failed to fetch meals');
+          }
+          const data = await res.json();
+          setPantryItems(data.ingredients);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchMeals();
+    }, []);
   
     // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     //   setSearchTerm(e.target.value);
