@@ -13,13 +13,13 @@ export default function handler(
   res: NextApiResponse<ResponseData>
 ) {
   const func_name = 'ingredients';
-    if (req.method == 'GET') {
+    if (req.method === 'GET') {
       console.log(`GET API /${func_name}`);
       res.status(200).json({ ingredients: mockupIngredients });
       return res;
     };
     
-    if (req.method == 'POST') {
+    if (req.method === 'POST') {
       console.log(`POST API /${func_name}`);
       res.status(200).json({ ingredients: mockupIngredients });
       return res;

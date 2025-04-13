@@ -10,7 +10,7 @@ export default function handler(
   res: NextApiResponse<ResponseData>
 ) {
     const func_name = 'img_to_text';
-    if (req.method == 'POST') {
+    if (req.method === 'POST') {
         console.log(`POST API /${func_name}`);
         try {
             // const result = await someAsyncOperation()

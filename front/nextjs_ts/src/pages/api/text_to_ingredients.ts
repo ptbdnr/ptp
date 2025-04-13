@@ -13,7 +13,7 @@ export default function handler(
   res: NextApiResponse<ResponseData>
 ) {
     const func_name = 'text_to_ingredients';
-    if (req.method == 'GET') {
+    if (req.method === 'GET') {
         console.log(`GET API /${func_name}`);
         try {
             // const result = await someAsyncOperation()
