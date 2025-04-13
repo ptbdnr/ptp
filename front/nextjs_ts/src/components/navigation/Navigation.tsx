@@ -44,6 +44,7 @@ export default function Navigation() {
         <span className={styles.navLabel}>Discover</span>
       </button>
       
+      {/* 
       <button 
         className={`${styles.navItem} ${activeTab === 'plan' ? styles.active : ''}`}
         onClick={() => {
@@ -53,7 +54,8 @@ export default function Navigation() {
       >
         <span className={styles.navIcon}>📅</span>
         <span className={styles.navLabel}>Plan</span>
-      </button>
+      </button> 
+      */}
       
     </nav>
   );
