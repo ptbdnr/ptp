@@ -10,7 +10,7 @@ export const mockupMeals : Meal[] = [
       },
       ingredients: { 
         ingredients: [
-          { id: "1", name: "Eggs", quantity: 4, unit: "pieces" },
+          { id: "1", name: "Eggs", quantity: 4, unit: "pieces"},
           { id: "2", name: "Bell Peppers", quantity: 2, unit: "pieces" },
           { id: "3", name: "Onion", quantity: 1, unit: "pieces" },
           { id: "4", name: "Spinach", quantity: 1, unit: "cup" }

@@ -5,7 +5,7 @@ export interface Ingredient {
     quantity: number;
     unit: string;
     expiryDate?: string;
-    images: {
+    images?: {
         thumbnail_url: string;
     };
 }

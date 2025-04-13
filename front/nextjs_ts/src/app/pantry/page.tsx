@@ -77,7 +77,7 @@ export default function Page() {
                 return (
                   <div key={item.id} className={styles.pantryItem}>
                     <div className={styles.ingredientIcon}>
-                      {item.images.thumbnail_url}
+                      {item.images?.thumbnail_url}
                     </div>
                     <div className={styles.itemDetails}>
                       <h3 className={styles.itemName}>{item.name}</h3>
