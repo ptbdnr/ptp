@@ -13,11 +13,15 @@ interface MealSwipeCardProps {
 }
 
 export default function MealSwipeCard({ meal, onSwipe }: MealSwipeCardProps) {
-  const handleDragEnd = (event: any, info: any) => {
+  const handleDragEnd = (event: MouseEvent | TouchEvent, info: { offset: { x: number } }) => {
     if (info.offset.x > 100) {
-      onSwipe && onSwipe("right");
+      if (onSwipe) {
+        onSwipe("right");
+      }
     } else if (info.offset.x < -100) {
-      onSwipe && onSwipe("left");
+      if (onSwipe) {
+        onSwipe("left");
+      }
     }
   };
 
