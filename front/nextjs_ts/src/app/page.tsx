@@ -21,10 +21,15 @@ export default function Page() {
         </h1>
 
         <p className={styles.description}>
-          Plato is a multi-modal AI application that transforms the way you approach home cooking. By accepting inputs in various formats (text, speech, images, and videos), it provides personalized recipe recommendations tailored to your specific dietary needs, available ingredients, kitchen tools, and meal plans.
+          Plato is a multi-modal AI application that transforms the way you approach home cooking.
+          By accepting inputs in various formats (text, speech, images, and videos), 
+          it provides personalized recipe recommendations tailored 
+          to your specific dietary needs, available ingredients, kitchen tools, and meal plans.
         </p>
         <p className={styles.description}>
-          Developed during a 2-week <a href="https://www.kxsb.org/lpb25" target="_blank">hackathon</a> to bring AI innovation into your kitchen.
+          Developed during a 2-week 
+          <a href="https://www.kxsb.org/lpb25" target="_blank">hackathon</a> 
+          to bring AI innovation into your kitchen.
         </p>
         
         <div className={styles.grid}>
