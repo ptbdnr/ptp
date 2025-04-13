@@ -117,6 +117,13 @@ docker push ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
 # example: docker push ams.vultrcr.com/ptpcrtstnl001/next_ts:latest
 ```
 
+Log in to the server.
+
+```shell
+ssh $ADMIN_USER@$SERVER_IP
+# exmple: ssh root@136.244.104.56
+```
+
 On the server, ensure Docker is installed
 
 ```shell
@@ -140,12 +147,20 @@ docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
 
 # Pull yout latest image
 docker pull ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+# example: docker pull ams.vultrcr.com/ptpcrtstnl001/next_ts:latest
 # on macOS you might need the suffix `--platform linux/x86_64`
 
-# List all images available locally
+# List all images available locally, verify the image is available
 docker images
+
+# List all the running containers
+docker ps
+
+# Stop the container running on port 3000 (if any)
+docker stop $CONTAINER_ID
 
 # Run image in detached mode, optionally add `--name $CONTAINER_NAME`
 docker run -d -p 3000:3000 ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME
+# example: docker run -d -p 3000:3000 ams.vultrcr.com/ptpcrtstnl001/next_ts
 ```
 
