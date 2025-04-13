@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-
 import { Meal } from '@/types/meals';
 
 import styles from './MealCard.module.css';
