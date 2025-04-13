@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.1",
+    "framer-motion": "^12.6.5",
     "next": "15.3.0",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
