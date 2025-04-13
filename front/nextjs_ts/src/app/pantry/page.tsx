@@ -116,10 +116,10 @@ export default function Page() {
         </div>
 
         <ModalCamera open={isCameraOpen} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
-        {capturedImage && <Image src={capturedImage} alt="Captured" />}
+        {capturedImage && <img src={capturedImage} alt="Captured" />}
 
         <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
-        {inputText && <p style={{ color: 'black' }}>Dictated Text: {inputText}</p>}
+        {inputText && <p style={{ color: 'black' }}>Input Text: {inputText}</p>}
 
         {/* 
         <div className={styles.searchContainer}>
