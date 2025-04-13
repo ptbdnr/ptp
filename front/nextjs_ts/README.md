@@ -93,8 +93,10 @@ Ensure Docker daemon is running on your machine.
 # Build the image, 
 # optionally add `--no-cache` to force a fresh build
 docker build --progress=plain -t ptp/$IMAGE_NAME:$TAG .
+# example: docker build --progress=plain -t ptp/next_ts:latest .
 # Quick test
 docker run -p 3000:3000 ptp/$IMAGE_NAME:latest
+# example: docker run -p 3000:3000 ptp/next_ts:latest
 ```
 
 ```shell
@@ -110,7 +112,9 @@ docker login https://ams.vultrcr.com/ptpcrtstnl001 -u $CR_USER -p $CR_PASS
 
 # Tag and Push your image to Vults Container Registry
 docker tag ptp/$IMAGE_NAME:latest ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+# example: docker tag ptp/next_ts:latest ams.vultrcr.com/ptpcrtstnl001/next_ts:latest
 docker push ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+# example: docker push ams.vultrcr.com/ptpcrtstnl001/next_ts:latest
 ```
 
 On the server, ensure Docker is installed
@@ -118,7 +122,7 @@ On the server, ensure Docker is installed
 ```shell
 apt  install docker.io
 
-# Below is Optional but recommended
+# Below is Optional, but recommended
 # Create user `docker`
 useradd -m -g users docker
 # create user group `dockergroup`
