@@ -11,12 +11,12 @@ import styles from './pantry.module.css';
 
 export default function Page() {
 
-    const [searchTerm, setSearchTerm] = useState('');
+    // const [searchTerm, setSearchTerm] = useState('');
     const [pantryItems] = useState<Ingredient[]>(mockupIngredients);
   
-    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchTerm(e.target.value);
-    };
+    // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //   setSearchTerm(e.target.value);
+    // };
   
     const getExpiryStatus = (expiryDate: string | undefined) => {
       if (!expiryDate) return null;
@@ -54,6 +54,7 @@ export default function Page() {
             </button>
           </div>
   
+          {/* 
           <div className={styles.searchContainer}>
             <div className={styles.searchBox}>
               <span className={styles.searchIcon}>🔍</span>
@@ -65,7 +66,8 @@ export default function Page() {
                 className={styles.searchInput}
               />
             </div>
-          </div>
+          </div> 
+          */}
 
           <section className={styles.pantryItemsSection}>
             <h2 className={styles.sectionTitle}>Your Pantry Items</h2>
@@ -91,7 +93,7 @@ export default function Page() {
                         )}
                       </p>
                     </div>
-                    <button className={styles.editButton}>Edit</button>
+                    <button className={styles.editButton} disabled>Edit</button>
                   </div>
                 );
               })}
