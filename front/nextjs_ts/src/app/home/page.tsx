@@ -9,6 +9,7 @@ import styles from './home.module.css';
 export default function Page() {
     const [weeklyBudget, setWeeklyBudget] = useState(44);
     const [maxPrepTime, setMaxPrepTime] = useState(28);
+    const [dietaryPreferences, setDietaryPreferences] = useState<string[]>([]);
   
     const handleBudgetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = parseInt(e.target.value);
@@ -19,6 +20,12 @@ export default function Page() {
       const value = parseInt(e.target.value);
       setMaxPrepTime(value);
     };
+
+    const handleDiataryPreferenceChange = (preference: string) => {
+        if (preference && !dietaryPreferences.includes(preference)) {
+          setDietaryPreferences([...dietaryPreferences, preference]);
+        }
+    }
 
     return (
     <HomeLayout>
@@ -75,8 +82,18 @@ export default function Page() {
 
           <div className={styles.dietaryPrefsContainer}>
             <label className={styles.dietaryLabel}>Dietary Preferences</label>
-            <button className={styles.dietaryButton}>
-              Select your dietary preferences
+            <button 
+              className={dietaryPreferences.length > 0 ? styles.dietaryButton: styles.dietaryButtonEmpty}
+              onClick={() => {
+                const newPreference = prompt('Enter your dietary preference (e.g., Vegan, Gluten-Free):');
+                newPreference && handleDiataryPreferenceChange(newPreference);
+              }}
+            >
+              {
+                dietaryPreferences.length > 0
+                ? dietaryPreferences.join(', ')
+                : 'Select your dietary preferences'
+              }
               <span className={styles.plusIcon}>+</span>
             </button>
           </div>
