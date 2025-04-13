@@ -19,7 +19,7 @@ export default function Page() {
   const [inputText, setInputText] = useState<string | null>(null);
 
   const [pantryItems, setPantryItems] = useState<Ingredient[]>([]);
-  // const [searchTerm, setSearchTerm] = useState('');
+  const [newPantryItems, setNewPantryItems] = useState<Ingredient[]>([]);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -46,11 +46,11 @@ export default function Page() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ image: imageData }),
+        body: JSON.stringify({ image: capturedImage }),
       }
       );
       if (!res.ok) {
-        throw new Error('Failed to fetch meals');
+        throw new Error('Failed to fetch description of image.');
       }
       const data = await res.json();
       console.log('Response from API img_to_text:', data);
@@ -74,13 +74,15 @@ export default function Page() {
       }
       );
       if (!res.ok) {
-        throw new Error('Failed to fetch meals');
+        throw new Error('Failed to fetch ingredients from text.');
       }
       const data = await res.json();
       console.log('Response from API text_to_ingredients:', data);
+      const newIngredients = data.ingredients;
+      setNewPantryItems(newIngredients);
       // Use functional update to ensure the latest state is used.
       setPantryItems(prev => {
-        const updated = prev.concat(data.ingredients);
+        const updated = prev.concat(newIngredients);
         upsertPantry(updated);
         return updated;
       });
@@ -137,48 +139,41 @@ export default function Page() {
   return (
       <PantryLayout>
 
-        <div className={styles.actionButtons}>
-          <button 
-            className={`${styles.actionButton} ${styles.scanButton}`} 
-            onClick={() => setCameraOpen(true)}
-          >
-            📸 Take<br/>Picture
-          </button>
-          <button 
-            className={`${styles.actionButton} ${styles.addButton}`} 
-            onClick={() => setCameraOpen(true)}
-          >
-            🧾 Scan<br/>Receipt
-          </button>
-          <button 
-            className={`${styles.actionButton} ${styles.importButton}`} 
-            onClick={() => setDictationOpen(true)}
-          >
-            🎙️ Dictate <br/> Type
-          </button>
-        </div>
-
-        <ModalCamera open={isCameraOpen} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
-        {/* {capturedImage && <img src={capturedImage} alt="Captured" />} */}
-
-        <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
-        {/* {inputText && <p style={{ color: 'black' }}>Input Text: {inputText}</p>} */}
-
-        {/* 
-        <div className={styles.searchContainer}>
-          <div className={styles.searchBox}>
-            <span className={styles.searchIcon}>🔍</span>
-            <input
-              type="text"
-              placeholder="Search ingredients..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className={styles.searchInput}
-            />
+        <div className={styles.inputs}>
+          <div className={styles.actionButtons}>
+            <button 
+              className={`${styles.actionButton} ${styles.scanButton}`} 
+              onClick={() => setCameraOpen(true)}
+            >
+              📸<br />Take<br/>Picture
+            </button>
+            <button 
+              className={`${styles.actionButton} ${styles.addButton}`} 
+              onClick={() => setCameraOpen(true)}
+            >
+              🧾<br />Scan<br/>Receipt
+            </button>
+            <button 
+              className={`${styles.actionButton} ${styles.importButton}`} 
+              onClick={() => setDictationOpen(true)}
+            >
+              🎙️<br />Dictate <br/> or Type
+            </button>
+            <ModalCamera open={isCameraOpen} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
+            <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
           </div>
-        </div> 
-        */}
-
+          {newPantryItems.length > 0 && (
+            <div className={styles.newItemsNotification}>
+              <p>New items added to your pantry!</p>
+              <ul>
+                {newPantryItems.map(item => (
+                  <li key={item.id}>{item.name} - {item.quantity} {item.unit}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+        
         <section className={styles.pantryItemsSection}>
           <h2 className={styles.sectionTitle}>Your Pantry Items</h2>
           

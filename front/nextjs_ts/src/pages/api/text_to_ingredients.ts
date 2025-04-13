@@ -22,9 +22,11 @@ export default function handler(
                     { id: v4(), name: 'lollipop', quantity: 1, unit: 'pieces', images: { thumbnail_url: '🍭' } },
                 ]
              })
+             return;
         } catch (err) {
             console.error('Error fetching data:', err);
             res.status(500).send({ error: 'failed to fetch data' });
+            return;
         }
     }
     

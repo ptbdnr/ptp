@@ -12,5 +12,6 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
+  const func_name = 'meals';
   res.status(200).json({ meals: mockupMeals })
 }

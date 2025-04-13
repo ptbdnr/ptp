@@ -16,11 +16,13 @@ export default function handler(
     if (req.method === 'GET') {
       console.log(`GET API /${func_name}`);
       res.status(200).json({ ingredients: mockupIngredients });
+      return;
     };
     
     if (req.method === 'POST') {
       console.log(`POST API /${func_name}`);
       res.status(200).json({ ingredients: mockupIngredients });
+      return;
     };
     
     console.error(`API /${func_name} does not support ${req.method}`);
