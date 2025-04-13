@@ -26,10 +26,8 @@ export default function handler(
             console.error('Error fetching data:', err);
             res.status(500).send({ error: 'failed to fetch data' });
         }
-        return res;    
     }
     
     console.error(`API /${func_name} does not support ${req.method}`);
     res.status(405).send({ error: `API /${func_name} does not support ${req.method}` });
-    return res;
 }
