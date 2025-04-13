@@ -78,8 +78,12 @@ export default function Page() {
       }
       const data = await res.json();
       console.log('Response from API text_to_ingredients:', data);
-      const updatedPantryItems = pantryItems.concat(data.ingredients);
-      upsertPantry(updatedPantryItems);
+      // Use functional update to ensure the latest state is used.
+      setPantryItems(prev => {
+        const updated = prev.concat(data.ingredients);
+        upsertPantry(updated);
+        return updated;
+      });
     } catch (error) {
       console.error(error);
     }    
@@ -99,7 +103,6 @@ export default function Page() {
       }
       const data = await res.json();
       console.log('Response from API upsert:', data);
-      setPantryItems(items);
     }
     catch (error) {
       console.error(error);
