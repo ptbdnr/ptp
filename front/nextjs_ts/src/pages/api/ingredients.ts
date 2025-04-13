@@ -8,9 +8,23 @@ type ResponseData = {
   ingredients: Ingredient[]
 }
  
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  res.status(200).json({ ingredients: mockupIngredients })
+  const func_name = 'ingredients';
+    if (req.method === 'GET') {
+      console.log(`GET API /${func_name}`);
+      res.status(200).json({ ingredients: mockupIngredients });
+      return;
+    };
+    
+    if (req.method === 'POST') {
+      console.log(`POST API /${func_name}`);
+      res.status(200).json({ ingredients: mockupIngredients });
+      return;
+    };
+    
+    console.error(`API /${func_name} does not support ${req.method}`);
+    res.status(405).json({ ingredients: [] });
 }

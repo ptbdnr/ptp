@@ -47,7 +47,7 @@ export default function ModalCamera({ open, onClose, onCapture }: ModalCameraPro
             const context = canvasRef.current.getContext('2d');
             if (context) {
                 context.drawImage(videoRef.current, 0, 0, width, height);
-                const imageData = canvasRef.current.toDataURL('image/png');
+                const imageData = canvasRef.current.toDataURL('image/png').split(',')[1]; // Extract base64 part
                 onCapture(imageData);
             }
         }

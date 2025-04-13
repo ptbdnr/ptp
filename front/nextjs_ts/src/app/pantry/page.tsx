@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 import { Ingredient } from '@/types/ingredients';
 
@@ -15,12 +14,10 @@ import styles from './pantry.module.css';
 export default function Page() {
   // input modalities
   const [isCameraOpen, setCameraOpen] = useState(false);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isDictationOpen, setDictationOpen] = useState(false);
-  const [dictatedText, setDictatedText] = useState<string | null>(null);
 
   const [pantryItems, setPantryItems] = useState<Ingredient[]>([]);
-  // const [searchTerm, setSearchTerm] = useState('');
+  const [newPantryItems, setNewPantryItems] = useState<Ingredient[]>([]);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -38,15 +35,77 @@ export default function Page() {
     fetchMeals();
   }, []);
 
-  const handleCapture = (imageData: string) => {
-    setCapturedImage(imageData);
+  async function handleCapture (imageData: string) {
     setCameraOpen(false);
+    try {
+      const res = await fetch('/api/img_to_text', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: imageData }),
+      }
+      );
+      if (!res.ok) {
+        throw new Error('Failed to fetch description of image.');
+      }
+      const data = await res.json();
+      console.log('Response from API img_to_text:', data);
+      handleDictation(data.content);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleDictation = (text: string) => {
-    setDictatedText(text);
+  async function handleDictation (text: string) {
     setDictationOpen(false);
+    try {
+      const url = `/api/text_to_ingredients?content=${text}`;
+      console.log('GET URL:', url);
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+      );
+      if (!res.ok) {
+        throw new Error('Failed to fetch ingredients from text.');
+      }
+      const data = await res.json();
+      console.log('Response from API text_to_ingredients:', data);
+      const newIngredients = data.ingredients;
+      setNewPantryItems(newIngredients);
+      // Use functional update to ensure the latest state is used.
+      setPantryItems(prev => {
+        const updated = prev.concat(newIngredients);
+        upsertPantry(updated);
+        return updated;
+      });
+    } catch (error) {
+      console.error(error);
+    }    
   };
+
+  async function upsertPantry(items: Ingredient[]) {
+    try {
+      const res = await fetch('/api/ingredients', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ingredients: items }),
+      });
+      if (!res.ok) {
+        throw new Error('Failed to upsert pantry items');
+      }
+      const data = await res.json();
+      console.log('Response from API upsert:', data);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
 
   // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   setSearchTerm(e.target.value);
@@ -76,48 +135,41 @@ export default function Page() {
   return (
       <PantryLayout>
 
-        <div className={styles.actionButtons}>
-          <button 
-            className={`${styles.actionButton} ${styles.scanButton}`} 
-            onClick={() => setCameraOpen(true)}
-          >
-            📸 Take<br/>Picture
-          </button>
-          <button 
-            className={`${styles.actionButton} ${styles.addButton}`} 
-            onClick={() => setCameraOpen(true)}
-          >
-            🧾 Scan<br/>Receipt
-          </button>
-          <button 
-            className={`${styles.actionButton} ${styles.importButton}`} 
-            onClick={() => setDictationOpen(true)}
-          >
-            🎙️ Dictate <br/> Type
-          </button>
-        </div>
-
-        <ModalCamera open={isCameraOpen} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
-        {capturedImage && <Image src={capturedImage} alt="Captured" />}
-
-        <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
-        {dictatedText && <p style={{ color: 'black' }}>Dictated Text: {dictatedText}</p>}
-
-        {/* 
-        <div className={styles.searchContainer}>
-          <div className={styles.searchBox}>
-            <span className={styles.searchIcon}>🔍</span>
-            <input
-              type="text"
-              placeholder="Search ingredients..."
-              value={searchTerm}
-              onChange={handleSearch}
-              className={styles.searchInput}
-            />
+        <div className={styles.inputs}>
+          <div className={styles.actionButtons}>
+            <button 
+              className={`${styles.actionButton} ${styles.scanButton}`} 
+              onClick={() => setCameraOpen(true)}
+            >
+              📸<br />Take<br/>Picture
+            </button>
+            <button 
+              className={`${styles.actionButton} ${styles.addButton}`} 
+              onClick={() => setCameraOpen(true)}
+            >
+              🧾<br />Scan<br/>Receipt
+            </button>
+            <button 
+              className={`${styles.actionButton} ${styles.importButton}`} 
+              onClick={() => setDictationOpen(true)}
+            >
+              🎙️<br />Dictate <br/> or Type
+            </button>
+            <ModalCamera open={isCameraOpen} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
+            <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
           </div>
-        </div> 
-        */}
-
+          {newPantryItems.length > 0 && (
+            <div className={styles.newItemsNotification}>
+              <p>New items added to your pantry!</p>
+              <ul>
+                {newPantryItems.map(item => (
+                  <li key={item.id}>{item.name} - {item.quantity} {item.unit}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+        
         <section className={styles.pantryItemsSection}>
           <h2 className={styles.sectionTitle}>Your Pantry Items</h2>
           
