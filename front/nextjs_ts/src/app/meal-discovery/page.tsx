@@ -10,7 +10,7 @@ import MealSwipeCard from '@/components/meal-swipe-card/MealSwipeCard';
 
 import styles from './meal-discovery.module.css';
 
-import { mockupMeals, mockupSupriseMeal } from '@/data/meals';
+import { mockupSupriseMeal } from '@/data/meals';
 
 
 export default function Page() {
