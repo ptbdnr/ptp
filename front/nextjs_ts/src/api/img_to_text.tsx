@@ -20,6 +20,7 @@ export default function handler(
         // const result = await someAsyncOperation()
         res.status(200).send({ message: 'a banana' })
     } catch (err) {
+        console.error('Error fetching data:', err)
         res.status(500).send({ error: 'failed to fetch data' })
     }
   

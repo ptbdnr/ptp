@@ -11,7 +11,6 @@ type MealCardProps = {
 };
 
 export default function MealCard({ recipe: recipe }: MealCardProps) {
-  const [isLiked, setIsLiked] = useState<boolean | null>(null);
   const difficulty = ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)];
   const price = 3 + Math.floor(Math.random() * 18) + [0.0, 0.50, 0.75][Math.floor(Math.random() * 3)];
   const prepTime = 10 + Math.floor(Math.random() * 60);
@@ -32,7 +31,6 @@ export default function MealCard({ recipe: recipe }: MealCardProps) {
           className={`${styles.actionButton} ${styles.dislikeButton}`}
           onClick={() => {
             console.log("Disliked");
-            setIsLiked(false);
           }}
         >
           ✕
@@ -41,7 +39,6 @@ export default function MealCard({ recipe: recipe }: MealCardProps) {
           className={`${styles.actionButton} ${styles.likeButton}`}
           onClick={() => {
             console.log("Liked");
-            setIsLiked(true)
           }}
         >
           ✓

@@ -12,8 +12,7 @@ import styles from './pantry.module.css';
 export default function Page() {
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [activeFilter, setActiveFilter] = useState('All');
-    const [pantryItems, setPantryItems] = useState<Ingredient[]>(mockupIngredients);
+    const [pantryItems] = useState<Ingredient[]>(mockupIngredients);
   
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchTerm(e.target.value);

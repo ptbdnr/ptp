@@ -9,7 +9,6 @@ import styles from './home.module.css';
 export default function Page() {
     const [weeklyBudget, setWeeklyBudget] = useState(44);
     const [maxPrepTime, setMaxPrepTime] = useState(28);
-    const [dietaryPreferences, setDietaryPreferences] = useState<string[]>([]);
   
     const handleBudgetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = parseInt(e.target.value);

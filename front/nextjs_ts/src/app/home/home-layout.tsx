@@ -1,4 +1,3 @@
-import Header from '@/components/header/Header';
 import Navigation from '@/components/navigation/Navigation';
 
 import styles from '@/styles/plato.module.css';

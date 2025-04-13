@@ -1,25 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import MealDiscoveryLayout from './meal-discovery-layout';
 
 import { Meal } from '@/types/meals';
-import { Ingredients, Ingredient } from '@/types/ingredients';
 
 import MealCard from '@/components/meal-card/MealCard';
 
 import styles from './meal-discovery.module.css';
 
 import { mockupMeals } from '@/data/meals';
-import { mockupIngredients } from '@/data/ingredients';
 
 
 export default function Page() {
-  const [currentIngredients, setCurrentIngredients] = useState<Ingredients>({ingredients: mockupIngredients});
-  const [currentRecipe, setCurrentRecipe] = useState<Meal>(mockupMeals[0]);
-  const [progress, setProgress] = useState({current: 2, total: mockupMeals.length});
-  const [totalPrice, setTotalPrice] = useState({current: 15.25, total: 44});
+  const [currentRecipe] = useState<Meal>(mockupMeals[0]);
+  const [progress] = useState({current: 2, total: mockupMeals.length});
+  const [totalPrice] = useState({current: 15.25, total: 44});
 
   return (
     <MealDiscoveryLayout>
