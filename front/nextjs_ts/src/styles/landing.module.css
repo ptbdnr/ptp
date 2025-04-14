@@ -67,10 +67,34 @@
   text-decoration: underline;
 }
 
+.kxsbGrid {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 120px;
+  margin-bottom: 40px;
+  width: 42rem;
+}
+
+.kxsbFull{
+  font-size: clamp(1.57109rem, 1.16408rem + 2.03506vw, 2.99563rem);
+  font-family: var(--heading-font);
+}
+
+.kxsbShort{
+  font-size: 90px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -2px;
+  margin: 0px;
+}
+
 .code {
   background: #fafafa;
   border-radius: 5px;
   padding: 0.75rem;
+  color: black;
   font-size: 1.1rem;
   font-family:
     Menlo,

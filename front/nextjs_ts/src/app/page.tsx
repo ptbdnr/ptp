@@ -58,9 +58,17 @@ export default function Page() {
             <h2 className={styles.subtitle}>
               Developed during
             </h2>
-            <p className={styles.description}>
-              <a href="https://www.kxsb.org/lpb25" target="_blank">KXSB London, Paris, Berlin AI HackXelerator™ - LPB25</a> 
-            </p>
+            <div className={styles.kxsbGrid}>
+              <div className={styles.kxsbFull}>
+                The Ultimate, Multi-modal, AI Acceleration Event
+              </div>
+              <div className={styles.kxsbShort}>
+              <a href="https://www.kxsb.org/lpb25" target="_blank">LPB 25</a>
+              </div>              
+            </div>
+            {/* <p className={styles.code}>
+              <a href="https://www.kxsb.org/lpb25" target="_blank">KXSB London, Paris, Berlin AI HackXelerator™</a> 
+            </p> */}
           </div>
           
           <div className={styles.sponsors}>
