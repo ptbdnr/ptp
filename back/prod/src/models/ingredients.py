@@ -2,11 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 if TYPE_CHECKING:
     from datetime import date
-
 
 class Ingredient(BaseModel):
     """Model for an ingredient."""
@@ -14,7 +13,7 @@ class Ingredient(BaseModel):
     name: str
     quantity: float
     unit: str
-    expiry_date: Optional[date] = None
+    expiry_date: Optional[date] = Field(None)
 
 
 class Ingredients(BaseModel):
