@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 import Head from "next/head";
 import styles from "../styles/landing.module.css";
@@ -19,28 +20,12 @@ export default function Page() {
         <h1 className={styles.title}>
           Plato
         </h1>
+        <title className={styles.tagline}>
+          Smarter cooking starts here
+        </title>
 
-        <p className={styles.description}>
-          Plato is a multi-modal AI application that transforms the way you approach home cooking.
-          By accepting inputs in various formats (text, speech, images, and videos), 
-          it provides personalized recipe recommendations tailored 
-          to your specific dietary needs, available ingredients, kitchen tools, and meal plans.
-        </p>
-        <p className={styles.description}>
-          Developed during a 2-week 
-          <a href="https://www.kxsb.org/lpb25" target="_blank">hackathon</a> 
-          to bring AI innovation into your kitchen.
-        </p>
         
         <div className={styles.grid}>
-          <a href="https://github.com/ptbdnr/ptp" 
-            target="_blank" 
-            className={styles.card}
-          >
-            <h3>Documentation &rarr;</h3>
-            <p>Find more documentation and learn about the project.</p>
-          </a>
-
           <div
             onClick={() => {router.push('/login')}}
             className={styles.card}
@@ -48,8 +33,67 @@ export default function Page() {
             <h3>Try it &rarr;</h3>
             <p>Discover and cook something delicious.</p>
           </div>
-
+          <a href="https://github.com/ptbdnr/ptp" 
+            target="_blank" 
+            className={styles.card}
+          >
+            <h3>Documentation &rarr;</h3>
+            <p>Find more documentation and learn about the project.</p>
+          </a>
         </div>
+
+        <p className={styles.description}>
+          Plato is a multi-modal AI application that transforms the way you approach home cooking.
+          By accepting inputs in various formats (text, speech, images, and videos), 
+          it provides personalized recipe recommendations tailored 
+          to your specific dietary needs, available ingredients, kitchen tools, and meal plans.
+        </p>
+
+        <div className={styles.description}>
+          <p>
+            Developed during <a href="https://www.kxsb.org/lpb25" target="_blank">KXSB London, Paris, Berlin AI HackXelerator™ - LPB25</a> 
+          </p>
+          <div className={styles.sponsors}>
+            <h2>Partners</h2>
+            <div className={styles.grid}></div>
+              <div className={styles.sponsorLogo}>
+                <a href="https://www.vultr.com" target="_blank" rel="noopener">
+                  <Image src="logos/vultr.svg" alt="Vultr" width={120} height={120}/>
+                </a>
+              </div>
+              {/* <div className={styles.sponsorLogo}>
+                <a href="https://www.amd.com" target="_blank" rel="noopener">
+                  <Image src="logos/AMD.svg" alt="AMD" width={120} height={120}/>
+                </a>
+              </div> */}
+              <div className={styles.sponsorLogo}>
+                <a href="https://www.pinecone.io" target="_blank" rel="noopener">
+                  <Image src="logos/pinecone.svg" alt="Pinecone" width={120} height={120}/>
+                </a>
+              </div>
+              {/* <div className={styles.sponsorLogo}>
+                <a href="https://huggingface.co/" target="_blank" rel="noopener">
+                  <Image src="logos/hf.svg" alt="Huggingface" width={120} height={120}/>
+                </a>
+              </div> */}
+              <div className={styles.sponsorLogo}>
+                <a href="https://mistral.ai/" target="_blank" rel="noopener">
+                  <Image src="logos/mistral.svg" alt="Mistral AI" width={120} height={120}/>
+                </a>
+              </div>
+              <div className={styles.sponsorLogo}>
+                <a href="https://lumalabs.ai" target="_blank" rel="noopener">
+                  <Image src="logos/lumalabs.svg" alt="Luma Labs" width={120} height={120}/>
+                </a>
+              </div>
+              {/* <div className={styles.sponsorLogo}>
+                <a href="https://www.twelvelabs.io/" target="_blank" rel="noopener">
+                  <Image src="logos/twelvelabs.webp" alt="Twelve Labs" width={120} height={120}/>
+                </a>
+              </div> */}
+          </div>
+        </div>
+
       </main>
 
       <footer className={styles.footer}>
