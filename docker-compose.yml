@@ -2,14 +2,12 @@ version: '3.8'
 
 services:
   frontend:
-    build:
-      context: ./front/nextjs_ts
-      dockerfile: Dockerfile
+    image: ams.vultrcr.com/ptpcrtstnl001/next_ts:latest
     expose:
       - "3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=https://localhost/api/backend
+      - NEXT_PUBLIC_API_URL=https://199.247.26.104/api/backend
     env_file:
       - .env
     depends_on:
@@ -19,13 +17,11 @@ services:
     restart: unless-stopped
 
   backend:
-    build:
-      context: ./back/sample
-      dockerfile: Dockerfile
+    image: ams.vultrcr.com/ptpcrtstnl001/backend:latest
     expose:
       - "80"
     environment:
-      - CORS_ORIGINS=https://localhost
+      - CORS_ORIGINS=https://199.247.26.104
     env_file:
       - .env
     networks:

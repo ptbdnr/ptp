@@ -45,3 +45,50 @@ localhost {
     level INFO
   }
 }
+
+# Production Caddyfile
+# Replace yourdomain.com with your actual domain
+yourdomain.com {
+  # Caddy will automatically get Let's Encrypt certificates
+
+  # Frontend Next.js API routes
+  handle /api/meals* {
+    reverse_proxy frontend:3000
+  }
+  
+  handle /api/ingredients* {
+    reverse_proxy frontend:3000
+  }
+  
+  handle /api/img_to_text* {
+    reverse_proxy frontend:3000
+  }
+
+  # Backend API routes
+  handle /api/backend/* {
+    uri strip_prefix /api/backend
+    reverse_proxy backend:80
+  }
+
+  # All other requests go to the frontend
+  handle {
+    reverse_proxy frontend:3000
+  }
+
+  # Enable compression
+  encode gzip zstd
+  
+  # Set security headers
+  header {
+    # Enable HSTS
+    # Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    # Prevent MIME sniffing
+    X-Content-Type-Options "nosniff"
+    # Enable browser XSS protection
+    X-XSS-Protection "1; mode=block"
+    # Prevent clickjacking
+    X-Frame-Options "SAMEORIGIN"
+    # Allow camera access from same origin
+    Permissions-Policy "camera=self"
+  }
+}

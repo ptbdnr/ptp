@@ -8,8 +8,9 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-    ports:
-      - "3000:3000"
+      - NEXT_PUBLIC_API_URL=https://localhost/api/backend
+    expose:
+      - "3000"
 
   backend:
     command: uvicorn src.main:app --host 0.0.0.0 --port 80 --reload
@@ -17,5 +18,27 @@ services:
       - ./back/sample:/code
     environment:
       - ENVIRONMENT=development
+      - CORS_ORIGINS=https://localhost
+    expose:
+      - "80"
+
+  caddy:
+    image: caddy:2
     ports:
-      - "8000:80"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile.dev:/etc/caddy/Caddyfile:ro
+      - caddy_dev_data:/data
+      - caddy_dev_config:/config
+    depends_on:
+      - frontend
+      - backend
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  caddy_dev_data:
+  caddy_dev_config:
