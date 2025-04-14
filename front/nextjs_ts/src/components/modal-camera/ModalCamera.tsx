@@ -13,7 +13,9 @@ export default function ModalCamera({ open, onClose, onCapture }: ModalCameraPro
 
     useEffect(() => {
         if (open) {
-            navigator.mediaDevices.getUserMedia({ video: true })
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: { ideal: 'environment' } } // Default to rear camera
+            })
                 .then(stream => {
                     if (videoRef.current) {
                         videoRef.current.srcObject = stream;
