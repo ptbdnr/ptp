@@ -17,12 +17,14 @@ export default function Page() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Plato
-        </h1>
-        <title className={styles.tagline}>
-          Smarter cooking starts here
-        </title>
+        <div>
+          <h1 className={styles.title}>
+            Plato
+          </h1>
+          <p className={styles.description}>
+            Smarter cooking starts here
+          </p>
+        </div>
 
         
         <div className={styles.grid}>
@@ -42,51 +44,61 @@ export default function Page() {
           </a>
         </div>
 
-        <p className={styles.description}>
-          Plato is a multi-modal AI application that transforms the way you approach home cooking.
-          By accepting inputs in various formats (text, speech, images, and videos), 
-          it provides personalized recipe recommendations tailored 
-          to your specific dietary needs, available ingredients, kitchen tools, and meal plans.
-        </p>
-
-        <div className={styles.description}>
-          <p>
-            Developed during <a href="https://www.kxsb.org/lpb25" target="_blank">KXSB London, Paris, Berlin AI HackXelerator™ - LPB25</a> 
+        <div>
+          <p className={styles.description}>
+            Plato is a multi-modal AI application that transforms the way you approach home cooking.
+            By accepting inputs in various formats (text, speech, images, and videos), 
+            it provides personalized recipe recommendations tailored 
+            to your specific dietary needs, available ingredients, kitchen tools, and meal plans.
           </p>
+        </div>
+
+        <div>
+          <div>
+            <h2 className={styles.subtitle}>
+              Developed during
+            </h2>
+            <p className={styles.description}>
+              <a href="https://www.kxsb.org/lpb25" target="_blank">KXSB London, Paris, Berlin AI HackXelerator™ - LPB25</a> 
+            </p>
+          </div>
+          
           <div className={styles.sponsors}>
-            <h2>Partners</h2>
+            <h2 className={styles.subtitle}>
+              Sponsors
+            </h2>
             <div className={styles.grid}></div>
-              <div className={styles.sponsorLogo}>
+              <div className={styles.card}>
                 <a href="https://www.vultr.com" target="_blank" rel="noopener">
                   <Image src="logos/vultr.svg" alt="Vultr" width={120} height={120}/>
                 </a>
               </div>
-              {/* <div className={styles.sponsorLogo}>
+              <div className={styles.card}>
                 <a href="https://www.amd.com" target="_blank" rel="noopener">
                   <Image src="logos/AMD.svg" alt="AMD" width={120} height={120}/>
                 </a>
-              </div> */}
-              <div className={styles.sponsorLogo}>
+              </div>
+              <div className={styles.card}>
                 <a href="https://www.pinecone.io" target="_blank" rel="noopener">
                   <Image src="logos/pinecone.svg" alt="Pinecone" width={120} height={120}/>
                 </a>
               </div>
-              {/* <div className={styles.sponsorLogo}>
+              <div className={styles.card}>
                 <a href="https://huggingface.co/" target="_blank" rel="noopener">
                   <Image src="logos/hf.svg" alt="Huggingface" width={120} height={120}/>
                 </a>
-              </div> */}
-              <div className={styles.sponsorLogo}>
+              </div>
+              <div className={styles.card}>
                 <a href="https://mistral.ai/" target="_blank" rel="noopener">
                   <Image src="logos/mistral.svg" alt="Mistral AI" width={120} height={120}/>
                 </a>
               </div>
-              <div className={styles.sponsorLogo}>
+              <div className={styles.card}>
                 <a href="https://lumalabs.ai" target="_blank" rel="noopener">
                   <Image src="logos/lumalabs.svg" alt="Luma Labs" width={120} height={120}/>
                 </a>
               </div>
-              {/* <div className={styles.sponsorLogo}>
+              {/* <div className={styles.card}>
                 <a href="https://www.twelvelabs.io/" target="_blank" rel="noopener">
                   <Image src="logos/twelvelabs.webp" alt="Twelve Labs" width={120} height={120}/>
                 </a>
