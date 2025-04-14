@@ -88,8 +88,7 @@ pip3 install -r requirements.txt
 
 ```shell
 cd /path/to/project
-cd ./src
-uvicorn main:app --reload
+uvicorn src.main:app --reload
 ```
 
 Access the interactive API documentation at `http://localhost:8000/docs`
@@ -97,6 +96,9 @@ Access the interactive API documentation at `http://localhost:8000/docs`
 quick test
 ```shell
 curl http://127.0.0.1:8000/recommend -X POST
+# or
+curl "http://127.0.0.1:8000/users/kxsb/text2img?title=burger&description=american%20double%20cheeseburger"
+curl "http://127.0.0.1:8000/users/kxsb/text2ingredients?text=two%20eggs%20and%20a%20slice%20of%20bread"
 ```
 
 
@@ -109,8 +111,11 @@ Ensure Docker daemon is running on your machine.
 docker build -t ptp/$IMAGE_NAME:$TAG .
 # example: docker build -t ptp/back:latest .
 # Quick test
-docker run -p 3000:3000 ptp/$IMAGE_NAME:$TAG
-# example: docker run -p 3000:3000 ptp/back:latest
+docker run -p 80:80 ptp/$IMAGE_NAME:$TAG
+# example: docker run -p 80:80 ptp/back:latest
+# Quick test
+curl "http://127.0.0.1:80/users/kxsb/text2img?title=burger&description=american%20double%20cheeseburger"
+curl "http://127.0.0.1:80/users/kxsb/text2ingredients?text=two%20eggs%20and%20a%20slice%20of%20bread"
 ```
 
 ```shell

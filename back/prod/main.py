@@ -230,7 +230,7 @@ async def text2img(
         s3_bucket="luma-images",
         lumna_api_key=os.getenv("LUMAAI_API_KEY"),
     )
-    return await img_generator.asyncImage(
+    return await img_generator.generate_image(
         title=title,
         description=description,
         aspect_ratio=aspect_ratio,

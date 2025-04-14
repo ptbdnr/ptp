@@ -3,63 +3,21 @@ from __future__ import annotations
 import os
 import uuid
 from datetime import date
-from typing import Annotated, Optional, cast
+from typing import Annotated, cast
 
 import dotenv
 from fastapi import FastAPI, Form, HTTPException, Path
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from src.models.equipments import Equipment, Equipments
+from src.models.ingredients import Ingredient, Ingredients
+from src.models.meals import Meal, Meals
+from src.models.preferences import UserPreferences
 from src.text_to_img.meal_image import MealImageGenerator
+from src.text_to_schema.ingredient_parser import IngredientParser
 
-dotenv.load_dotenv(".env.local")
+dotenv.load_dotenv("./.env.local")
 
 DEFAULT_USER_ID = "kxsb"
-
-# Define the models based on the OpenAPI specification
-class Ingredient(BaseModel):
-    """Model for an ingredient."""
-
-    name: str
-    quantity: float
-    unit: str
-    expiry_date: Optional[date] = None
-
-class Ingredients(BaseModel):
-    """Model for a list of ingredients."""
-
-    ingredients: list[Ingredient]
-
-class Equipment(BaseModel):
-    """Model for a kitchen equipment."""
-
-    name: str
-    quantity: float
-
-class Equipments(BaseModel):
-    """Model for a list of kitchen equipments."""
-
-    equipments: list[Equipment]
-
-class UserPreferences(BaseModel):
-    """Model for user dietary and budget preferences."""
-
-    preferences: list[str]
-
-class Recipe(BaseModel):
-    """Model for a recipe."""
-
-    id: str
-    name: str
-    description: str
-    ingredients: list[Ingredient]
-    required_equipment: list[str]
-
-class RecommendedRecipes(BaseModel):
-    """Model for recommended recipes."""
-
-    recipes: list[Recipe]
-    missing_ingredients: list[str]
-    missing_equipment: list[str]
 
 # Create FastAPI app
 app = FastAPI(
@@ -100,11 +58,11 @@ db = {
 }
 
 # Routes implementation
-@app.post("/recommend", response_model=RecommendedRecipes)
+@app.post("/recommend", response_model=Meals)
 async def recommend_recipe(
     userId: Annotated[str, Form()] = DEFAULT_USER_ID,
     text: Annotated[str, Form()] = "foo",
-) -> RecommendedRecipes:
+) -> Meals:
     """Recommend recipes based on user inventory and preferences."""
     # In a real application, this would call an AI model for recommendations
     # For demo purposes, return mock data
@@ -119,9 +77,9 @@ async def recommend_recipe(
         }
 
     # Generate a sample recommendation
-    return RecommendedRecipes(
-        recipes=[
-            Recipe(
+    return Meals(
+        meals=[
+            Meal(
                 id=str(uuid.uuid4()),
                 name="Tomato Pasta",
                 description="A simple and delicious tomato pasta dish.",
@@ -227,14 +185,26 @@ async def text2img(
         s3_hostname=os.getenv("VULTR_OBJECT_STORAGE_HOSTNAME"),
         s3_access_key=os.getenv("VULTR_OBJECT_STORAGE_ACCESS_KEY"),
         s3_secret_key=os.getenv("VULTR_OBJECT_STORAGE_SECRET_KEY"),
-        s3_bucket="luma-images",
-        lumna_api_key=os.getenv("LUMAAI_API_KEY"),
+        s3_bucket_name=os.getenv("VULTR_OBJECT_STORAGE_BUCKET_NAME_MEAL_IMAGES"),
+        luma_api_key=os.getenv("LUMAAI_API_KEY"),
     )
-    return await img_generator.asyncImage(
+    return img_generator.generate_image(
         title=title,
         description=description,
         aspect_ratio=aspect_ratio,
     )
+
+@app.get("/users/{userId}/text2ingredients")
+async def text2ingredients(
+    userId: Annotated[str, Path()],
+    text: str,
+) -> Ingredients:
+    """Generate an image based on text input."""
+    parser = IngredientParser(
+        mistral_api_key=os.getenv("MISTRAL_API_KEY"),
+        mistral_model_name=os.getenv("MISTRAL_MODEL_NAME"),
+    )
+    return parser.text_to_ingredients(text=text)
 
 if __name__ == "__main__":
     import uvicorn

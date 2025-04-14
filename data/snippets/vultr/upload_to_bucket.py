@@ -41,7 +41,7 @@ client = session.client(
 
 # List buckets
 bucket_list = client.list_buckets()
-logger.info("Buckets %s", json.dumps(client.list_buckets(), indent=2, default=str))
+logger.info("Buckets %s", json.dumps(bucket_list, indent=2, default=str))
 
 # Check if bucket exists
 bucket_exists = False
