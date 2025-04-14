@@ -67,7 +67,7 @@ export default function Page() {
             <h2 className={styles.subtitle}>
               Sponsors
             </h2>
-            <div className={styles.grid}></div>
+            <div className={styles.grid}>
               <div className={styles.card}>
                 <a href="https://www.vultr.com" target="_blank" rel="noopener">
                   <Image src="logos/vultr.svg" alt="Vultr" width={120} height={120}/>
@@ -103,6 +103,7 @@ export default function Page() {
                   <Image src="logos/twelvelabs.webp" alt="Twelve Labs" width={120} height={120}/>
                 </a>
               </div> */}
+            </div>
           </div>
         </div>
 
