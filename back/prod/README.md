@@ -128,6 +128,7 @@ docker pull ptp/$IMAGE_NAME:latest
 
 # Tag and Push your image to Vults Container Registry
 docker tag $IMAGE_NAME:latest ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
+# example: docker tag back:latest ams.vultrcr.com/ptpcrtstnl001/back:latest
 docker push ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME:latest
 ```
 
