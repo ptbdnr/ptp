@@ -35,7 +35,7 @@ export default function ModalDictation({ open, onClose, onCapture }: ModalDictat
         </p>
         <div className={styles.inputContainer}>
           <textarea
-            placeholder="Dictate/Type here..."
+            placeholder="Dictate or Type here..."
             value={dictatedText}
             onChange={(e) => handleChange(e)}
             className={styles.textInput}
@@ -48,7 +48,7 @@ export default function ModalDictation({ open, onClose, onCapture }: ModalDictat
             className={styles.captureButton}
             disabled={!dictatedText}
           >
-            Save Dictation
+            Save
           </button>
           <button onClick={onClose} className={styles.cancelButton}>
             Cancel
