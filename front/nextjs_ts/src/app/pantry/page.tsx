@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { Ingredient } from '@/types/ingredients';
 
@@ -15,9 +16,14 @@ export default function Page() {
   // input modalities
   const [isCameraOpen, setCameraOpen] = useState(false);
   const [isDictationOpen, setDictationOpen] = useState(false);
+  const [inputText, setInputText] = useState("")
 
   const [pantryItems, setPantryItems] = useState<Ingredient[]>([]);
   const [newPantryItems, setNewPantryItems] = useState<Ingredient[]>([]);
+  
+  const notifyImageProcessStart = () => toast("Sending image to AI vision");
+  const notifyImageProcessEnd = (text: string) => toast(`AI vision response: ${text}`);
+  const notifyTextProcessStart = () => toast(`Sending text to AI`);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -37,6 +43,7 @@ export default function Page() {
 
   async function handleCapture (imageData: string) {
     setCameraOpen(false);
+    notifyImageProcessStart()
     try {
       const res = await fetch('/api/img_to_text', {
         method: 'POST',
@@ -51,6 +58,8 @@ export default function Page() {
       }
       const data = await res.json();
       console.log('Response from API img_to_text:', data);
+      notifyImageProcessEnd(data.text)
+      setInputText(data.text);
       handleDictation(data.text);
     } catch (error) {
       console.error(error);
@@ -59,6 +68,7 @@ export default function Page() {
 
   async function handleDictation (text: string) {
     setDictationOpen(false);
+    notifyTextProcessStart();
     try {
       const url = `/api/text_to_ingredients?text=${text}`;
       console.log('GET URL:', url);
@@ -75,6 +85,7 @@ export default function Page() {
       const data = await res.json();
       console.log('Response from API text_to_ingredients:', data);
       const newIngredients = data.ingredients;
+      setInputText("");
       setNewPantryItems(newIngredients);
       // Use functional update to ensure the latest state is used.
       setPantryItems(prev => {
@@ -158,12 +169,19 @@ export default function Page() {
             <ModalCamera open={isCameraOpen} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
             <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
           </div>
+          
+          {inputText.length > 0 && (
+            <div className={styles.newItemsNotification}>
+              {inputText}
+            </div>
+          )}
+
           {newPantryItems.length > 0 && (
             <div className={styles.newItemsNotification}>
               <p>New items added to your pantry!</p>
               <ul>
                 {newPantryItems.map(item => (
-                  <li key={item.id}>{item.name} - {item.quantity} {item.unit}</li>
+                  <li key={item.id}>{item.name}: {item.quantity} {item.unit}</li>
                 ))}
               </ul>
             </div>
@@ -200,6 +218,7 @@ export default function Page() {
             })}
           </div>
         </section>
+        <ToastContainer />
       </PantryLayout>
   );
 }
