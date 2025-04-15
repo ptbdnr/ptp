@@ -38,7 +38,7 @@ export default function Page() {
           <div className={styles.sliderContainer}>
             <label className={styles.sliderLabel}>Weekly Budget</label>
             <div className={styles.sliderWithValues}>
-              <span className={styles.minValue}>$20</span>
+              <span className={styles.minValue}>£20</span>
               <input
                 type="range"
                 min="20"
@@ -47,10 +47,10 @@ export default function Page() {
                 onChange={handleBudgetChange}
                 className={styles.slider}
               />
-              <span className={styles.maxValue}>$100</span>
+              <span className={styles.maxValue}>£100</span>
             </div>
             <div className={styles.currentValueContainer}>
-              <span className={styles.dollarSign}>$</span>
+              <span className={styles.dollarSign}>£</span>
               <span className={styles.currentValue}>{weeklyBudget}</span>
             </div>
           </div>

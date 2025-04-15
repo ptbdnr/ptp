@@ -11,7 +11,7 @@ export default function Header({ tagline }: HeaderProps) {
     <div className={styles.header}>
       <div className={styles.titleLine}>
         <Image
-          src="logo.svg"
+          src="/logo.svg"
           alt="Logo"
           width={40}
           height={40}

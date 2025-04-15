@@ -13,6 +13,13 @@ export default function Page() {
 
     return (
     <HomeLayout>
+        <button 
+          onClick={() => router.push('/profile')} 
+          className={styles.button}
+        >
+          <h3>Smarter Cooking Starts Here</h3>
+        </button>
+
         <div className={styles.video} >
           <video 
             controls
@@ -21,13 +28,6 @@ export default function Page() {
             Your browser does not support the video tag.
           </video>
         </div>
-
-        <button 
-          onClick={() => router.push('/profile')} 
-          className={styles.button}
-        >
-          <h3>Smarter Cooking Starts Here</h3>
-        </button>
     </HomeLayout>
     );
 }
