@@ -39,7 +39,7 @@ export default async function handler(
             }
 
             // Assuming the data contains an array of ingredients
-            const ingredients = data.ingredients.map((ingredient: any) => ({
+            const ingredients = data.ingredients.map((ingredient: Ingredient) => ({
                 id: v4(),
                 name: ingredient.name,
                 quantity: ingredient.quantity,
