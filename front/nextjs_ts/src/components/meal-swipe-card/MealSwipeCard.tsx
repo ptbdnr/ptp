@@ -33,7 +33,7 @@ export default function MealSwipeCard({ meal, onSwipe }: MealSwipeCardProps) {
       whileDrag={{ scale: 1.1 }}
       className={styles.card}
     >
-      <MealCard meal={meal} />
+      <MealCard meal={meal} display_details={true} display_tags={true} display_feedbackbuttons={true} />
     </motion.div>
   );
 };

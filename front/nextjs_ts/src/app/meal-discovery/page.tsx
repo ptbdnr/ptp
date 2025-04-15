@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
 
 import type { Meal } from "@/types/meals";
 
 import MealDiscoveryLayout from './meal-discovery-layout';
 
 import MealSwipeCard from '@/components/meal-swipe-card/MealSwipeCard';
+import MealCard from "@/components/meal-card/MealCard";
 
 import styles from './meal-discovery.module.css';
 
@@ -14,8 +16,10 @@ import { mockupSupriseMeal } from '@/data/meals';
 
 
 export default function Page() {
+  const router = useRouter();
   const [meals, setMeals] = useState<Meal[]>([]);
   const surpriseMeal: Meal = mockupSupriseMeal;
+  const [likedMeals, setLikedMeals] = useState<Meal[]>([]);
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -35,7 +39,10 @@ export default function Page() {
 
   const handleSwipe = (direction: "left" | "right") => {
     console.log(`Swiped ${direction}`);
-    setMeals((prev) => prev.slice(1)); // Remove the top card
+    if (direction === "right") {
+      setLikedMeals((prev) => [...prev, meals[0]]);
+    }
+    setMeals((prev) => prev.slice(1));
   };
   
   return (
@@ -51,6 +58,22 @@ export default function Page() {
             <MealSwipeCard 
               meal={surpriseMeal}
             />
+          )}
+        </div>
+
+        <div className={styles.menu}>
+          {likedMeals.length > 0 ? (
+            likedMeals.map((meal, index) => (
+                <button
+                  key={meal.id}
+                  className={styles.menuCard}
+                  onClick={() => router.push(`/meals/${meal.id}`)}
+                >
+                  <MealCard meal={meal} key={index} />
+                </button>
+              ))
+          ) : (
+            <p>Swipe right to add to menu, left to skip</p>
           )}
         </div>
 
