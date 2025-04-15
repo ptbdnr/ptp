@@ -12,14 +12,14 @@ export default function Navigation() {
   return (
     <nav className={styles.bottomNav}>
       <button 
-        className={`${styles.navItem} ${activeTab === 'home' ? styles.active : ''}`}
+        className={`${styles.navItem} ${activeTab === 'profile' ? styles.active : ''}`}
         onClick={() => {
-          setActiveTab('home'); 
-          router.push('/home');
+          setActiveTab('profile'); 
+          router.push('/profile');
         }}
       >
         <span className={styles.navIcon}>🏠</span>
-        <span className={styles.navLabel}>Home</span>
+        <span className={styles.navLabel}>Profile</span>
       </button>
       
       <button 
