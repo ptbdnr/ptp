@@ -59,11 +59,11 @@ db = {
 
 # Routes implementation
 @app.post("/recommend", response_model=Meals)
-async def recommend_recipe(
+async def recommend_meal(
     userId: Annotated[str, Form()] = DEFAULT_USER_ID,
     text: Annotated[str, Form()] = "foo",
 ) -> Meals:
-    """Recommend recipes based on user inventory and preferences."""
+    """Recommend meals based on user inventory and preferences."""
     # In a real application, this would call an AI model for recommendations
     # For demo purposes, return mock data
 
@@ -91,8 +91,6 @@ async def recommend_recipe(
                 required_equipment=["Pot", "Pan", "Knife"],
             ),
         ],
-        missing_ingredients=["Pasta", "Olive oil"],
-        missing_equipment=["Pot"],
     )
 
 @app.get("/users/{userId}/ingredients", response_model=Ingredients)

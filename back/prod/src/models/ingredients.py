@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from datetime import date
+from typing import List, Optional  # noqa: UP035
 
 from pydantic import BaseModel, Field
 
-if TYPE_CHECKING:
-    from datetime import date
 
 class Ingredient(BaseModel):
     """Model for an ingredient."""
@@ -19,4 +18,4 @@ class Ingredient(BaseModel):
 class Ingredients(BaseModel):
     """Model for a list of ingredients."""
 
-    ingredients: list[Ingredient]
+    ingredients: List[Ingredient]  # noqa: UP006

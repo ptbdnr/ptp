@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import List  # noqa: UP035
+
 from pydantic import BaseModel
 
 
@@ -12,4 +14,4 @@ class Equipment(BaseModel):
 class Equipments(BaseModel):
     """Model for a list of kitchen equipments."""
 
-    equipments: list[Equipment]
+    equipments: List[Equipment]  # noqa: UP006
