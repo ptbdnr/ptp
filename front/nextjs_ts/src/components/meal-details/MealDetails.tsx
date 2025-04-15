@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Carousel from 'react-bootstrap/Carousel';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
+
 import { Meal } from '@/types/meals';
 import { Ingredient } from '@/types/ingredients';
 import styles from './MealDetails.module.css';
@@ -28,12 +30,7 @@ export default function MealDetails({ meal }: MealDetailsProps) {
       <div className={styles.header}>
         {/* Meal Hero Image */}
         <div className={styles.heroImageContainer}>
-          <Image 
-            src={meal.images.hero_url || "/placeholder-dish_16x4.jpg"}
-            alt={meal.name}
-            fill
-            className={styles.heroImage}
-          />
+          <HeroCarousel meal={meal} />
           <div className={styles.heroContent}>
             <h1 className={styles.recipeTitle}>{meal.name}</h1>
             <p className={styles.recipeDescription}>{meal.desciption}</p>
@@ -129,5 +126,30 @@ export default function MealDetails({ meal }: MealDetailsProps) {
         <button className={styles.actionButton} disabled>Add to Shopping</button>
       </div>
     </div>
+  );
+}
+
+function HeroCarousel({meal}: {meal: Meal}) {
+  const interval = 100;
+
+  return (
+    <Carousel>
+      <Carousel.Item interval={interval}>
+        <Image 
+            src={meal.images.hero_url || "/placeholder-dish_16x4.jpg"}
+            alt=""
+            fill
+            className={styles.heroImage}
+        />
+      </Carousel.Item>
+      <Carousel.Item interval={interval}>
+        <Image 
+            src={meal.images.hero_url || "/placeholder-dish2_16x4.jpg"}
+            alt=""
+            fill
+            className={styles.heroImage}
+        />
+      </Carousel.Item>
+    </Carousel>
   );
 }
