@@ -51,7 +51,7 @@ export default function Page() {
       }
       const data = await res.json();
       console.log('Response from API img_to_text:', data);
-      handleDictation(data.content);
+      handleDictation(data.text);
     } catch (error) {
       console.error(error);
     }
@@ -60,7 +60,7 @@ export default function Page() {
   async function handleDictation (text: string) {
     setDictationOpen(false);
     try {
-      const url = `/api/text_to_ingredients?content=${text}`;
+      const url = `/api/text_to_ingredients?text=${text}`;
       console.log('GET URL:', url);
       const res = await fetch(url, {
         method: 'GET',

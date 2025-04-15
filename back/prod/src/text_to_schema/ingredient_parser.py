@@ -72,6 +72,9 @@ class IngredientParser:
         logger.debug("Chat response: %s", chat_response)
 
         logger.debug(chat_response.choices[0].message.content)
-        ingredients : Ingredients = Ingredients(ingredients=json.loads(chat_response.choices[0].message.content))
+        data_obj = json.loads(chat_response.choices[0].message.content)
+        if not isinstance(data_obj, list):
+            data_obj = [data_obj]
+        ingredients : Ingredients = Ingredients(ingredients=data_obj)
 
         return ingredients

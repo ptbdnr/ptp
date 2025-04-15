@@ -21,7 +21,7 @@ const objectContentType = 'image/png';
 
 type ResponseData = {
     error?: string;
-    content?: string;
+    text?: string;
 }
  
 export default async function handler(
@@ -45,10 +45,10 @@ export default async function handler(
             console.log("Image URL:", url);  
             
             // Process the image URL with Mistral  
-            const message_content = await mistral_vision(url);  
-            console.log("Content:", message_content);  
+            const message_text = await mistral_vision(url);  
+            console.log("Message_text:", message_text);  
             
-            res.status(200).send({ content: message_content });  
+            res.status(200).send({ text: message_text });  
             return;
         } catch (err) {
             console.error('Error fetching data:', err);
