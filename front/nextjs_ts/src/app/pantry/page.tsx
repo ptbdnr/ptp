@@ -34,7 +34,7 @@ export default function Page() {
     if (toastId.current) {
       toast.dismiss(toastId.current);
     }
-    toast(`🤖 Mistral`, {autoClose: 3000});
+    toastId.current = toast(`🤖 Mistral`, {autoClose: 5000});
   };
 
   useEffect(() => {
@@ -90,7 +90,11 @@ export default function Page() {
         },
       }
       );
+      if (toastId.current) {
+        toast.dismiss(toastId.current);
+      }
       if (!res.ok) {
+        setInputText("Ops, something went wrong. 💔 Please try again.");
         throw new Error('Failed to fetch ingredients from text.');
       }
       const data = await res.json();

@@ -7,6 +7,7 @@ import type { Meal } from "@/types/meals";
 
 import { useProfileContext } from '@/contexts/ProfileContext';
 import { usePantryContext } from '@/contexts/PantryContext';
+import { useMenuContext } from '@/contexts/MenuContext';
 
 import MealDiscoveryLayout from './meal-discovery-layout';
 
@@ -21,8 +22,8 @@ import { mockupSupriseMeal } from '@/data/meals';
 export default function Page() {
   const { profile } = useProfileContext();
   const { ingredients } = usePantryContext();
+  const { meals, setMeals } = useMenuContext();
   const router = useRouter();
-  const [meals, setMeals] = useState<Meal[]>([]);
   const surpriseMeal: Meal = mockupSupriseMeal;
   const [likedMeals, setLikedMeals] = useState<Meal[]>([]);
 
@@ -57,7 +58,7 @@ export default function Page() {
     if (direction === "right") {
       setLikedMeals((prev) => [...prev, meals[0]]);
     }
-    setMeals((prev) => prev.slice(1));
+    setMeals(meals.slice(1));
   };
   
   return (
