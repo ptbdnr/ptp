@@ -30,7 +30,7 @@ export default function MealSwipeCard({ meal, onSwipe }: MealSwipeCardProps) {
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={handleDragEnd}
-      whileDrag={{ scale: 1.1 }}
+      whileDrag={{ scale: 1.2 }}
       className={styles.card}
     >
       <MealCard meal={meal} display_details={true} display_tags={true} display_feedbackbuttons={true} />
