@@ -45,13 +45,14 @@ export default function Page() {
           throw new Error('Failed to fetch meals');
         }
         const data = await res.json();
+        console.log('Response from API ingredients:', data);
         setIngredients({ingredients: data.ingredients});
       } catch (error) {
         console.error(error);
       }
     };
     fetchMeals();
-  }, [setIngredients]);
+  }, []);
 
   async function handleCapture (imageData: string) {
     setCameraOpen(false);
