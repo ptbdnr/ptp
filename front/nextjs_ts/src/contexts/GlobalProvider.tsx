@@ -1,12 +1,15 @@
 import React from 'react';
 import { ProfileProvider } from '@/contexts/ProfileContext';
-import { PantryProvider } from '@/contexts/PantryProvider';
+import { PantryProvider } from '@/contexts/PantryContext';
+import { MenuProvider } from './MenuContext';
 
 export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <ProfileProvider>
       <PantryProvider>
-        {children}
+        <MenuProvider>
+          {children}
+          </MenuProvider>
       </PantryProvider>
     </ProfileProvider>
   );

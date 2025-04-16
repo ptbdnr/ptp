@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePantryContext } from '@/contexts/PantryProvider';
+import { usePantryContext } from '@/contexts/PantryContext';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { Ingredient } from '@/types/ingredients';
@@ -39,7 +39,7 @@ export default function Page() {
       }
     };
     fetchMeals();
-  }, []);
+  }, [setIngredients]);
 
   async function handleCapture (imageData: string) {
     setCameraOpen(false);

@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation';
 
 import type { Meal } from "@/types/meals";
 
+import { useProfileContext } from '@/contexts/ProfileContext';
+import { usePantryContext } from '@/contexts/PantryContext';
+
 import MealDiscoveryLayout from './meal-discovery-layout';
 
 import MealSwipeCard from '@/components/meal-swipe-card/MealSwipeCard';
@@ -16,6 +19,8 @@ import { mockupSupriseMeal } from '@/data/meals';
 
 
 export default function Page() {
+  const { profile } = useProfileContext();
+  const { ingredients } = usePantryContext();
   const router = useRouter();
   const [meals, setMeals] = useState<Meal[]>([]);
   const surpriseMeal: Meal = mockupSupriseMeal;
@@ -24,7 +29,17 @@ export default function Page() {
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        const res = await fetch('/api/meals');
+        const res = await fetch('/api/meals', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            dietaryPreferences: profile.dietaryPreferences,
+            maxPrepTime: profile.maxPrepTime,
+            ingredients: ingredients.ingredients,
+           }),
+        });
         if (!res.ok) {
           throw new Error('Failed to fetch meals');
         }
