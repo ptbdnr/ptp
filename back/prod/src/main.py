@@ -58,19 +58,18 @@ db = {
 }
 
 # Routes implementation
-@app.post("/recommend", response_model=Meals)
+@app.post("/recommend/{user_id:?}", response_model=Meals)
 async def recommend_meal(
-    userId: Annotated[str, Form()] = DEFAULT_USER_ID,
-    text: Annotated[str, Form()] = "foo",
+    user_id: Annotated[str, Form()] = DEFAULT_USER_ID,
 ) -> Meals:
     """Recommend meals based on user inventory and preferences."""
     # In a real application, this would call an AI model for recommendations
     # For demo purposes, return mock data
 
     # Check if user exists
-    if userId not in db["users"]:
+    if user_id not in db["users"]:
         # Create new user with empty data
-        db["users"][userId] = {
+        db["users"][user_id] = {
             "ingredients": Ingredients(ingredients=[]),
             "equipments": Equipments(equipments=[]),
             "preferences": UserPreferences(preferences=[]),
