@@ -33,7 +33,7 @@ export default function MealDetails({ meal }: MealDetailsProps) {
           <HeroCarousel meal={meal} />
           <div className={styles.heroContent}>
             <h1 className={styles.recipeTitle}>{meal.name}</h1>
-            <p className={styles.recipeDescription}>{meal.desciption}</p>
+            <p className={styles.recipeDescription}>{meal.description}</p>
           </div>
         </div>
         
