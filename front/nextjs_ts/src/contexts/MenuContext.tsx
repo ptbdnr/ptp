@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Meal } from '@/types/meals';
 
+import { mockupMeals } from '@/data/meals';
+
 export interface MenuContextType {
     meals: Meal[];
     setMeals: (meals: Meal[]) => void;
@@ -11,7 +13,7 @@ export interface MenuContextType {
 };
 
 // Create context with default values
-const defaultMeals: Meal[] = [];;
+const defaultMeals: Meal[] = mockupMeals;
 const MenuContext = createContext<MenuContextType>({
   meals: defaultMeals,
   setMeals: () => {},
