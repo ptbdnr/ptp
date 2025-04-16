@@ -1,0 +1,134 @@
+.container {
+    position: relative;
+    width: 95%;
+    max-width: 600px;
+    padding: 40px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .border_animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  
+  .border_animation::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      transparent, 
+      rgba(75, 0, 130, 0.8), 
+      rgba(138, 43, 226, 0.8), 
+      rgba(0, 191, 255, 0.8),
+      rgba(66, 184, 131, 0.8),
+      rgba(75, 0, 130, 0.8)
+    );
+    animation: rotate 4s linear infinite;
+  }
+  
+  .border_animation::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 6px;
+    z-index: 1;
+  }
+  
+  .content {
+    position: relative;
+    padding: 5px;
+    z-index: 2;
+    color:#6366f1;
+  }
+  
+  .ai-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 32px;
+    color: #6366f1;
+  }
+  
+  .typing {
+    width: 100%;
+    animation: typing 2s steps(22), blink 0.5s step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 16px;
+    font-family: monospace;
+    border-right: 3px solid;
+    margin-bottom: 20px;
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+  }
+  
+  @keyframes blink {
+    50% {
+      border-color: transparent;
+    }
+  }
+  
+  .pulse {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #6366f1;
+    animation: pulse 1.5s infinite;
+  }
+  
+  .pulse-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .pulse-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(0.8);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+}

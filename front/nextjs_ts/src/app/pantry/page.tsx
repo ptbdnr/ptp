@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { usePantryContext } from '@/contexts/PantryContext';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast, Id } from 'react-toastify';
 
 import { Ingredient } from '@/types/ingredients';
 
@@ -12,6 +12,7 @@ import ModalCamera from '@/components/modal-camera/ModalCamera';
 import ModalDictation from '@/components/modal-dictation/ModalDictation';
 
 import styles from './pantry.module.css';
+import ai_styles from './ai-container.module.css';
 
 export default function Page() {
   // input modalities
@@ -22,8 +23,19 @@ export default function Page() {
 
   const [newPantryItems, setNewPantryItems] = useState<Ingredient[]>([]);
   
-  const notifyImageProcessStart = () => toast("Sending image to AI vision");
-  const notifyTextProcessStart = () => toast(`Sending text to AI`);
+  const toastId = useRef<Id | undefined>(undefined);
+  const notifyImageProcessStart = () => {
+    if (toastId.current) {
+      toast.dismiss(toastId.current);
+    }
+    toastId.current = toast("👀 LumaLabs", {autoClose: 8000});
+  }
+  const notifyTextProcessStart = () => {
+    if (toastId.current) {
+      toast.dismiss(toastId.current);
+    }
+    toast(`🤖 Mistral`, {autoClose: 3000});
+  };
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -172,18 +184,26 @@ export default function Page() {
           
           {inputText.length > 0 && (
             <div className={styles.newItemsNotification}>
-              {inputText}
+              <div className={ai_styles.container}>
+                <div className={ai_styles.border_animation}>
+                  <div className={ai_styles.content}>
+                    {inputText}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
           {newPantryItems.length > 0 && (
-            <div className={styles.newItemsNotification}>
-              <p>New items added to your pantry!</p>
-              <ul>
-                {newPantryItems.map(item => (
-                  <li key={item.id}>{item.name}: {item.quantity} {item.unit}</li>
-                ))}
-              </ul>
+            <div className={ai_styles.container}>
+              <div className={ai_styles.border_animation}>
+                <p>New items added to your pantry!</p>
+                <ul>
+                  {newPantryItems.map(item => (
+                    <li key={item.id}>{item.name}: {item.quantity} {item.unit}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
         </div>
