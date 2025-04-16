@@ -13,3 +13,10 @@ export interface Ingredient {
 export interface Ingredients {
     ingredients: Ingredient[];
 }
+
+export interface IngredientsContextType {
+    ingredients: Ingredients | null;
+    setIngredients: (ingredients: Ingredients | null) => void;
+    isLoading: boolean;
+    error: string | null;
+};

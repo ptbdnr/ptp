@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePantryContext } from '@/contexts/PantryProvider';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { Ingredient } from '@/types/ingredients';
@@ -17,12 +18,11 @@ export default function Page() {
   const [isCameraOpen, setCameraOpen] = useState(false);
   const [isDictationOpen, setDictationOpen] = useState(false);
   const [inputText, setInputText] = useState("")
+  const { ingredients, setIngredients, isLoading } = usePantryContext();
 
-  const [pantryItems, setPantryItems] = useState<Ingredient[]>([]);
   const [newPantryItems, setNewPantryItems] = useState<Ingredient[]>([]);
   
   const notifyImageProcessStart = () => toast("Sending image to AI vision");
-  const notifyImageProcessEnd = (text: string) => toast(`AI vision response: ${text}`);
   const notifyTextProcessStart = () => toast(`Sending text to AI`);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Page() {
           throw new Error('Failed to fetch meals');
         }
         const data = await res.json();
-        setPantryItems(data.ingredients);
+        setIngredients({ingredients: data.ingredients});
       } catch (error) {
         console.error(error);
       }
@@ -58,7 +58,6 @@ export default function Page() {
       }
       const data = await res.json();
       console.log('Response from API img_to_text:', data);
-      notifyImageProcessEnd(data.text)
       setInputText(data.text);
       handleDictation(data.text);
     } catch (error) {
@@ -88,11 +87,9 @@ export default function Page() {
       setInputText("");
       setNewPantryItems(newIngredients);
       // Use functional update to ensure the latest state is used.
-      setPantryItems(prev => {
-        const updated = prev.concat(newIngredients);
-        upsertPantry(updated);
-        return updated;
-      });
+      const updatedIngredients = ingredients.ingredients.concat(newIngredients);
+      upsertPantry(updatedIngredients);
+      setIngredients({ ingredients: updatedIngredients });
     } catch (error) {
       console.error(error);
     }    
@@ -143,6 +140,9 @@ export default function Page() {
     }
   };
 
+  if (isLoading) return <div>Loading...</div>;
+  if (!ingredients) return <div>Please log in</div>;
+
   return (
       <PantryLayout>
 
@@ -192,7 +192,7 @@ export default function Page() {
           <h2 className={styles.sectionTitle}>Your Pantry Items</h2>
           
           <div className={styles.pantryList}>
-            {pantryItems.map(item => {
+            {ingredients.ingredients.map(item => {
               const expiryStatus = getExpiryStatus(item.expiryDate);
               
               return (

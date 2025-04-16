@@ -1,31 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useProfileContext } from '@/contexts/ProfileContext';
 
 import HomeLayout from './profile-layout';
 
 import styles from './profile.module.css';
 
 export default function Page() {
-    const [weeklyBudget, setWeeklyBudget] = useState(44);
-    const [maxPrepTime, setMaxPrepTime] = useState(28);
-    const [dietaryPreferences, setDietaryPreferences] = useState<string[]>([]);
+    const { profile, setProfile, isLoading } = useProfileContext();
   
     const handleBudgetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = parseInt(e.target.value);
-      setWeeklyBudget(value);
+      setProfile({
+        ...profile,
+        weeklyBudget: value,
+      });
     };
-  
+
     const handlePrepTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = parseInt(e.target.value);
-      setMaxPrepTime(value);
+      setProfile({
+        ...profile,
+        maxPrepTime: value,
+      });
     };
 
     const handleDiataryPreferenceChange = (preference: string) => {
-        if (preference && !dietaryPreferences.includes(preference)) {
-          setDietaryPreferences([...dietaryPreferences, preference]);
+        if (preference && !profile.dietaryPreferences.includes(preference)) {
+            setProfile({
+                ...profile,
+                dietaryPreferences: [...profile.dietaryPreferences, preference],
+            });
         }
     }
+
+    if (isLoading) return <div>Loading...</div>;
+    if (!profile) return <div>Please log in</div>;
 
     return (
     <HomeLayout>
@@ -43,7 +53,7 @@ export default function Page() {
                 type="range"
                 min="20"
                 max="100"
-                value={weeklyBudget}
+                value={profile.weeklyBudget}
                 onChange={handleBudgetChange}
                 className={styles.slider}
               />
@@ -51,7 +61,7 @@ export default function Page() {
             </div>
             <div className={styles.currentValueContainer}>
               <span className={styles.dollarSign}>£</span>
-              <span className={styles.currentValue}>{weeklyBudget}</span>
+              <span className={styles.currentValue}>{profile.weeklyBudget}</span>
             </div>
           </div>
 
@@ -63,14 +73,14 @@ export default function Page() {
                 type="range"
                 min="10"
                 max="60"
-                value={maxPrepTime}
+                value={profile.maxPrepTime}
                 onChange={handlePrepTimeChange}
                 className={styles.slider}
               />
               <span className={styles.maxValue}>60 min</span>
             </div>
             <div className={styles.currentValueContainer}>
-              <span className={styles.currentValue}>{maxPrepTime}</span>
+              <span className={styles.currentValue}>{profile.maxPrepTime}</span>
               <span className={styles.unit}> min</span>
             </div>
           </div>
@@ -78,7 +88,7 @@ export default function Page() {
           <div className={styles.dietaryPrefsContainer}>
             <label className={styles.dietaryLabel}>Dietary Preferences</label>
             <button 
-              className={dietaryPreferences.length > 0 ? styles.dietaryButton: styles.dietaryButtonEmpty}
+              className={profile.dietaryPreferences.length > 0 ? styles.dietaryButton: styles.dietaryButtonEmpty}
               onClick={() => {
                 const newPreference = prompt('Enter your dietary preference (e.g., Vegan, Gluten-Free):');
                 if (newPreference) {
@@ -87,8 +97,8 @@ export default function Page() {
               }}
             >
               {
-                dietaryPreferences.length > 0
-                ? dietaryPreferences.join(', ')
+                profile.dietaryPreferences.length > 0
+                ? profile.dietaryPreferences.join(', ')
                 : 'Select your dietary preferences'
               }
               <span className={styles.plusIcon}>+</span>

@@ -12,10 +12,17 @@ export interface Meal {
     ingredients: Ingredients;
     equipments?: Equipments;
     instructions?: string;
-}
+};
 
 export interface RecommendedMeals {
     recipes: Meal[];
     missingIngredients: Ingredients;
     missingEquipments: Equipments;
-}
+};
+
+export interface MealsContextType {
+    meals: Meal[] | null;
+    setMeals: (meals: Meal[] | null) => void;
+    isLoading: boolean;
+    error: string | null;
+};

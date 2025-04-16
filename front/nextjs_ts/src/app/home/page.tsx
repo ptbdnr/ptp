@@ -21,6 +21,7 @@ export default function Page() {
         </button>
 
         <div className={styles.video} >
+          ... or watch the video before you go
           <video 
             controls
           >
