@@ -1,6 +1,6 @@
 
 
-# :wrench: Developer Guide
+## :wrench: Developer Guide
 
 
 ### Ensure you have node.js
@@ -8,9 +8,17 @@
 ref: https://nodejs.org/en/download
 
 
-## Copy the environment variables to the project root
+### Copy the environment variables to the project root
 
 source: ask!
+
+for sample: see `path/to/repo_root/.env.sample`
+
+```shell
+ln path/to/repo_root/.env.local /path/to/project_root/.env.local
+```
+
+or
 
 ```shell
 cat << EOF > .env.local
