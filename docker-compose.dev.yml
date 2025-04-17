@@ -2,20 +2,45 @@ version: '3.8'
 
 services:
   frontend:
-    command: npm run dev
-    volumes:
-      - ./front/nextjs_ts:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
+    build:
+      context: ./front/nextjs_ts
+      dockerfile: Dockerfile
+      target: dependencies # Stop at dependencies stage, don't build for prod
     ports:
       - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://backend:80}
+    env_file:
+      - .env
+    volumes:
+      - ./front/nextjs_ts:/app
+      - /app/node_modules # Preserve container's node_modules
+      - /app/.next # Preserve container's .next directory
+    command: npm run dev
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
 
   backend:
-    command: uvicorn src.main:app --host 0.0.0.0 --port 80 --reload
-    volumes:
-      - ./back/sample:/code
-    environment:
-      - ENVIRONMENT=development
+    build:
+      context: ./back/sample
+      dockerfile: Dockerfile
     ports:
-      - "8000:80"
+      - "8000:80" # Map to 8000 externally to avoid conflicts
+    environment:
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://frontend:3000}
+    env_file:
+      - .env
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  app-data: # For any persistent data you might need

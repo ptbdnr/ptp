@@ -1,6 +1,7 @@
 module.exports = {
     content: [
       "./src/**/*.{js,ts,jsx,tsx}",
+      "node_modules/@llamaindex/chat-ui/**/*.{ts,tsx}",
     ],
     theme: {
       extend: {
