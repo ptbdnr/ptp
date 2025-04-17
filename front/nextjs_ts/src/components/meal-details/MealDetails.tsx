@@ -7,7 +7,7 @@ import { Ingredient } from '@/types/ingredients';
 import Carousel from 'react-bootstrap/Carousel';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
-import { Bookmark, Star } from 'lucide-react';
+import { Bookmark, ShoppingCart, WandSparkles, Star } from 'lucide-react';
 
 import styles from './MealDetails.module.css';
 
@@ -17,6 +17,8 @@ interface MealDetailsProps {
 
 export default function MealDetails({ meal }: MealDetailsProps) {
   const [activeTab, setActiveTab] = useState('ingredients');
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isRated, setIsRated] = useState(false);
   const servings = 4;
   const prepTime = 30;
   const difficulty = 'Med'
@@ -98,7 +100,7 @@ export default function MealDetails({ meal }: MealDetailsProps) {
           <div className={styles.ingredientsContainer}>
             <div className={styles.ingredientsHeader}>
               <span>{meal.ingredients.ingredients.length} ingredients</span>
-              <button className={styles.adjustButton}>Adjust</button>
+              {/* <button className={styles.adjustButton}>Adjust</button> */}
             </div>
             <ul className={styles.ingredientsList}>
               {meal.ingredients.ingredients.map((ingredient) => (
@@ -106,12 +108,26 @@ export default function MealDetails({ meal }: MealDetailsProps) {
                   key={ingredient.id} 
                   className={`${styles.ingredientItem} ${userHasIngredient(ingredient) ? styles.hasIngredient : styles.missingIngredient}`}
                 >
-                  <span className={styles.ingredientCheck}>
-                    {userHasIngredient(ingredient) ? '✓' : '✕'}
-                  </span>
-                  <span className={styles.ingredientName}>
-                    {ingredient.quantity} {ingredient.unit} {ingredient.name}
-                  </span>
+                  <div className={styles.IngredientDetails}>
+                    <span className={styles.ingredientCheck}>
+                      {userHasIngredient(ingredient) ? '✓' : '✕'}
+                    </span>
+                    <span className={styles.ingredientName}>
+                      {ingredient.quantity} {ingredient.unit} {ingredient.name}
+                    </span>
+                  </div>
+                  <div className={styles.ingredientActions}>
+                  {!userHasIngredient(ingredient) && 
+                    <button 
+                      disabled
+                    >
+                      <ShoppingCart className={styles.actionIcon} />
+                    </button>
+                  }
+                    <button>
+                      <WandSparkles className={styles.actionIcon} />
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -129,11 +145,17 @@ export default function MealDetails({ meal }: MealDetailsProps) {
       
       {/* Action Buttons */}
       <div className={styles.actionButtons}>
-        <button className={styles.actionButton} disabled>
-          <Bookmark className={styles.icon} /> <span>Save</span>
+        <button 
+          className={styles.actionButton}
+          onClick={() => setIsBookmarked(!isBookmarked)}
+        >
+          <Bookmark className={styles.icon} fill={isBookmarked ? '#fc3b00' : 'transparent'} /> <span>Save</span>
         </button>
-        <button className={styles.actionButton} disabled>
-          <Star className={styles.icon} /> <span>Rate</span>
+        <button 
+          className={styles.actionButton}
+          onClick={() => setIsRated(!isRated)}
+        >
+          <Star className={styles.icon} fill={isRated ? 'yellow' : 'transparent'}/> <span>Rate</span>
         </button>
       </div>
     </div>
