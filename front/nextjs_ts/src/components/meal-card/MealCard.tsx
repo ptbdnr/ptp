@@ -2,7 +2,7 @@ import { Meal } from '@/types/meals';
 
 import { useProfileContext } from '@/contexts/ProfileContext';
 
-import { getDifficultyOptions } from '@/lib/profile';
+import { getDifficultyOptions } from '@/utils/profile';
 
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
 
