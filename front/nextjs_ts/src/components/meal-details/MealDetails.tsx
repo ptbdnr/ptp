@@ -7,7 +7,7 @@ import { Ingredient } from '@/types/ingredients';
 import Carousel from 'react-bootstrap/Carousel';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
-import { Bookmark, ShoppingCart, WandSparkles, Star } from 'lucide-react';
+import { Bookmark, ShoppingCart, Star, WandSparkles } from 'lucide-react';
 
 import styles from './MealDetails.module.css';
 
@@ -62,7 +62,7 @@ export default function MealDetails({ meal }: MealDetailsProps) {
             <span className={styles.statLabel}>difficulty</span>
           </div>
           <div className={styles.statItem}>
-            <span className={styles.statIcon}>💲</span>
+            <span className={styles.statIcon}>💵</span>
             <span className={styles.statValue}>£{price}</span>
             <span className={styles.statLabel}>total</span>
           </div>
