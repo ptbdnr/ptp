@@ -167,6 +167,11 @@ docker images
 # List all containers
 docker ps -a
 
+# :WARNING: Stop all containers
+docker stop $(docker ps -q)
+# :WARNING: Remove all containers
+docker rm $(docker ps -a -q)
+
 # Run image in detached mode
 docker run -d --name $CONTAINER_NAME -p 80:80 ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME
 # example: docker run -d --name back -p 80:80 ams.vultrcr.com/ptpcrtstnl001/back
