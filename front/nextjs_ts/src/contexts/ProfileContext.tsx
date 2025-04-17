@@ -14,6 +14,7 @@ export interface ProfileContextType {
 const defaultProfile: Profile = {
   weeklyBudget: 50,
   maxPrepTime: 60,
+  difficultyLevel: 'Medium',
   dietaryPreferences: ['vegetarian', 'gluten-free'],
 };
 const ProfileContext = createContext<ProfileContextType>({
