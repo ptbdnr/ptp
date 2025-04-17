@@ -22,7 +22,10 @@ export default function MealDetails({ meal }: MealDetailsProps) {
 
   // Determine which ingredients the user has/doesn't have
   const userHasIngredient = (ingredient: Ingredient): boolean => {
-    return !ingredient.name.includes(meal.ingredients.ingredients[0].name);
+    if (meal.ingredients) {
+      return !ingredient.name.includes(meal.ingredients.ingredients[0].name);
+    }
+    return false;
   };
 
   return (
@@ -69,12 +72,14 @@ export default function MealDetails({ meal }: MealDetailsProps) {
       
       {/* Tabs */}
       <div className={styles.tabs}>
+        { meal.ingredients &&
         <button 
           className={`${styles.tab} ${activeTab === 'ingredients' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('ingredients')}
         >
           Ingredients
         </button>
+        }
         { meal.instructions &&
         <button 
           className={`${styles.tab} ${activeTab === 'instructions' ? styles.activeTab : ''}`}
@@ -87,7 +92,7 @@ export default function MealDetails({ meal }: MealDetailsProps) {
       
       {/* Tab Content */}
       <div className={styles.tabContent}>
-        {activeTab === 'ingredients' && (
+        {activeTab === 'ingredients' && meal.ingredients && (
           <div className={styles.ingredientsContainer}>
             <div className={styles.ingredientsHeader}>
               <span>{meal.ingredients.ingredients.length} ingredients</span>

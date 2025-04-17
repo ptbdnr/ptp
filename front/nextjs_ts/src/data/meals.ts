@@ -6,7 +6,7 @@ export const mockupMeals : Meal[] = [
       name: "Simple Veggie Frittata",
       description: "A quick and easy frittata packed with veggies.",
       images: {
-        thumbnail_url: "🍳",
+        placeholder_emoji: "🍳",
       },
       ingredients: { 
         ingredients: [
@@ -28,7 +28,7 @@ export const mockupMeals : Meal[] = [
       id: "2",
       name: "Turkey Avocado Wrap",
       images: {
-        thumbnail_url: "🌯",
+        placeholder_emoji: "🌯",
       },
       description: "A healthy wrap with turkey and avocado.",
       ingredients: {
@@ -51,7 +51,7 @@ export const mockupMeals : Meal[] = [
       id: "3",
       name: "Lemon Herb Chicken",
       images: {
-        thumbnail_url: "🍗",
+        placeholder_emoji: "🍗",
       },
       description: "Juicy chicken marinated in lemon and herbs.",
       ingredients: {
@@ -77,7 +77,7 @@ export const mockupMeals : Meal[] = [
     name: "Surprise Meal",
     description: "A surprise meal just for you!",
     images: {
-      thumbnail_url: "🍽️",
+      placeholder_emoji: "🍽️",
     },
     ingredients: {
       ingredients: [

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from 'next/navigation';
 
 import type { Meal } from "@/types/meals";
@@ -11,6 +11,7 @@ import { useMenuContext } from '@/contexts/MenuContext';
 
 import MealDiscoveryLayout from './meal-discovery-layout';
 
+import { ToastContainer, toast, Id } from 'react-toastify';
 import MealSwipeCard from '@/components/meal-swipe-card/MealSwipeCard';
 import MealCard from "@/components/meal-card/MealCard";
 
@@ -27,9 +28,18 @@ export default function Page() {
   const surpriseMeal: Meal = mockupSupriseMeal;
   const [likedMeals, setLikedMeals] = useState<Meal[]>([]);
 
+  const toastId = useRef<Id | undefined>(undefined);
+  const notifyAIRecommendationStart = () => {
+    if (toastId.current) {
+      toast.dismiss(toastId.current);
+    }
+    toastId.current = toast("🤖 Mistral", {autoClose: 10000});
+  }
+
   useEffect(() => {
     const fetchMeals = async () => {
       try {
+        notifyAIRecommendationStart();
         const res = await fetch('/api/meals', {
           method: 'POST',
           headers: {
@@ -41,6 +51,7 @@ export default function Page() {
             ingredients: ingredients.ingredients,
            }),
         });
+        toast.dismiss(toastId.current);
         if (!res.ok) {
           throw new Error('Failed to fetch meals');
         }
@@ -92,7 +103,7 @@ export default function Page() {
             <p>Swipe right to add to menu, left to skip</p>
           )}
         </div>
-
+        <ToastContainer />
     </MealDiscoveryLayout>
   );
 }

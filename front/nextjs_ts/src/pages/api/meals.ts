@@ -21,24 +21,24 @@ export default async function handler(
   };
   
   if (req.method === 'POST') {
-    const {dietaryPreferences, maxPrepTime, ingredients } = req.body;
-    const user_id = process.env.DEFAULT_USER_ID;
-    const ptp_api_url = process.env.PTP_API_URL;
     console.log(`POST API /${func_name}`);
-    const body = req.body;
-    console.log('Request Body:', body);
+    const url = `${process.env.PTP_API_URL}recommend`;
+    console.log(`url: ${url}`);
+    const {dietaryPreferences, maxPrepTime, ingredients } = req.body;
+    const req_body = {
+      userId: process.env.DEFAULT_USER_ID,
+      dietaryPreferences: dietaryPreferences,
+      maxPrepTime: maxPrepTime,
+      ingredients: ingredients,
+    };
+    console.log('Request Body:', req_body);
     try {
-      const response = await fetch(`${ptp_api_url}recommend`, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          user_id: user_id,
-          dietaryPreferences: dietaryPreferences,
-          maxPrepTime: maxPrepTime,
-          ingredients: ingredients,
-        }),
+        body: JSON.stringify(req_body),
       });
 
       if (!response.ok) {
@@ -56,13 +56,7 @@ export default async function handler(
       }
 
       // Assuming the data contains an array of meals
-      const meals = data.meals.map((meal: Meal) => ({
-        id: meal.id,
-        name: meal.name,
-        description: meal.description,
-        ingredients: meal.ingredients,
-        images: { thumbnail_url: '🍭' },
-      }));
+      const meals = data.meals;
       res.status(200).send({ meals: meals});
       return;
     } catch (err) {

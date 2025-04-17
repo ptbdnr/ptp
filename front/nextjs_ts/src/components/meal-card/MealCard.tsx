@@ -32,7 +32,7 @@ export default function MealCard({
       }
       
       <div className={styles.mealImage} style={{ fontSize: '150px', lineHeight: '150px', textAlign: 'center' }}>
-        {meal.images.thumbnail_url}
+        {meal.images.placeholder_emoji}
         
         {display_feedbackbuttons &&
         <div className={styles.actionButtons}>

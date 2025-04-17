@@ -15,15 +15,13 @@ export default async function handler(
     const func_name = 'text_to_ingredients';
     if (req.method === 'GET') {
         console.log(`GET API /${func_name}`);
-        try {
-            // const result = await someAsyncOperation()
-            const text = req.query.text as string;
-            const user_id = process.env.DEFAULT_USER_ID;
-            const ptp_api_url = process.env.PTP_API_URL;
-            const response = await fetch(`${ptp_api_url}users/${user_id}/text2ingredients?text=${text}`, {
+        const user_id = process.env.DEFAULT_USER_ID;
+        const text = req.query.text as string;
+        const url = `${process.env.PTP_API_URL}users/${user_id}/text2ingredients?text=${text}`;
+        try {            
+            const response = await fetch(url, {
                 method: 'GET',
             });
-            
             if (!response.ok) {
                 console.error('Error fetching data:', response.statusText);
                 res.status(500).send({ error: 'failed to fetch data' });

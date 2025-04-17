@@ -6,10 +6,10 @@ export interface Meal {
     name: string; // 1-5 words
     description: string; // 3-10 words
     images: {
-        thumbnail_url: string;
+        placeholder_emoji: string;
         hero_url?: string;
     };
-    ingredients: Ingredients;
+    ingredients?: Ingredients;
     equipments?: Equipments;
     instructions?: string;
 };
