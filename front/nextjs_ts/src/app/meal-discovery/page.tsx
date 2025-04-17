@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import type { Meal } from "@/types/meals";
 
+import Carousel from 'react-multi-carousel';
 import { useProfileContext } from '@/contexts/ProfileContext';
 import { usePantryContext } from '@/contexts/PantryContext';
 import { useMenuContext } from '@/contexts/MenuContext';
@@ -16,9 +17,30 @@ import MealSwipeCard from '@/components/meal-swipe-card/MealSwipeCard';
 import MealCard from "@/components/meal-card/MealCard";
 
 import styles from './meal-discovery.module.css';
+import 'react-multi-carousel/lib/styles.css';
 
 import { mockupMeals, mockupSupriseMeal } from '@/data/meals';
 
+
+const carousel_responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1
+  }
+};
 
 export default function Page() {
   const { profile } = useProfileContext();
@@ -92,7 +114,6 @@ export default function Page() {
   
   return (
     <MealDiscoveryLayout>
-        
         <div className={styles.mealSuggestion}>
           {stockMeals.length > 0 ? (
             <MealSwipeCard 
@@ -121,21 +142,25 @@ export default function Page() {
           )}
         </div>
 
-        <div className={styles.menu}>
-          {likedMeals.length > 0 ? (
-            likedMeals.map((meal, index) => (
-                <button
-                  key={meal.id}
-                  className={styles.menuCard}
-                  onClick={() => router.push(`/meals/${meal.id}`)}
-                >
-                  <MealCard meal={meal} key={index} card_size="Small" />
-                </button>
-              ))
-          ) : (
-            <p>Swipe right to add to menu, left to skip</p>
-          )}
-        </div>
+        <Carousel 
+          responsive={carousel_responsive} 
+          className={styles.menu}>
+          {
+            likedMeals.length == 0  ? 
+            <div className={styles.menuInstruction}>
+              Swipe right to add meal to your menu,<br />left to skip.
+            </div>
+          : likedMeals.map((meal, index) => (
+              <button
+                key={meal.id}
+                className={styles.menuCard}
+                onClick={() => router.push(`/meals/${meal.id}`)}
+              >
+                <MealCard meal={meal} key={index} card_size="Small" />
+              </button>
+          ))}
+        </Carousel>
+
         <ToastContainer />
     </MealDiscoveryLayout>
   );
