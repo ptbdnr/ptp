@@ -20,9 +20,9 @@ This implementation includes:
 
 This implementation provides a solid foundation that you can extend with actual business logic, database integration, and AI-powered recommendation functionality.
 
-# Developer Guide
+## :wrench: Developer Guide
 
-## Requirements
+### Requirements
 
 * Python3.11
 * Docker
@@ -30,7 +30,7 @@ This implementation provides a solid foundation that you can extend with actual 
     * Container Registry
     * Compute instance
 
-## Clone the repo
+### Clone the repo
 
 Connect your host to GitHub
 1. [Create a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
@@ -45,9 +45,17 @@ Connect your host to GitHub
 git clone git@github.com:ptbdnr/ptp.git
 ```
 
-## Copy the environment variables to the project root
+### Copy the environment variables to the project root
 
 source: ask!
+
+for sample: see `path/to/repo_root/.env.sample`
+
+```shell
+ln path/to/repo_root/.env.local /path/to/project_root/.env.local
+```
+
+or
 
 ```shell
 cat << EOF > .env.local
