@@ -1,95 +1,105 @@
 import { Meal } from "@/types/meals";
 
-export const mockupMeals : Meal[] = [
-    {
-      id: "1",
-      name: "Simple Veggie Frittata",
-      description: "A quick and easy frittata packed with veggies.",
-      images: {
-        placeholder_emoji: "🍳",
-      },
-      ingredients: { 
-        ingredients: [
-          { id: "1", name: "Eggs", quantity: 4, unit: "pieces"},
-          { id: "2", name: "Bell Peppers", quantity: 2, unit: "pieces" },
-          { id: "3", name: "Onion", quantity: 1, unit: "pieces" },
-          { id: "4", name: "Spinach", quantity: 1, unit: "cup" }
-        ]
-      },
-      equipments: { 
-        equipments: [
-          { id: "1", name: "Oven", quantity: 1 },
-          { id: "2", name: "Skillet", quantity: 1 },
-        ]
-      },
-      instructions: "1. Preheat oven to 375°F (190°C).\n2. Dice bell peppers and onion.\n3. Heat skillet over medium heat and sauté peppers and onions until soft, about 5 minutes.\n4. Add spinach and cook until wilted.\n5. Whisk eggs in a bowl and pour over vegetables in the skillet.\n6. Cook on stovetop for 3-4 minutes until edges start to set.\n7. Transfer skillet to oven and bake for 10-12 minutes until eggs are fully set.\n8. Let cool slightly before slicing and serving."
-    },
-    {
-      id: "2",
-      name: "Turkey Avocado Wrap",
-      images: {
-        placeholder_emoji: "🌯",
-      },
-      description: "A healthy wrap with turkey and avocado.",
-      ingredients: {
-        ingredients: [
-          { id: "1", name: "Turkey", quantity: 100, unit: "grams" },
-          { id: "2", name: "Avocado", quantity: 1, unit: "pieces" },
-          { id: "3", name: "Whole Wheat Wrap", quantity: 1, unit: "pieces" },
-          { id: "4", name: "Lettuce", quantity: 1, unit: "cup" }
-        ]
-      },
-      equipments: {
-        equipments: [
-          { id: "1", name: "Knife", quantity: 1 },
-          { id: "2", name: "Cutting Board", quantity: 1 },
-        ]
-      },
-      instructions: "1. Lay the whole wheat wrap flat on a clean surface.\n2. Slice the avocado and arrange on the wrap.\n3. Layer turkey slices evenly on top of the avocado.\n4. Add lettuce leaves on top of the turkey.\n5. Fold in sides of the wrap, then roll tightly from bottom up.\n6. Cut in half diagonally and serve immediately."
-    },
-    {
-      id: "3",
-      name: "Lemon Herb Chicken",
-      images: {
-        placeholder_emoji: "🍗",
-      },
-      description: "Juicy chicken marinated in lemon and herbs.",
-      ingredients: {
-        ingredients: [
-          { id: "1", name: "Chicken", quantity: 2, unit: "pieces" },
-          { id: "2", name: "Lemon", quantity: 1, unit: "pieces" },
-          { id: "3", name: "Olive Oil", quantity: 2, unit: "tablespoons" },
-          { id: "4", name: "Garlic", quantity: 2, unit: "cloves" }
-        ]
-      },
-      equipments: {
-        equipments: [
-          { id: "1", name: "Grill", quantity: 1 },
-          { id: "2", name: "Marinating Container", quantity: 1 },
-        ]
-      },
-      instructions: "## Preparation\n1. Mince garlic cloves and zest the lemon.\n2. Juice the lemon and combine with olive oil and minced garlic in a container.\n3. Add chicken pieces to the marinade and coat thoroughly.\n4. Cover container and refrigerate for at least 30 minutes, preferably 2-4 hours.\n\n## Cooking\n1. Preheat grill to medium-high heat.\n2. Remove chicken from marinade and place on the grill.\n3. Cook for 6-7 minutes per side until internal temperature reaches 165°F (74°C).\n4. Let chicken rest for 5 minutes before serving."
-    }
-  ];
-
-  export const mockupSupriseMeal: Meal = {
-    id: "surprise",
-    name: "Surprise Meal",
-    description: "A surprise meal just for you!",
+export const mockupMeals: Meal[] = [
+  {
+    id: "1",
+    name: "Quinoa Veggie Bowl",
+    description: "A hearty bowl of quinoa and fresh veggies, perfect for vegans and gluten-free diets.",
     images: {
-      placeholder_emoji: "🍽️",
+      placeholder_emoji: "🥗",
     },
     ingredients: {
       ingredients: [
-        { id: "1", name: "Surprise Ingredient 1", quantity: 1, unit: "g" },
-        { id: "2", name: "Surprise Ingredient 2", quantity: 2, unit: "g" },
-      ]
+        { id: "1", name: "Quinoa", quantity: 1, unit: "cup" },
+        { id: "2", name: "Cherry Tomatoes", quantity: 1, unit: "cup" },
+        { id: "3", name: "Cucumber", quantity: 1, unit: "pieces" },
+        { id: "4", name: "Avocado", quantity: 1, unit: "pieces" },
+        { id: "5", name: "Lemon Juice", quantity: 2, unit: "tablespoons" },
+      ],
     },
     equipments: {
       equipments: [
-        { id: "1", name: "Surprise Equipment 1", quantity: 1 },
-        { id: "2", name: "Surprise Equipment 2", quantity: 1 },
-      ]
+        { id: "1", name: "Pot", quantity: 1 },
+        { id: "2", name: "Knife", quantity: 1 },
+        { id: "3", name: "Cutting Board", quantity: 1 },
+      ],
     },
-    instructions: "# Your Mystery Meal Adventure\n\n**Step 1:** Open your surprise ingredients package.\n\n**Step 2:** Follow the secret recipe card included in your package.\n\n**Step 3:** Prepare ingredients according to the instructions on the card.\n\n**Step 4:** Cook using the provided equipment following temperature and time guidelines.\n\n**Step 5:** Plate your creation and enjoy your surprise meal!"
-  };
+    instructions:
+      "1. Rinse quinoa and cook according to package instructions.\n2. Dice cherry tomatoes, cucumber, and avocado.\n3. Combine cooked quinoa, diced veggies, and lemon juice in a bowl.\n4. Mix well and serve fresh.",
+  },
+  {
+    id: "2",
+    name: "Sweet Potato Tacos",
+    description: "Delicious vegan and gluten-free tacos with roasted sweet potatoes.",
+    images: {
+      placeholder_emoji: "🌮",
+    },
+    ingredients: {
+      ingredients: [
+        { id: "1", name: "Sweet Potatoes", quantity: 2, unit: "pieces" },
+        { id: "2", name: "Corn Tortillas", quantity: 4, unit: "pieces" },
+        { id: "3", name: "Black Beans", quantity: 1, unit: "cup" },
+        { id: "4", name: "Cilantro", quantity: 1, unit: "bunch" },
+        { id: "5", name: "Lime", quantity: 1, unit: "pieces" },
+      ],
+    },
+    equipments: {
+      equipments: [
+        { id: "1", name: "Oven", quantity: 1 },
+        { id: "2", name: "Baking Sheet", quantity: 1 },
+        { id: "3", name: "Knife", quantity: 1 },
+      ],
+    },
+    instructions:
+      "1. Preheat oven to 400°F (200°C).\n2. Peel and dice sweet potatoes, then roast on a baking sheet for 20-25 minutes.\n3. Warm corn tortillas in a skillet.\n4. Fill tortillas with roasted sweet potatoes, black beans, and chopped cilantro.\n5. Squeeze lime juice over tacos and serve.",
+  },
+  {
+    id: "3",
+    name: "Chickpea Salad",
+    description: "A protein-packed vegan and gluten-free salad with chickpeas and fresh veggies.",
+    images: {
+      placeholder_emoji: "🥙",
+    },
+    ingredients: {
+      ingredients: [
+        { id: "1", name: "Chickpeas", quantity: 1, unit: "can" },
+        { id: "2", name: "Red Bell Pepper", quantity: 1, unit: "pieces" },
+        { id: "3", name: "Cucumber", quantity: 1, unit: "pieces" },
+        { id: "4", name: "Olive Oil", quantity: 2, unit: "tablespoons" },
+        { id: "5", name: "Parsley", quantity: 1, unit: "bunch" },
+      ],
+    },
+    equipments: {
+      equipments: [
+        { id: "1", name: "Knife", quantity: 1 },
+        { id: "2", name: "Cutting Board", quantity: 1 },
+        { id: "3", name: "Mixing Bowl", quantity: 1 },
+      ],
+    },
+    instructions:
+      "1. Rinse and drain chickpeas.\n2. Dice red bell pepper and cucumber.\n3. Chop parsley finely.\n4. Combine chickpeas, diced veggies, and parsley in a mixing bowl.\n5. Drizzle with olive oil, mix well, and serve.",
+  },
+];
+
+export const mockupSupriseMeal: Meal = {
+  id: "surprise",
+  name: "Surprise Vegan Delight",
+  description: "A surprise vegan and gluten-free meal just for you!",
+  images: {
+    placeholder_emoji: "🍽️",
+  },
+  ingredients: {
+    ingredients: [
+      { id: "1", name: "Surprise Ingredient 1", quantity: 1, unit: "g" },
+      { id: "2", name: "Surprise Ingredient 2", quantity: 2, unit: "g" },
+    ],
+  },
+  equipments: {
+    equipments: [
+      { id: "1", name: "Surprise Equipment 1", quantity: 1 },
+      { id: "2", name: "Surprise Equipment 2", quantity: 1 },
+    ],
+  },
+  instructions:
+    "# Your Mystery Vegan Adventure\n\n**Step 1:** Open your surprise ingredients package.\n\n**Step 2:** Follow the secret recipe card included in your package.\n\n**Step 3:** Prepare ingredients according to the instructions on the card.\n\n**Step 4:** Cook using the provided equipment following temperature and time guidelines.\n\n**Step 5:** Plate your creation and enjoy your surprise vegan meal!",
+};
