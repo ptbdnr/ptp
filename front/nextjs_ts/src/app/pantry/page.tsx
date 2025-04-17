@@ -176,7 +176,7 @@ export default function Page() {
               className={`${styles.actionButton} ${styles.addButton}`} 
               onClick={() => setCameraOpen(true)}
             >
-              🧾<br />Scan<br/>Receipt
+              🧾<br />Receipt<br/> or Barcode
             </button>
             <button 
               className={`${styles.actionButton} ${styles.importButton}`} 

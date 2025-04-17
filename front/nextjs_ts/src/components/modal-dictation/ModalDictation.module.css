@@ -40,12 +40,26 @@
     color: #333;
   }
   
+
   .instructions {
     margin-bottom: 1rem;
     font-size: 1rem;
     color: #333;
   }
   
+.inputContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 5px;
+}
+
+.micIcon {
+  color: #333;
+  
+}
+
   .buttons {
     display: flex;
     justify-content: center;
