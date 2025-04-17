@@ -33,7 +33,7 @@ export default function Page() {
     if (toastId.current) {
       toast.dismiss(toastId.current);
     }
-    toastId.current = toast("🤖 Mistral", {autoClose: 10000});
+    toastId.current = toast("🤖 Mistral text generation", {autoClose: 14000});
   }
 
   useEffect(() => {

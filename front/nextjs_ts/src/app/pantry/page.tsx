@@ -28,13 +28,13 @@ export default function Page() {
     if (toastId.current) {
       toast.dismiss(toastId.current);
     }
-    toastId.current = toast("👀 LumaLabs", {autoClose: 8000});
+    toastId.current = toast("🗃️ Vultr ObjStore 👀 Mistral vision", {autoClose: 8000});
   }
   const notifyTextProcessStart = () => {
     if (toastId.current) {
       toast.dismiss(toastId.current);
     }
-    toastId.current = toast(`🤖 Mistral`, {autoClose: 5000});
+    toastId.current = toast(`🤖 Mistral JSON mode`, {autoClose: 5000});
   };
 
   useEffect(() => {
@@ -80,6 +80,7 @@ export default function Page() {
 
   async function handleDictation (text: string) {
     setDictationOpen(false);
+    setInputText(text);
     notifyTextProcessStart();
     try {
       const url = `/api/text_to_ingredients?text=${text}`;
@@ -200,15 +201,14 @@ export default function Page() {
           )}
 
           {newPantryItems.length > 0 && (
-            <div className={ai_styles.container}>
-              <div className={ai_styles.border_animation}>
-                <p>New items added to your pantry!</p>
-                <ul>
-                  {newPantryItems.map(item => (
-                    <li key={item.id}>{item.name}: {item.quantity} {item.unit}</li>
-                  ))}
-                </ul>
-              </div>
+            <div className={styles.newItemsNotification}>
+              New items:
+              {newPantryItems.map((item, index) => (
+                <span key={item.id}>
+                {item.quantity} {item.unit} {item.name}
+                {index < newPantryItems.length - 1 && ', '}
+                </span>
+              ))}
             </div>
           )}
         </div>
