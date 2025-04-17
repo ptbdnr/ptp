@@ -23,8 +23,8 @@ export default function Header({ tagline }: HeaderProps) {
         <h1>PLATO</h1>
         </div>
         <div className={styles.iconsContainer}>
-          <CircleUser size={40} className={styles.userIcon} />
           <EllipsisVertical size={40} className={styles.menuIcon} />
+          <CircleUser size={40} className={styles.userIcon} />
         </div>
       </div>
       {tagline && <p className={styles.tagline}>{tagline}</p>}
