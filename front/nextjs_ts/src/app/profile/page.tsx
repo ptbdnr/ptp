@@ -86,7 +86,7 @@ export default function Page() {
           </div>
 
           <div className={styles.dietaryPrefsContainer}>
-            <label className={styles.dietaryLabel}>Dietary Preferences</label>
+            <label className={styles.dietaryLabel}>Diet & Preferences</label>
             <button 
               className={profile.dietaryPreferences.length > 0 ? styles.dietaryButton: styles.dietaryButtonEmpty}
               onClick={() => {

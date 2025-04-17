@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 2rem 1.5rem 1rem;
-  background-color: #ff7043;
+  background: linear-gradient(to bottom, #fc3b00, #ff7043);
   color: white;
 }
 

@@ -36,7 +36,7 @@ export default function Page() {
     if (toastId.current) {
       toast.dismiss(toastId.current);
     }
-    toastId.current = toast("🤖 Mistral text generation", {autoClose: 14000});
+    toastId.current = toast("✨ Smart Recipe Generator", {autoClose: 14000});
   }
 
   useEffect(() => {

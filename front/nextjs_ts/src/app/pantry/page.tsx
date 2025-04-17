@@ -28,13 +28,13 @@ export default function Page() {
     if (toastId.current) {
       toast.dismiss(toastId.current);
     }
-    toastId.current = toast("🗃️ Vultr ObjStore 👀 Mistral vision", {autoClose: 8000});
+    toastId.current = toast("👀 AI vision", {autoClose: 8000});
   }
   const notifyTextProcessStart = () => {
     if (toastId.current) {
       toast.dismiss(toastId.current);
     }
-    toastId.current = toast(`🤖 Mistral JSON mode`, {autoClose: 5000});
+    toastId.current = toast(`✨ Ingredient validation`, {autoClose: 5000});
   };
 
   useEffect(() => {
