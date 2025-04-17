@@ -7,25 +7,43 @@
   width: 100%;
 }
 
-.aiTag {
+.tag {
   position: absolute;
   top: 1rem;
-  right: 1rem;
-  background: #8e44ad;
-  color: white;
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-size: 0.8rem;
+  color: white;
   display: flex;
   align-items: center;
   gap: 0.3rem;
 }
 
-.aiDot {
+.tagDot {
   width: 10px;
   height: 10px;
   background: white;
   border-radius: 50%;
+}
+
+.aiTag {
+  right: 1rem;
+  background: #8e44ad;
+}
+
+.searchTag {
+  left: 1rem;
+  background: #3498db;
+}
+
+.stockTag {
+  left: 1rem;
+  background: #e67e22;
+}
+
+.surpriseTag {
+  left: 1rem;
+  background: #2ecc71;
 }
 
 .mealImage {

@@ -1,20 +1,37 @@
 import { Meal } from '@/types/meals';
 
-import { X, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import styles from './MealCard.module.css';
 
-type MealCardProps = {
+type MealCardProps = {  
   meal: Meal;
+  card_size?: 'small' | 'normal';
   display_details?: boolean,
-  display_tags?: boolean;
+  display_tags?: {
+    display_stocktag?: boolean,
+    display_searchtag?: boolean,
+    display_aitag?: boolean,
+    display_suprisetag?: boolean
+  },
   display_feedbackbuttons?: boolean;
 };
 
 export default function MealCard({ 
   meal: meal, 
+  card_size = 'normal',
   display_details = false, 
-  display_tags = false, 
+  display_tags: {
+    display_stocktag = false,
+    display_searchtag = false,
+    display_aitag = false,
+    display_suprisetag = false
+  } = {
+    display_stocktag: false,
+    display_searchtag: false,
+    display_aitag: false,
+    display_suprisetag: false
+  },
   display_feedbackbuttons = false 
 }: MealCardProps) {
   const difficulty = 'medium'; // ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)];
@@ -22,12 +39,30 @@ export default function MealCard({
   const prepTime = 30; // 10 + Math.floor(Math.random() * 60);
 
   return (
-    <div className={styles.card}>
+    <div className={styles.card + ' ' + styles[card_size]}>
       
-      { display_tags && 
-      <div className={styles.aiTag}>
-        <span className={styles.aiDot}></span>
+      { display_stocktag &&
+      <div className={`${styles.tag} ${styles.stockTag}`}>
+        <span className={styles.tagDot}></span>
+        Stock Meal
+      </div>
+      }
+      { display_searchtag &&
+      <div className={`${styles.tag} ${styles.searchTag}`}>
+        <span className={styles.tagDot}></span>
+        Search Result
+      </div>
+      }
+      { display_aitag && 
+      <div className={`${styles.tag} ${styles.aiTag}`}>
+        <span className={styles.tagDot}></span>
         AI Created
+      </div>
+      }
+      { display_suprisetag &&
+      <div className={`${styles.tag} ${styles.surpriseTag}`}>
+        <span className={styles.tagDot}></span>
+        Surprise Meal
       </div>
       }
       
@@ -40,14 +75,14 @@ export default function MealCard({
             className={`${styles.actionButton} ${styles.dislikeButton}`}
             aria-label="Dislike meal"
           >
-            <X size={24} />
+            <ChevronLeft size={24} />
           </button>
           
           <button 
             className={`${styles.actionButton} ${styles.likeButton}`}
             aria-label="Like meal"
           >
-            <Check size={24} />
+            <ChevronRight size={24} />
           </button>
         </div>
         }
