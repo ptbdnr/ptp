@@ -30,19 +30,19 @@
     width: 100%;
   }
   
-  .recipeTitle {
+  .mealTitle {
     margin: 0;
     font-size: 1.8rem;
     font-weight: bold;
   }
   
-  .recipeDescription {
+  .mealDescription {
     margin: 0.5rem 0 0;
     font-size: 0.9rem;
     opacity: 0.9;
   }
   
-  .recipeStats {
+  .mealStats {
     display: flex;
     justify-content: space-between;
     padding: 1rem;

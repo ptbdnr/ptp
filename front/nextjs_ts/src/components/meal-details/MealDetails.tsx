@@ -39,15 +39,15 @@ export default function MealDetails({ meal }: MealDetailsProps) {
         <div className={styles.heroImageContainer}>
           <HeroCarousel meal={meal} />
           <div className={styles.heroContent}>
-            <h1 className={styles.recipeTitle}>{meal.name}</h1>
-            <p className={styles.recipeDescription}>{meal.description}</p>
+            <h1 className={styles.mealTitle}>{meal.name}</h1>
+            <p className={styles.mealDescription}>{meal.description}</p>
           </div>
         </div>
         
         {/* Meal Stats */}
-        <div className={styles.recipeStats}>
+        <div className={styles.mealStats}>
           <div className={styles.statItem}>
-            <span className={styles.statIcon}>⏱</span>
+            <span className={styles.statIcon}>⏱️</span>
             <span className={styles.statValue}>{prepTime}</span>
             <span className={styles.statLabel}>min</span>
           </div>
@@ -62,7 +62,7 @@ export default function MealDetails({ meal }: MealDetailsProps) {
             <span className={styles.statLabel}>difficulty</span>
           </div>
           <div className={styles.statItem}>
-            <span className={styles.statIcon}>💵</span>
+            <span className={styles.statIcon}>💰</span>
             <span className={styles.statValue}>£{price}</span>
             <span className={styles.statLabel}>total</span>
           </div>

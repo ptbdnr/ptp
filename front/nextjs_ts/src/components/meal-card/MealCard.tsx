@@ -4,7 +4,7 @@ import { useProfileContext } from '@/contexts/ProfileContext';
 
 import { getDifficultyOptions } from '@/lib/profile';
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ThumbsDown, ThumbsUp } from 'lucide-react';
 
 import styles from './MealCard.module.css';
 
@@ -81,14 +81,14 @@ export default function MealCard({
             className={`${styles.actionButton} ${styles.dislikeButton}`}
             aria-label="Dislike meal"
           >
-            <ChevronLeft size={24} />
+            <ThumbsDown size={24} />
           </button>
           
           <button 
             className={`${styles.actionButton} ${styles.likeButton}`}
             aria-label="Like meal"
           >
-            <ChevronRight size={24} />
+            <ThumbsUp size={24} />
           </button>
         </div>
         }
@@ -98,18 +98,23 @@ export default function MealCard({
         <h2 className={`${styles.mealName} ${styles[`mealName${card_size}`]}`}>{meal.name}</h2>
         
         { display_details && 
-        <div className={styles.mealDetails}>
-          <div className={styles.prepTime}>
-            <span className={styles.value}>{prepTime}</span>
-            <span className={styles.unit}>min</span>
+        <div className={styles.mealStats}>
+          <div className={styles.statItem}>
+            <span className={styles.statIcon}>⏱️</span>
+            <span className={styles.statValue}>{prepTime}</span>
+            <span className={styles.statLabel}>min</span>
           </div>
           
-          <div className={`${styles.difficulty} ${styles[`difficulty${difficulty}`]}`}>
-            {difficulty.toLowerCase()}
+          <div className={styles.statItem}>
+            <span className={styles.statIcon}>⭐</span>
+            <span className={styles.statValue}>{difficulty}</span>
+            <span className={styles.statLabel}>difficulty</span>
           </div>
           
-          <div className={styles.price}>
-            £{price}
+          <div className={styles.statItem}>
+            <span className={styles.statIcon}>💰</span>
+            <span className={styles.statValue}>£{price}</span>
+            <span className={styles.statLabel}>total</span>
           </div>
         </div>
         }

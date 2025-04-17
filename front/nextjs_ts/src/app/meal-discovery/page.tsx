@@ -97,25 +97,25 @@ export default function Page() {
           {stockMeals.length > 0 ? (
             <MealSwipeCard 
               meal={stockMeals[0]}
-              tags={["stock"]}
+              // tags={["stock"]}
               onSwipe={(direction) => handleSwipe(direction, "stock", setStockMeals)}
             />
           ) : searchMeals.length > 0 ? (
             <MealSwipeCard 
               meal={searchMeals[0]}
-              tags={["search"]}
+              // tags={["search"]}
               onSwipe={(direction) => handleSwipe(direction, "search", setSearchMeals)}
             />
           ) : aiMeals.length > 0 ? (
             <MealSwipeCard 
               meal={aiMeals[0]}
-              tags={["ai"]}
+              // tags={["ai"]}
               onSwipe={(direction) => handleSwipe(direction, "ai", setAiMeals)}
             />
           ) : (
             <MealSwipeCard
-              tags={["surprise"]}
               meal={surpriseMeal}
+              // tags={["surprise"]}
               onSwipe={(direction) => handleSwipe(direction, "surprise", setAiMeals)}
             />
           )}
