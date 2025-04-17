@@ -17,6 +17,7 @@ import ai_styles from './ai-container.module.css';
 export default function Page() {
   // input modalities
   const [isCameraOpen, setCameraOpen] = useState(false);
+  const [isScanBarcode, setScanBarcode] = useState(false);
   const [isDictationOpen, setDictationOpen] = useState(false);
   const [inputText, setInputText] = useState("")
   const { ingredients, setIngredients, isLoading } = usePantryContext();
@@ -168,13 +169,13 @@ export default function Page() {
           <div className={styles.actionButtons}>
             <button 
               className={`${styles.actionButton} ${styles.scanButton}`} 
-              onClick={() => setCameraOpen(true)}
+              onClick={() => {setScanBarcode(false); setCameraOpen(true)}}
             >
               📸<br />Take<br/>Picture
             </button>
             <button 
               className={`${styles.actionButton} ${styles.addButton}`} 
-              onClick={() => setCameraOpen(true)}
+              onClick={() => {setScanBarcode(true); setCameraOpen(true)}}
             >
               🧾<br />Receipt<br/> or Barcode
             </button>
@@ -184,7 +185,7 @@ export default function Page() {
             >
               🎙️<br />Dictate <br/> or Type
             </button>
-            <ModalCamera open={isCameraOpen} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
+            <ModalCamera open={isCameraOpen} scan_barcode={isScanBarcode} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
             <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
           </div>
           
