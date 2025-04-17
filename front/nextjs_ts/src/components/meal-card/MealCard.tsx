@@ -1,5 +1,9 @@
 import { Meal } from '@/types/meals';
 
+import { useProfileContext } from '@/contexts/ProfileContext';
+
+import { getDifficultyOptions } from '@/lib/profile';
+
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import styles from './MealCard.module.css';
@@ -34,9 +38,11 @@ export default function MealCard({
   },
   display_feedbackbuttons = false 
 }: MealCardProps) {
-  const difficulty = 'medium'; // ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)];
-  const price = 18; // 3 + Math.floor(Math.random() * 18) + [0.0, 0.50, 0.75][Math.floor(Math.random() * 3)];
-  const prepTime = 30; // 10 + Math.floor(Math.random() * 60);
+  const { profile } = useProfileContext();
+  const difficultyOptions = getDifficultyOptions(profile.difficultyLevel);
+  const difficulty = difficultyOptions[Math.floor(Math.random() * difficultyOptions.length)];
+  const price = 3 + Math.floor(Math.random() * 18) + [0.0, 0.50, 0.75][Math.floor(Math.random() * 3)];
+  const prepTime = 10 + Math.floor(Math.random() * profile.maxPrepTime-10);
 
   return (
     <div className={`${styles.card}`}>
@@ -98,8 +104,8 @@ export default function MealCard({
             <span className={styles.unit}>min</span>
           </div>
           
-          <div className={styles.difficulty}>
-            {difficulty}
+          <div className={`${styles.difficulty} ${styles[`difficulty${difficulty}`]}`}>
+            {difficulty.toLowerCase()}
           </div>
           
           <div className={styles.price}>

@@ -88,7 +88,7 @@ export default function Page() {
             <div className={styles.difficultySelectorContainer}>
             <label className={styles.difficultyLabel}>Difficulty Level</label>
             <div className={styles.difficultyOptions}>
-              {['Easy', 'Medium', 'Hard'].map((level) => (
+              {(['Easy', 'Medium', 'Hard'] as const).map((level) => (
               <button
                 key={level}
                 className={
