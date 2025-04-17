@@ -6,7 +6,7 @@ import styles from './MealCard.module.css';
 
 type MealCardProps = {  
   meal: Meal;
-  card_size?: 'small' | 'normal';
+  card_size?: 'Small' | 'Normal';
   display_details?: boolean,
   display_tags?: {
     display_stocktag?: boolean,
@@ -19,7 +19,7 @@ type MealCardProps = {
 
 export default function MealCard({ 
   meal: meal, 
-  card_size = 'normal',
+  card_size = 'Normal',
   display_details = false, 
   display_tags: {
     display_stocktag = false,
@@ -39,7 +39,7 @@ export default function MealCard({
   const prepTime = 30; // 10 + Math.floor(Math.random() * 60);
 
   return (
-    <div className={styles.card + ' ' + styles[card_size]}>
+    <div className={`${styles.card}`}>
       
       { display_stocktag &&
       <div className={`${styles.tag} ${styles.stockTag}`}>
@@ -66,7 +66,7 @@ export default function MealCard({
       </div>
       }
       
-      <div className={styles.mealImage} style={{ fontSize: '150px', lineHeight: '150px', textAlign: 'center' }}>
+      <div className={`${styles.mealImage} ${styles[`mealImage${card_size}`]}`}>
         {meal.images.placeholder_emoji}
         
         {display_feedbackbuttons &&
@@ -89,7 +89,7 @@ export default function MealCard({
       </div>
       
       <div className={styles.mealInfo}>
-        <h2 className={styles.mealName}>{meal.name}</h2>
+        <h2 className={`${styles.mealName} ${styles[`mealName${card_size}`]}`}>{meal.name}</h2>
         
         { display_details && 
         <div className={styles.mealDetails}>
