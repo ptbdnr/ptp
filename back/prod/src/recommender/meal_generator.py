@@ -4,11 +4,12 @@ import json
 import logging
 import os
 from textwrap import dedent
-from typing import Optional
+from typing import Literal, Optional
 
 from mistralai import Mistral, ResponseFormat
-from src.models.ingredients import Ingredient, Ingredients
-from src.models.meals import Meal, Meals
+
+from src.models.ingredients import Ingredient
+from src.models.meals import Meal, MealPreview, Meals
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -35,15 +36,18 @@ class MealGenerator:
         self.mistral_client = Mistral(api_key=mistral_api_key)
         logger.debug("Mistral client initialized")
 
-    def meal_generator(
+    def recommend(
         self,
+        model: Literal[Meal, MealPreview],
         dietary_preferences: list[str],
         max_prep_time: Optional[int] = 90,
         ingredients: Optional[list[Ingredient]] = None,
-    ) -> dict:
+        min_num_meals: Optional[int] = 3,
+        max_num_meals: Optional[int] = 5,
+    ) -> Meals:
         """Convert text to ingredients."""
         ingredients = ingredients or []
-        schema = Meal.model_json_schema(by_alias=False)
+        schema = model.model_json_schema(by_alias=False)
         response_format : ResponseFormat = ResponseFormat(
             schema = [schema],
             response_format = "json",
@@ -56,7 +60,8 @@ class MealGenerator:
             {max_prep_time} minutes,
             and the ingredients:
             {ingredients}
-            Generate 1-3 meals that are healthy, delicious, and easy to prepare.
+            Create min {min_num_meals} max {max_num_meals} meals.
+            The meals should be healthy, delicious, and easy to prepare.
             Extract the meals in short JSON object. Don't include any other information. Be concise.
             The JSON object should be in the following format:
             {schema_str}
@@ -64,8 +69,10 @@ class MealGenerator:
         prompt = prompt_template.format(
             dietary_preferences=dietary_preferences,
             max_prep_time=max_prep_time,
-            ingredients=[ingredient.dict() for ingredient in ingredients],
+            ingredients=[ingredient.model_dump() for ingredient in ingredients],
             schema_str=json.dumps(schema),
+            min_num_meals=min_num_meals,
+            max_num_meals=max_num_meals,
         )
         logger.debug("Parsing text with prompt: %s", prompt)
 
@@ -87,6 +94,4 @@ class MealGenerator:
         data_obj = json.loads(chat_response.choices[0].message.content)
         if not isinstance(data_obj, list):
             data_obj = [data_obj]
-        meals : Meals = Meals(meals=data_obj)
-
-        return meals
+        return Meals(meals=data_obj)

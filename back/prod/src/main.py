@@ -1,19 +1,28 @@
 from __future__ import annotations
 
+import logging
 import os
-import uuid
 from datetime import date
 from typing import Annotated, cast
 
 import dotenv
-from fastapi import FastAPI, Form, HTTPException, Path
+from fastapi import FastAPI, HTTPException, Path
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
 from src.models.equipments import Equipment, Equipments
 from src.models.ingredients import Ingredient, Ingredients
-from src.models.meals import Meal, Meals
+from src.models.meals import Meals, MealPreview
 from src.models.preferences import UserPreferences
+from src.recommender.meal_generator import MealGenerator
 from src.text_to_img.meal_image import MealImageGenerator
 from src.text_to_schema.ingredient_parser import IngredientParser
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
+logger.addHandler(handler)
 
 dotenv.load_dotenv("./.env.local")
 
@@ -57,40 +66,60 @@ db = {
     },
 }
 
+class RecommendRequestBody(BaseModel):
+    userId: str
+    dietaryPreferences: list[str]
+    maxPrepTime: int
+    ingredients: list[Ingredient] = []
+
 # Routes implementation
-@app.post("/recommend/{user_id:?}", response_model=Meals)
+@app.post("/recommend", response_model=Meals)
 async def recommend_meal(
-    user_id: Annotated[str, Form()] = DEFAULT_USER_ID,
+    request_body: RecommendRequestBody,
 ) -> Meals:
     """Recommend meals based on user inventory and preferences."""
-    # In a real application, this would call an AI model for recommendations
-    # For demo purposes, return mock data
-
     # Check if user exists
-    if user_id not in db["users"]:
-        # Create new user with empty data
-        db["users"][user_id] = {
-            "ingredients": Ingredients(ingredients=[]),
-            "equipments": Equipments(equipments=[]),
-            "preferences": UserPreferences(preferences=[]),
-        }
+    user_id = request_body.userId
+    dietary_preferences = request_body.dietaryPreferences
+    max_prep_time = request_body.maxPrepTime
+    ingredients = request_body.ingredients
+    logger.info("Received request: %s", request_body)
 
-    # Generate a sample recommendation
-    return Meals(
-        meals=[
-            Meal(
-                id=str(uuid.uuid4()),
-                name="Tomato Pasta",
-                description="A simple and delicious tomato pasta dish.",
-                ingredients=[
-                    Ingredient(name="Tomato", quantity=3, unit="pieces"),
-                    Ingredient(name="Pasta", quantity=200, unit="grams"),
-                    Ingredient(name="Olive oil", quantity=2, unit="tablespoons"),
-                ],
-                required_equipment=["Pot", "Pan", "Knife"],
-            ),
-        ],
+    recommender = MealGenerator()
+    meals: Meals = recommender.recommend(
+        model=MealPreview,
+        dietary_preferences=dietary_preferences,
+        max_prep_time=max_prep_time,
+        ingredients=ingredients,
+        min_num_meals=3,
+        max_num_meals=5,
     )
+    return meals
+
+    # if user_id not in db["users"]:
+    #     # Create new user with empty data
+    #     db["users"][user_id] = {
+    #         "ingredients": Ingredients(ingredients=[]),
+    #         "equipments": Equipments(equipments=[]),
+    #         "preferences": UserPreferences(preferences=[]),
+    #     }
+
+    # # Generate a sample recommendation
+    # return Meals(
+    #     meals=[
+    #         Meal(
+    #             id=str(uuid.uuid4()),
+    #             name="Tomato Pasta",
+    #             description="A simple and delicious tomato pasta dish.",
+    #             ingredients=[
+    #                 Ingredient(name="Tomato", quantity=3, unit="pieces"),
+    #                 Ingredient(name="Pasta", quantity=200, unit="grams"),
+    #                 Ingredient(name="Olive oil", quantity=2, unit="tablespoons"),
+    #             ],
+    #             required_equipment=["Pot", "Pan", "Knife"],
+    #         ),
+    #     ],
+    # )
 
 @app.get("/users/{userId}/ingredients", response_model=Ingredients)
 async def get_ingredients(
