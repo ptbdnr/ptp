@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { Meal } from '@/types/meals';
+import { Ingredient } from '@/types/ingredients';
+
 import Carousel from 'react-bootstrap/Carousel';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
+import { Bookmark, Star } from 'lucide-react';
 
-import { Meal } from '@/types/meals';
-import { Ingredient } from '@/types/ingredients';
 import styles from './MealDetails.module.css';
 
 interface MealDetailsProps {
@@ -127,8 +129,12 @@ export default function MealDetails({ meal }: MealDetailsProps) {
       
       {/* Action Buttons */}
       <div className={styles.actionButtons}>
-        <button className={styles.actionButton} disabled>Add to Meal Plan</button>
-        <button className={styles.actionButton} disabled>Add to Shopping</button>
+        <button className={styles.actionButton} disabled>
+          <Bookmark className={styles.icon} /> <span>Save</span>
+        </button>
+        <button className={styles.actionButton} disabled>
+          <Star className={styles.icon} /> <span>Rate</span>
+        </button>
       </div>
     </div>
   );
