@@ -79,6 +79,58 @@ export const mockupMeals: Meal[] = [
     instructions:
       "1. Rinse and drain chickpeas.\n2. Dice red bell pepper and cucumber.\n3. Chop parsley finely.\n4. Combine chickpeas, diced veggies, and parsley in a mixing bowl.\n5. Drizzle with olive oil, mix well, and serve.",
   },
+  {
+    id: "4",
+    name: "Zucchini Noodles",
+    description: "A low-carb vegan and gluten-free dish made with spiralized zucchini.",
+    images: {
+      placeholder_emoji: "🍝",
+    },
+    ingredients: {
+      ingredients: [
+        { id: "1", name: "Zucchini", quantity: 2, unit: "pieces" },
+        { id: "2", name: "Cherry Tomatoes", quantity: 1, unit: "cup" },
+        { id: "3", name: "Basil", quantity: 1, unit: "bunch" },
+        { id: "4", name: "Olive Oil", quantity: 2, unit: "tablespoons" },
+        { id: "5", name: "Garlic", quantity: 2, unit: "cloves" },
+      ],
+    },
+    equipments: {
+      equipments: [
+        { id: "1", name: "Spiralizer", quantity: 1 },
+        { id: "2", name: "Skillet", quantity: 1 },
+        { id: "3", name: "Knife", quantity: 1 },
+      ],
+    },
+    instructions:
+      "1. Spiralize zucchini into noodles.\n2. Mince garlic and halve cherry tomatoes.\n3. Heat olive oil in a skillet, add garlic and tomatoes, and sauté for 3-4 minutes.\n4. Add zucchini noodles to the skillet and cook for another 2-3 minutes.\n5. Garnish with fresh basil and serve.",
+  },
+  {
+    id: "5",
+    name: "Vegan Buddha Bowl",
+    description: "A colorful and nutritious vegan and gluten-free bowl filled with grains and veggies.",
+    images: {
+      placeholder_emoji: "🍚",
+    },
+    ingredients: {
+      ingredients: [
+        { id: "1", name: "Brown Rice", quantity: 1, unit: "cup" },
+        { id: "2", name: "Broccoli", quantity: 1, unit: "cup" },
+        { id: "3", name: "Carrots", quantity: 1, unit: "pieces" },
+        { id: "4", name: "Tahini", quantity: 2, unit: "tablespoons" },
+        { id: "5", name: "Sesame Seeds", quantity: 1, unit: "tablespoon" },
+      ],
+    },
+    equipments: {
+      equipments: [
+        { id: "1", name: "Pot", quantity: 1 },
+        { id: "2", name: "Steamer", quantity: 1 },
+        { id: "3", name: "Bowl", quantity: 1 },
+      ],
+    },
+    instructions:
+      "1. Cook brown rice according to package instructions.\n2. Steam broccoli and slice carrots.\n3. In a bowl, combine cooked rice, steamed veggies, and tahini.\n4. Sprinkle sesame seeds on top and serve.",
+  },  
 ];
 
 export const mockupSupriseMeal: Meal = {
