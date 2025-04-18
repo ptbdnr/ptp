@@ -7,14 +7,16 @@ from pydantic import BaseModel, ConfigDict
 from src.models.ingredients import Ingredient
 
 
+# docscrigs are above the class definition
+# becase the scema will use the docsring stored inside the class
+"""Model for meal images."""
 class MealImages(BaseModel):
-    """Model for meal images."""
 
     model_config = ConfigDict(extra="forbid")
     placeholder_emoji: str
 
+"""Model for meal preview."""
 class MealPreview(BaseModel):
-    """Model for meal preview."""
 
     model_config = ConfigDict(extra="forbid")
     id: str
@@ -22,8 +24,8 @@ class MealPreview(BaseModel):
     description: str
     images: MealImages
 
+"""Model for a meal."""
 class Meal(MealPreview):
-    """Model for a meal."""
 
     ingredients: Optional[List[Ingredient]]  # noqa: UP006
 
