@@ -4,9 +4,11 @@ import json
 import logging
 import os
 from textwrap import dedent
-from typing import Optional
+from typing import Literal, Optional
 
 from mistralai import Mistral, ResponseFormat
+from openai import OpenAI
+
 from src.models.ingredients import Ingredient, Ingredients
 
 logger = logging.getLogger(__name__)
@@ -19,20 +21,30 @@ logger.addHandler(handler)
 class IngredientParser:
     """Generate meal images using AI and store them in Object Storage."""
 
-    mistral_client: Mistral
-    mistral_model_name: str
+    provider: Literal["openai", "mistral"]
+    model_name: str
+    api_key: str
 
     def __init__(
         self,
-        mistral_api_key: Optional[str] = None,
-        mistral_model_name: Optional[str] = None,
+        api_key: Optional[str] = None,
+        model_name: Optional[str] = None,
+        provider: Optional[Literal["openai", "mistral"]] = None,
     ) -> None:
         """Initialize the instance."""
-        mistral_api_key = mistral_api_key or os.getenv("MISTRAL_API_KEY")
-        self.mistral_model_name = mistral_model_name or os.getenv("MISTRAL_MODEL_NAME")
-
-        self.mistral_client = Mistral(api_key=mistral_api_key)
-        logger.debug("Mistral client initialized")
+        self.provider = provider or "mistral"
+        self.api_key = api_key or (
+            os.getenv("MISTRAL_API_KEY")
+            if self.provider == "mistral"
+            else os.getenv("OPENAI_API_KEY")
+        )
+        self.model_name = model_name or (
+            os.getenv("MISTRAL_MODEL_NAME")
+            if self.provider == "mistral"
+            else os.getenv("OPENAI_MODEL_NAME")
+        )
+        logger.debug("MealGenerator initialized with provider: %s", self.provider)
+        logger.debug("Model name: %s", self.model_name)
 
     def text_to_ingredients(
         self,
@@ -40,10 +52,6 @@ class IngredientParser:
     ) -> dict:
         """Convert text to ingredients."""
         schema = Ingredient.model_json_schema(by_alias=False)
-        response_format : ResponseFormat = ResponseFormat(
-            schema = [schema],
-            response_format = "json",
-        )
         system_msg = "Extract the ingredients information."
         prompt_template = dedent("""
             {text}.
@@ -57,9 +65,38 @@ class IngredientParser:
         )
         logger.debug("Parsing text with prompt: %s", prompt)
 
+        if self.provider == "openai":
+            data_obj = self._openai(
+                system_msg=system_msg,
+                prompt=prompt,
+                schema=schema,
+            )
+        elif self.provider == "mistral":
+            data_obj = self._mistral(
+                system_msg=system_msg,
+                prompt=prompt,
+                schema=schema,
+            )
+        else:
+            msg = f"Unknown provider: {self.provider}"
+            logger.error(msg)
+            raise ValueError(msg)
+
+        if not isinstance(data_obj, list):
+            data_obj = [data_obj]
+        ingredients : Ingredients = Ingredients(ingredients=data_obj)
+
+        return ingredients
+
+    def _mistral(
+            self,
+            system_msg: str,
+            prompt: str,
+            schema: dict,
+    ) -> dict:
         model_name = self.mistral_model_name  # "ministral-8b-latest"
 
-        logger.debug("Using model: %s with respose format: %s", model_name, response_format.__dict__)
+        logger.debug("Using model: %s with respose format: %s", model_name, schema)
         chat_response = self.mistral_client.chat.complete(
             model = model_name,
             messages = [
@@ -72,9 +109,31 @@ class IngredientParser:
         logger.debug("Chat response: %s", chat_response)
 
         logger.debug(chat_response.choices[0].message.content)
-        data_obj = json.loads(chat_response.choices[0].message.content)
-        if not isinstance(data_obj, list):
-            data_obj = [data_obj]
-        ingredients : Ingredients = Ingredients(ingredients=data_obj)
+        return json.loads(chat_response.choices[0].message.content)
 
-        return ingredients
+    def _openai(
+            self,
+            system_msg: str,
+            prompt: str,
+            schema: dict,
+    ) -> dict:
+        """Call OpenAI API."""
+        openai_client = OpenAI(api_key=self.api_key)
+
+        response = openai_client.responses.create(
+            model=self.model_name,
+            input=[
+                {"role": "system", "content": system_msg},
+                {"role": "user", "content": prompt},
+            ],
+            text={
+                "format": {
+                    "type": "json_schema",
+                    "name": "meals",
+                    "schema": schema,
+                },
+            },
+        )
+        logger.debug("OpenAI response: %s", response)
+
+        return json.loads(response.output_text)

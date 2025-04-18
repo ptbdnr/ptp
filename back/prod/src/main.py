@@ -54,8 +54,8 @@ db = {
         # Sample user data
         DEFAULT_USER_ID: {
             "ingredients": Ingredients(ingredients=[
-                Ingredient(name="Tomato", quantity=5, unit="pieces", expiry_date=date(2025, 4, 15)),
-                Ingredient(name="Onion", quantity=3, unit="pieces", expiry_date=date(2025, 4, 20)),
+                Ingredient(name="Tomato", quantity=5, unit="pieces"),
+                Ingredient(name="Onion", quantity=3, unit="pieces"),
             ]),
             "equipments": Equipments(equipments=[
                 Equipment(name="Knife", quantity=2),
@@ -226,10 +226,7 @@ async def text2ingredients(
     text: str,
 ) -> Ingredients:
     """Generate an image based on text input."""
-    parser = IngredientParser(
-        mistral_api_key=os.getenv("MISTRAL_API_KEY"),
-        mistral_model_name=os.getenv("MISTRAL_MODEL_NAME"),
-    )
+    parser = IngredientParser(provider="openai")
     return parser.text_to_ingredients(text=text)
 
 if __name__ == "__main__":
