@@ -48,9 +48,25 @@ export default function ModalDictation({ open, onClose, onCapture }: ModalDictat
             className={styles.textInput}
             rows={4}
           />
-          <div className={styles.startButton}>
+            <button 
+            className={styles.startButton}
+            onClick={() => {
+              if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+              navigator.mediaDevices.getUserMedia({ audio: true })
+                .then((stream) => {
+                console.log('Microphone access granted:', stream);
+                // You can add further logic to handle the audio stream here
+                })
+                .catch((error) => {
+                console.error('Microphone access denied:', error);
+                });
+              } else {
+              console.error('getUserMedia is not supported in this browser.');
+              }
+            }}
+            >
             <MicIcon size={'64px'} />
-          </div>
+            </button>
         </div>
         <div className={styles.buttons}>
           <button
