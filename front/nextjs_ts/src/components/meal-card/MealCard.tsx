@@ -4,7 +4,7 @@ import { useProfileContext } from '@/contexts/ProfileContext';
 
 import { getDifficultyOptions } from '@/utils/profile';
 
-import { ThumbsDown, ThumbsUp } from 'lucide-react';
+import { ThumbsDown, ThumbsUp, X } from 'lucide-react';
 
 import styles from './MealCard.module.css';
 
@@ -19,6 +19,7 @@ type MealCardProps = {
     display_suprisetag?: boolean
   },
   display_feedbackbuttons?: boolean;
+  display_cancel?: boolean;
 };
 
 export default function MealCard({ 
@@ -36,7 +37,8 @@ export default function MealCard({
     display_aitag: false,
     display_suprisetag: false
   },
-  display_feedbackbuttons = false 
+  display_feedbackbuttons = false, 
+  display_cancel = false
 }: MealCardProps) {
   const { profile } = useProfileContext();
   const difficultyOptions = getDifficultyOptions(profile.difficultyLevel);
@@ -75,6 +77,15 @@ export default function MealCard({
       <div className={`${styles.mealImage} ${styles[`mealImage${card_size}`]}`}>
         {meal.images.placeholder_emoji}
         
+        {display_cancel &&
+        <button
+          className={styles.cancelButton}
+          aria-label="Cancel meal"
+        >
+          <X size={24} />
+        </button>
+        }
+
         {display_feedbackbuttons &&
         <div className={styles.actionButtons}>
           <button

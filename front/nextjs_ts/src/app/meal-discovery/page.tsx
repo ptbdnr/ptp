@@ -131,7 +131,7 @@ export default function Page() {
                 className={styles.menuCard}
                 onClick={() => router.push(`/meals/${meal.id}`)}
               >
-                <MealCard meal={meal} key={index} card_size="Small" />
+                <MealCard meal={meal} key={index} card_size="Small" display_cancel={true}/>
               </button>
           ))}
         </div>
