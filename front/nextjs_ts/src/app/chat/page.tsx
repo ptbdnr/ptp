@@ -1,20 +1,27 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
 import { ChatSection } from '@llamaindex/chat-ui';
 import { useChat } from '@ai-sdk/react';
 import ChatLayout from './chat-layout';
+import { useSession } from 'next-auth/react';
+import { ToastContainer, toast } from 'react-toastify';
 
 import '@llamaindex/chat-ui/styles/markdown.css' // code, latex and custom markdown styling
 import '@llamaindex/chat-ui/styles/pdf.css' // pdf styling
 
 export default function ChatPage() {
+  const { data: session } = useSession();
+
   const handler = useChat({
     api: '/api/chat',
+    headers: {
+      'Authorization': `Bearer ${session?.user?.accessToken || ''}`,
+      'Content-Type': 'application/json',
+    },
     initialMessages: [], // Start with empty chat
     onError: (error) => {
       console.error('Chat error:', error);
-      // You could add a toast notification here
+      toast.error('Failed to send message. Please try again.');
     },
   });
 
@@ -37,6 +44,7 @@ export default function ChatPage() {
           />
         </div>
       </div>
+      <ToastContainer />
     </ChatLayout>
   );
 } 
