@@ -2,12 +2,20 @@ from __future__ import annotations
 
 import uuid
 import os
+import logging
 from datetime import date
 from typing import Annotated, Optional, cast
 
-from fastapi import FastAPI, Form, HTTPException, Path
+from fastapi import FastAPI, Form, HTTPException, Path, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 DEFAULT_USER_ID = "kxsb"
 
@@ -210,6 +218,43 @@ async def upsert_dietary(
     else:
         db["users"][userId]["preferences"] = preferences
     return {"message": "Dietary preferences updated successfully"}
+
+@app.get("/users/{userId}/text2ingredients")
+async def text2ingredients(
+    request: Request,
+    userId: Annotated[str, Path()],
+    text: str,
+) -> Ingredients:
+    """Convert text to ingredients."""
+    logger.info("=" * 50)
+    logger.info("Request received for text2ingredients", extra={
+        "userId": userId,
+        "text": text,
+        "headers": dict(request.headers),
+        "query_params": dict(request.query_params),
+    })
+
+    try:
+        # For demo purposes, return mock data
+        logger.info("Generating mock ingredients")
+        ingredients = Ingredients(ingredients=[
+            Ingredient(name="Tomato", quantity=3, unit="pieces"),
+            Ingredient(name="Pasta", quantity=200, unit="grams"),
+            Ingredient(name="Olive oil", quantity=2, unit="tablespoons"),
+        ])
+
+        logger.info("Successfully generated ingredients", extra={
+            "ingredients_count": len(ingredients.ingredients),
+            "ingredients": [i.dict() for i in ingredients.ingredients]
+        })
+        return ingredients
+
+    except Exception as e:
+        logger.error("Error processing text2ingredients request", exc_info=True, extra={
+            "error": str(e),
+            "error_type": type(e).__name__,
+        })
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn

@@ -5,19 +5,21 @@ services:
     build:
       context: ./front/nextjs_ts
       dockerfile: Dockerfile
-      target: dependencies # Stop at dependencies stage, don't build for prod
+      target: dependencies
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://backend:80}
+      - WATCHPACK_POLLING=true
     env_file:
       - .env
     volumes:
       - ./front/nextjs_ts:/app
-      - /app/node_modules # Preserve container's node_modules
-      - /app/.next # Preserve container's .next directory
-    command: npm run dev
+      - /app/node_modules
+      - /app/.next
+    working_dir: /app
+    command: npx next dev
     depends_on:
       - backend
     networks:

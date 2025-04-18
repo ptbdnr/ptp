@@ -14,6 +14,7 @@
     "@headlessui/react": "^2.2.1",
     "@llamaindex/chat-ui": "^0.3.2",
     "@mistralai/mistralai": "^1.5.2",
+    "@types/ws": "^8.18.1",
     "ai": "^4.3.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -28,17 +29,18 @@
     "react-toastify": "^11.0.5",
     "tailwind-merge": "^3.2.0",
     "tw-animate-css": "^1.2.5",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "ws": "^8.18.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.1.3",
-    "@types/node": "^20",
-    "@types/react": "^19",
+    "@types/node": "20.17.30",
+    "@types/react": "19.1.2",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.0",
     "tailwindcss": "^4.1.3",
-    "typescript": "^5"
+    "typescript": "5.8.3"
   }
 }
