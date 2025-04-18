@@ -3,7 +3,7 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./front/nextjs_ts
+      context: ../front/nextjs_ts
       dockerfile: Dockerfile
       target: dependencies
     ports:
@@ -15,7 +15,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./front/nextjs_ts:/app
+      - ../front/nextjs_ts:/app
       - /app/node_modules
       - /app/.next
     working_dir: /app
@@ -28,7 +28,7 @@ services:
 
   backend:
     build:
-      context: ./back/sample
+      context: ../back/sample
       dockerfile: Dockerfile
     ports:
       - "8000:80" # Map to 8000 externally to avoid conflicts
