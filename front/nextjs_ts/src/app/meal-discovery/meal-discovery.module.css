@@ -22,12 +22,15 @@
 
 .menuCards {
   display: flex;
-  /* flex-direction: row; */
+  flex-direction: row;
+  max-height: 250;
   padding: 20px;
   gap: 10px;
-  overflow-x: visible;
-  overflow-y: visible;
-  max-height: 250;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  
 }
 
 .menuCard {
