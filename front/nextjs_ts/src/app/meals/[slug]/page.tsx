@@ -1,6 +1,8 @@
 import MealsLayout from './meals-layout';
 import MealDetails from '@/components/meal-details/MealDetails';
 
+import styles from './meals.module.css';
+
 import { mockupMeals } from '@/data/meals';
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
@@ -11,7 +13,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   
   return (
     <MealsLayout>
-      {meal && <MealDetails meal={meal} />}
+      <div className={styles.content}>
+        {meal && <MealDetails meal={meal} />}
+      </div>
     </MealsLayout>
   );
 }

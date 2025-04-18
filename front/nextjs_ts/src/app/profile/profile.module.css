@@ -3,6 +3,7 @@
   .content {
     flex: 1;
     padding: 1.5rem;
+    margin-bottom: 120px; /* Adjusted margifn-bottom to prevent overlap with footer */
   }
   
   .sectionTitle {

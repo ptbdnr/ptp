@@ -14,6 +14,7 @@ import MealDiscoveryLayout from './meal-discovery-layout';
 import { ToastContainer, toast, Id } from 'react-toastify';
 import MealSwipeCard from '@/components/meal-swipe-card/MealSwipeCard';
 import MealCard from "@/components/meal-card/MealCard";
+import { Trash } from "lucide-react";
 
 import styles from './meal-discovery.module.css';
 
@@ -120,20 +121,37 @@ export default function Page() {
         </div>
 
         <div className={styles.menu}>
-          {likedMeals.length == 0 && 
+          {
+          likedMeals.length == 0 &&
             <div className={styles.menuInstruction}>
               Swipe right to add meal to your menu,<br />left to skip.
             </div>
-           }
+          }
+          <div className={styles.menuCards}>
             {likedMeals.map((meal, index) => (
               <button
                 key={meal.id}
                 className={styles.menuCard}
                 onClick={() => router.push(`/meals/${meal.id}`)}
               >
-                <MealCard meal={meal} key={index} card_size="Small" display_cancel={true}/>
+                <MealCard meal={meal} key={index} card_size="Small"/>
               </button>
-          ))}
+            ))}
+          </div>
+          {/* {
+            likedMeals.length > 0 && (
+              <button
+                className={styles.clearMenu}
+                onClick={() => {
+                  setLikedMeals([]);
+                  setMeals([]);
+                }}
+              >
+                <Trash size={16} color="red" />
+                Clear Menu
+              </button>
+            )
+          } */}
         </div>
 
         <ToastContainer />
