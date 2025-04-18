@@ -5,7 +5,7 @@ export interface Ingredient {
     quantity: number;
     unit: string;
     images?: {
-        thumbnail_url: string;
+        placeholder_emoji: string;
     };
 }
 

@@ -103,6 +103,11 @@ export default function Page() {
       const data = await res.json();
       console.log('Response from API text_to_ingredients:', data);
       const newIngredients = data.ingredients;
+      newIngredients.forEach((item: Ingredient) => {
+        item.images = {
+          placeholder_emoji: '🪄',
+        };
+      });
       setInputText("");
       setNewPantryItems(newIngredients);
       // Use functional update to ensure the latest state is used.
@@ -224,7 +229,7 @@ export default function Page() {
               return (
                 <div key={item.id} className={styles.pantryItem}>
                   <div className={styles.ingredientIcon}>
-                    {item.images?.thumbnail_url}
+                    {item.images?.placeholder_emoji}
                   </div>
                   <div className={styles.itemDetails}>
                     <h3 className={styles.itemName}>{item.name}</h3>
