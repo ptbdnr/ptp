@@ -17,6 +17,7 @@ import ai_styles from './ai-container.module.css';
 export default function Page() {
   // input modalities
   const [isCameraOpen, setCameraOpen] = useState(false);
+  const [isScanBarcode, setScanBarcode] = useState(false);
   const [isDictationOpen, setDictationOpen] = useState(false);
   const [inputText, setInputText] = useState("")
   const { ingredients, setIngredients, isLoading } = usePantryContext();
@@ -28,13 +29,13 @@ export default function Page() {
     if (toastId.current) {
       toast.dismiss(toastId.current);
     }
-    toastId.current = toast("👀 LumaLabs", {autoClose: 8000});
+    toastId.current = toast("👀 AI vision", {autoClose: 8000});
   }
   const notifyTextProcessStart = () => {
     if (toastId.current) {
       toast.dismiss(toastId.current);
     }
-    toastId.current = toast(`🤖 Mistral`, {autoClose: 5000});
+    toastId.current = toast(`✨ Ingredient validation`, {autoClose: 5000});
   };
 
   useEffect(() => {
@@ -45,13 +46,14 @@ export default function Page() {
           throw new Error('Failed to fetch meals');
         }
         const data = await res.json();
+        console.log('Response from API ingredients:', data);
         setIngredients({ingredients: data.ingredients});
       } catch (error) {
         console.error(error);
       }
     };
     fetchMeals();
-  }, [setIngredients]);
+  }, []);
 
   async function handleCapture (imageData: string) {
     setCameraOpen(false);
@@ -79,6 +81,7 @@ export default function Page() {
 
   async function handleDictation (text: string) {
     setDictationOpen(false);
+    setInputText(text);
     notifyTextProcessStart();
     try {
       const url = `/api/text_to_ingredients?text=${text}`;
@@ -135,26 +138,26 @@ export default function Page() {
   //   setSearchTerm(e.target.value);
   // };
 
-  const getExpiryStatus = (expiryDate: string | undefined) => {
-    if (!expiryDate) return null;
+  // const getExpiryStatus = (expiryDate: string | undefined) => {
+  //   if (!expiryDate) return null;
     
-    const today = new Date();
-    const expiry = new Date(expiryDate);
-    const diffTime = expiry.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  //   const today = new Date();
+  //   const expiry = new Date(expiryDate);
+  //   const diffTime = expiry.getTime() - today.getTime();
+  //   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
-    if (diffDays > 5) {
-      return { status: 'Fresh', className: styles.fresh };
-    } else if (diffDays <= 5 && diffDays > 1) {
-      return { status: `Expires in ${diffDays} days`, className: styles.expiringLater };
-    } else if (diffDays === 1) {
-      return { status: 'Expires tomorrow', className: styles.expiringSoon };
-    } else if (diffDays <= 0) {
-      return { status: 'Expired', className: styles.expired };
-    } else {
-      return { status: 'Expires soon', className: styles.expiringSoon };
-    }
-  };
+  //   if (diffDays > 5) {
+  //     return { status: 'Fresh', className: styles.fresh };
+  //   } else if (diffDays <= 5 && diffDays > 1) {
+  //     return { status: `Expires in ${diffDays} days`, className: styles.expiringLater };
+  //   } else if (diffDays === 1) {
+  //     return { status: 'Expires tomorrow', className: styles.expiringSoon };
+  //   } else if (diffDays <= 0) {
+  //     return { status: 'Expired', className: styles.expired };
+  //   } else {
+  //     return { status: 'Expires soon', className: styles.expiringSoon };
+  //   }
+  // };
 
   if (isLoading) return <div>Loading...</div>;
   if (!ingredients) return <div>Please log in</div>;
@@ -166,15 +169,15 @@ export default function Page() {
           <div className={styles.actionButtons}>
             <button 
               className={`${styles.actionButton} ${styles.scanButton}`} 
-              onClick={() => setCameraOpen(true)}
+              onClick={() => {setScanBarcode(false); setCameraOpen(true)}}
             >
               📸<br />Take<br/>Picture
             </button>
             <button 
               className={`${styles.actionButton} ${styles.addButton}`} 
-              onClick={() => setCameraOpen(true)}
+              onClick={() => {setScanBarcode(true); setCameraOpen(true)}}
             >
-              🧾<br />Scan<br/>Receipt
+              🧾<br />Receipt<br/> or Barcode
             </button>
             <button 
               className={`${styles.actionButton} ${styles.importButton}`} 
@@ -182,7 +185,7 @@ export default function Page() {
             >
               🎙️<br />Dictate <br/> or Type
             </button>
-            <ModalCamera open={isCameraOpen} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
+            <ModalCamera open={isCameraOpen} scan_barcode={isScanBarcode} onClose={() => setCameraOpen(false)} onCapture={handleCapture} />
             <ModalDictation open={isDictationOpen} onClose={() => setDictationOpen(false)} onCapture={handleDictation} />
           </div>
           
@@ -199,15 +202,14 @@ export default function Page() {
           )}
 
           {newPantryItems.length > 0 && (
-            <div className={ai_styles.container}>
-              <div className={ai_styles.border_animation}>
-                <p>New items added to your pantry!</p>
-                <ul>
-                  {newPantryItems.map(item => (
-                    <li key={item.id}>{item.name}: {item.quantity} {item.unit}</li>
-                  ))}
-                </ul>
-              </div>
+            <div className={styles.newItemsNotification}>
+              New items:
+              {newPantryItems.map((item, index) => (
+                <span key={item.id}>
+                {item.quantity} {item.unit} {item.name}
+                {index < newPantryItems.length - 1 && ', '}
+                </span>
+              ))}
             </div>
           )}
         </div>
@@ -217,7 +219,7 @@ export default function Page() {
           
           <div className={styles.pantryList}>
             {ingredients.ingredients.map(item => {
-              const expiryStatus = getExpiryStatus(item.expiryDate);
+              // const expiryStatus = getExpiryStatus(item.expiryDate);
               
               return (
                 <div key={item.id} className={styles.pantryItem}>
@@ -228,12 +230,12 @@ export default function Page() {
                     <h3 className={styles.itemName}>{item.name}</h3>
                     <p className={styles.itemQuantity}>
                       {item.quantity} {item.unit}
-                      {expiryStatus && (
+                      {/* {expiryStatus && (
                         <>
                           <span className={styles.separator}>•</span>
                           <span className={expiryStatus.className}>{expiryStatus.status}</span>
                         </>
-                      )}
+                      )} */}
                     </p>
                   </div>
                   <button className={styles.editButton} disabled>Edit</button>

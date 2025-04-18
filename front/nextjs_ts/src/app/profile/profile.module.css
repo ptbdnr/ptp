@@ -86,8 +86,55 @@
     color: #666;
   }
   
+.difficultySelectorContainer {
+    margin-top: 2rem;
+  }
+
+  .difficultyLabel {
+    display: block;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .difficultyOptions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
   .dietaryPrefsContainer {
     margin-top: 2rem;
+  }
+
+  .difficultyLevel {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .difficultyButtonActive {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ff7043;
+    border-radius: 8px;
+    background-color: #ff7043;
+    color: white;
+    font-size: 0.95rem;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .difficultyButton {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    color: #333;
+    font-size: 0.95rem;
+    position: relative;
+    cursor: pointer;
   }
   
   .dietaryLabel {

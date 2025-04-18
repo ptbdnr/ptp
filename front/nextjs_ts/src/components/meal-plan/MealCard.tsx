@@ -1,19 +1,19 @@
 import { Meal } from '@/types/meals';
 import { Ingredient } from '@/types/ingredients';
 
-export function MealCard( recipe: Meal ) {
+export function MealCard( meal: Meal ) {
 
-  const ingredients : Array<Ingredient> = recipe.ingredients.ingredients;
+  const ingredients : Array<Ingredient> = meal.ingredients ? meal.ingredients.ingredients : [];
   
     return (
       <div className="bg-white rounded-2xl flex overflow-hidden shadow-sm">
         <div className="w-20 bg-gray-50 flex items-center justify-center text-3xl">
-          {recipe.images.thumbnail_url}
+          {meal.images.placeholder_emoji}
         </div>
         <div className="flex-1 p-4">
           <div className="flex justify-between items-start">
             <div>
-              <h4 className="text-gray-800 font-semibold mb-2">{recipe.name}</h4>
+              <h4 className="text-gray-800 font-semibold mb-2">{meal.name}</h4>
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-gray-500">•</span>
                 <span className="text-gray-500">•</span>

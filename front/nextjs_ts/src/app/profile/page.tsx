@@ -72,12 +72,12 @@ export default function Page() {
               <input
                 type="range"
                 min="10"
-                max="60"
+                max="90"
                 value={profile.maxPrepTime}
                 onChange={handlePrepTimeChange}
                 className={styles.slider}
               />
-              <span className={styles.maxValue}>60 min</span>
+              <span className={styles.maxValue}>90 min</span>
             </div>
             <div className={styles.currentValueContainer}>
               <span className={styles.currentValue}>{profile.maxPrepTime}</span>
@@ -85,8 +85,27 @@ export default function Page() {
             </div>
           </div>
 
+            <div className={styles.difficultySelectorContainer}>
+            <label className={styles.difficultyLabel}>Difficulty Level</label>
+            <div className={styles.difficultyOptions}>
+              {(['Easy', 'Medium', 'Hard'] as const).map((level) => (
+              <button
+                key={level}
+                className={
+                profile.difficultyLevel === level
+                  ? styles.difficultyButtonActive
+                  : styles.difficultyButton
+                }
+                onClick={() => setProfile({ ...profile, difficultyLevel: level })}
+              >
+                {level}
+              </button>
+              ))}
+            </div>
+            </div>
+
           <div className={styles.dietaryPrefsContainer}>
-            <label className={styles.dietaryLabel}>Dietary Preferences</label>
+            <label className={styles.dietaryLabel}>Diet & Preferences</label>
             <button 
               className={profile.dietaryPreferences.length > 0 ? styles.dietaryButton: styles.dietaryButtonEmpty}
               onClick={() => {

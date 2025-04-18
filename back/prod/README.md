@@ -49,12 +49,21 @@ git clone git@github.com:ptbdnr/ptp.git
 
 source: ask!
 
+for sample: see `path/to/repo_root/.env.sample`
+
+```shell
+ln path/to/repo_root/.env.local /path/to/project_root/.env.local
+```
+
+or
+
 ```shell
 cat << EOF > .env.local
 KEY1=VALUE1
 KEY2=VALUE2
 EOF
 ```
+
 
 ### Evaluate dependencies
 
@@ -166,6 +175,11 @@ docker images
 
 # List all containers
 docker ps -a
+
+# :WARNING: Stop all containers
+docker stop $(docker ps -q)
+# :WARNING: Remove all containers
+docker rm $(docker ps -a -q)
 
 # Run image in detached mode
 docker run -d --name $CONTAINER_NAME -p 80:80 ams.vultrcr.com/ptpcrtstnl001/$IMAGE_NAME

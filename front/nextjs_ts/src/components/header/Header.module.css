@@ -3,16 +3,31 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 2rem 1.5rem 1rem;
-  background-color: #ff7043;
+  background: linear-gradient(to bottom, #fc3b00, #ff7043);
   color: white;
 }
 
 .titleLine {
   display: flex;
-  flex-direction: row;;
+  flex-direction: row;
+  justify-content: space-between;
   font-size: 1.8rem;
   font-weight: bold;
   margin: 0 0 0.5rem;
+  gap: 0.5rem;
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.iconsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   gap: 0.5rem;
 }
 

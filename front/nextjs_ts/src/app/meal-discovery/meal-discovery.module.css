@@ -10,8 +10,18 @@
   flex-direction: row;
   justify-content: center;
   align-content: center;
+  margin: 20px;
   padding: 20px;
   gap: 1rem;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.menuInstruction {
+  margin: 20px;
+  max-width: 250px;
+  text-align: center;
+  color: #333;
 }
 
 .menuCard {
@@ -19,4 +29,5 @@
   max-width: 150;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
+  margin: 10px;
 }

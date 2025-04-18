@@ -1,8 +1,8 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-# :wrench: Developer Guide
+## :wrench: Developer Guide
 
-## Requirements
+### Requirements
 
 * node v18 or later: https://nodejs.org/en/download
 * Docker: https://docs.docker.com/get-docker/
@@ -11,7 +11,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
     * Compute instance
 
 
-## Clone the repo
+### Clone the repo
 
 Connect your host to GitHub
 1. [Create a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
@@ -27,9 +27,17 @@ git clone git@github.com:ptbdnr/ptp.git
 ```
 
 
-## Copy the environment variables to the project root
+### Copy the environment variables to the project root
 
 source: ask!
+
+for sample: see `path/to/repo_root/.env.sample`
+
+```shell
+ln path/to/repo_root/.env.local /path/to/project_root/.env.local
+```
+
+or
 
 ```shell
 cat << EOF > .env.local
@@ -65,7 +73,7 @@ pnpm dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
-# Contribution
+## Contribution
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

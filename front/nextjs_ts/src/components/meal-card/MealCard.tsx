@@ -1,38 +1,79 @@
 import { Meal } from '@/types/meals';
 
-import { X, Check } from 'lucide-react';
+import { useProfileContext } from '@/contexts/ProfileContext';
+
+import { getDifficultyOptions } from '@/utils/profile';
+
+import { ThumbsDown, ThumbsUp } from 'lucide-react';
 
 import styles from './MealCard.module.css';
 
-type MealCardProps = {
+type MealCardProps = {  
   meal: Meal;
+  card_size?: 'Small' | 'Normal';
   display_details?: boolean,
-  display_tags?: boolean;
+  display_tags?: {
+    display_stocktag?: boolean,
+    display_searchtag?: boolean,
+    display_aitag?: boolean,
+    display_suprisetag?: boolean
+  },
   display_feedbackbuttons?: boolean;
 };
 
 export default function MealCard({ 
   meal: meal, 
+  card_size = 'Normal',
   display_details = false, 
-  display_tags = false, 
+  display_tags: {
+    display_stocktag = false,
+    display_searchtag = false,
+    display_aitag = false,
+    display_suprisetag = false
+  } = {
+    display_stocktag: false,
+    display_searchtag: false,
+    display_aitag: false,
+    display_suprisetag: false
+  },
   display_feedbackbuttons = false 
 }: MealCardProps) {
-  const difficulty = 'medium'; // ['easy', 'medium', 'hard'][Math.floor(Math.random() * 3)];
-  const price = 18; // 3 + Math.floor(Math.random() * 18) + [0.0, 0.50, 0.75][Math.floor(Math.random() * 3)];
-  const prepTime = 30; // 10 + Math.floor(Math.random() * 60);
+  const { profile } = useProfileContext();
+  const difficultyOptions = getDifficultyOptions(profile.difficultyLevel);
+  const difficulty = difficultyOptions[Math.floor(Math.random() * difficultyOptions.length)];
+  const price = 3 + Math.floor(Math.random() * 18) + [0.0, 0.50, 0.75][Math.floor(Math.random() * 3)];
+  const prepTime = 10 + Math.floor(Math.random() * profile.maxPrepTime-10);
 
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card}`}>
       
-      { display_tags && 
-      <div className={styles.aiTag}>
-        <span className={styles.aiDot}></span>
+      { display_stocktag &&
+      <div className={`${styles.tag} ${styles.stockTag}`}>
+        <span className={styles.tagDot}></span>
+        Stock Meal
+      </div>
+      }
+      { display_searchtag &&
+      <div className={`${styles.tag} ${styles.searchTag}`}>
+        <span className={styles.tagDot}></span>
+        Search Result
+      </div>
+      }
+      { display_aitag && 
+      <div className={`${styles.tag} ${styles.aiTag}`}>
+        <span className={styles.tagDot}></span>
         AI Created
       </div>
       }
+      { display_suprisetag &&
+      <div className={`${styles.tag} ${styles.surpriseTag}`}>
+        <span className={styles.tagDot}></span>
+        Surprise Meal
+      </div>
+      }
       
-      <div className={styles.mealImage} style={{ fontSize: '150px', lineHeight: '150px', textAlign: 'center' }}>
-        {meal.images.thumbnail_url}
+      <div className={`${styles.mealImage} ${styles[`mealImage${card_size}`]}`}>
+        {meal.images.placeholder_emoji}
         
         {display_feedbackbuttons &&
         <div className={styles.actionButtons}>
@@ -40,35 +81,40 @@ export default function MealCard({
             className={`${styles.actionButton} ${styles.dislikeButton}`}
             aria-label="Dislike meal"
           >
-            <X size={24} />
+            <ThumbsDown size={24} />
           </button>
           
           <button 
             className={`${styles.actionButton} ${styles.likeButton}`}
             aria-label="Like meal"
           >
-            <Check size={24} />
+            <ThumbsUp size={24} />
           </button>
         </div>
         }
       </div>
       
       <div className={styles.mealInfo}>
-        <h2 className={styles.mealName}>{meal.name}</h2>
+        <h2 className={`${styles.mealName} ${styles[`mealName${card_size}`]}`}>{meal.name}</h2>
         
         { display_details && 
-        <div className={styles.mealDetails}>
-          <div className={styles.prepTime}>
-            <span className={styles.value}>{prepTime}</span>
-            <span className={styles.unit}>min</span>
+        <div className={styles.mealStats}>
+          <div className={styles.statItem}>
+            <span className={styles.statIcon}>⏱️</span>
+            <span className={styles.statValue}>{prepTime}</span>
+            <span className={styles.statLabel}>min</span>
           </div>
           
-          <div className={styles.difficulty}>
-            {difficulty}
+          <div className={styles.statItem}>
+            <span className={styles.statIcon}>⭐</span>
+            <span className={styles.statValue}>{difficulty}</span>
+            <span className={styles.statLabel}>difficulty</span>
           </div>
           
-          <div className={styles.price}>
-            £{price}
+          <div className={styles.statItem}>
+            <span className={styles.statIcon}>💰</span>
+            <span className={styles.statValue}>£{price}</span>
+            <span className={styles.statLabel}>total</span>
           </div>
         </div>
         }

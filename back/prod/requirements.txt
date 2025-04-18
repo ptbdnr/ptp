@@ -10,4 +10,4 @@ requests==2.32.3
 boto3==1.37.33
 lumaai==1.7.3
 mistralai==1.6.0
-
+openai==1.75.0

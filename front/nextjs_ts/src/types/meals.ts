@@ -4,12 +4,12 @@ import { Equipments } from "./equipments";
 export interface Meal {
     id: string;
     name: string; // 1-5 words
-    desciption: string; // 3-10 words
+    description: string; // 3-10 words
     images: {
-        thumbnail_url: string;
+        placeholder_emoji: string;
         hero_url?: string;
     };
-    ingredients: Ingredients;
+    ingredients?: Ingredients;
     equipments?: Equipments;
     instructions?: string;
 };

@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Ingredients } from '@/types/ingredients';
 
+import { mockupIngredients } from '@/data/ingredients'
+
 export interface PantryContextType {
     ingredients: Ingredients;
     setIngredients: (ingredients: Ingredients) => void;
@@ -12,7 +14,7 @@ export interface PantryContextType {
 
 // Create context with default values
 const defaultIngredients: Ingredients = {
-  ingredients: []
+  ingredients: mockupIngredients
 };
 const PantryContext = createContext<PantryContextType>({
   ingredients: defaultIngredients,

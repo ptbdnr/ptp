@@ -3,11 +3,12 @@ import styles from './ModalCamera.module.css';
 
 interface ModalCameraProps {
     open: boolean;
+    scan_barcode: boolean;
     onClose: () => void;
     onCapture: (imageData: string) => void;
 }
 
-export default function ModalCamera({ open, onClose, onCapture }: ModalCameraProps) {
+export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: ModalCameraProps) {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -66,6 +67,11 @@ export default function ModalCamera({ open, onClose, onCapture }: ModalCameraPro
                 <div className={styles.videoContainer}>
                     <video ref={videoRef} autoPlay className={styles.video} />
                     <canvas ref={canvasRef} style={{ display: 'none' }} />
+                    {open && scan_barcode && (
+                        <div className={styles.barScannerOverlay}>
+                            <div className={styles.barScannerLine}></div>
+                        </div>
+                    )}
                 </div>
                 <div className={styles.buttons}>
                     <button onClick={handleCapture} className={styles.captureButton}>

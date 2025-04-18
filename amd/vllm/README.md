@@ -1,10 +1,5 @@
+
 ## :wrench: Developer Guide
-
-### Requirements
-
-* Python3.11
-* Vultr account with:
-    * Object Storage
 
 ### Clone the repo
 
@@ -20,34 +15,11 @@ Connect your host to GitHub
 ```shell
 git clone git@github.com:ptbdnr/ptp.git
 ```
-
-### Copy the environment variables to the project root
-
-source: ask!
-
-for sample: see `path/to/repo_root/.env.sample`
-
 ```shell
-ln path/to/repo_root/.env.local /path/to/project_root/.env.local
+ssh root@$HOST
 ```
 
-or
-
-```shell
-cat << EOF > .env.local
-KEY1=VALUE1
-KEY2=VALUE2
-EOF
-```
-
-### Evaluate dependencies
-
-```shell
-(ls .env.local && echo 'INFO: Found .env.local') || echo 'CRITICAL: Missing .env.local'
-(ls requirements.txt && echo 'INFO: Found requirements.txt') || echo 'CRITICAL: Missing requirements.txt'
-```
-
-## Ensure you have python3-venv
+### Ensure you have python3-venv
 
 On Debian/Ubuntu
 ```shell
@@ -57,7 +29,7 @@ sudo apt install -y python3.12-venv
 sudo apt install -y python3-pytest
 ```
 
-## Create Python environment and install dependencies
+### Create Python environment and install dependencies
 
 ```shell
 cd /path/to/project
@@ -66,8 +38,20 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-## Create Vultr Object Storage bucket(s)
+### Install vllm
+
+in your browser, go to https://huggingface.co/settings/tokens/new?tokenType=write and create a new token
 
 ```shell
-python3 main.py
+# login using the token
+huggingface-cli login
+```
+
+in your browser, go to https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct and request access to the model
+
+```shell
+# download the model
+huggingface-cli download meta-llama/Llama-3.3-70B-Instruct
+# serve the model
+vllm serve meta-llama/Llama-3.3-70B-Instruct --port 8006
 ```

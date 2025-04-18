@@ -9,7 +9,8 @@ from typing import Literal, Optional
 from mistralai import Mistral, ResponseFormat
 from openai import OpenAI
 
-from src.models.ingredients import Ingredient, Ingredients
+from src.models.ingredients import Ingredient
+from src.models.meals import Meal, MealPreview, Meals
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -18,8 +19,8 @@ handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s -
 logger.addHandler(handler)
 
 
-class IngredientParser:
-    """Generate meal images using AI and store them in Object Storage."""
+class MealGenerator:
+    """Generate meal using AI."""
 
     provider: Literal["openai", "mistral"]
     model_name: str
@@ -46,24 +47,41 @@ class IngredientParser:
         logger.debug("MealGenerator initialized with provider: %s", self.provider)
         logger.debug("Model name: %s", self.model_name)
 
-    def text_to_ingredients(
+    def recommend(
         self,
-        text: str,
-    ) -> dict:
+        model: Literal[Meal, MealPreview],
+        dietary_preferences: list[str],
+        max_prep_time: Optional[int] = 90,
+        ingredients: Optional[list[Ingredient]] = None,
+        min_num_meals: Optional[int] = 3,
+        max_num_meals: Optional[int] = 5,
+    ) -> Meals:
         """Convert text to ingredients."""
-        schema = Ingredient.model_json_schema(by_alias=False)
-        system_msg = "Extract the ingredients information."
+        ingredients = ingredients or []
+        schema = model.model_json_schema(by_alias=False)
+        system_msg = "As a customer focused chef, you recommend meals."
         prompt_template = dedent("""
-            {text}.
-            Extract the ingredients in short JSON object. Don't include any other information. Be concise.
+            Given the dietary preferences:
+            {dietary_preferences}
+            and the maximum preparation time:
+            {max_prep_time} minutes,
+            and the ingredients:
+            {ingredients}
+            Create min {min_num_meals} max {max_num_meals} meals.
+            The meals should be healthy, delicious, and easy to prepare.
+            Extract the meals in short JSON object. Don't include any other information. Be concise.
             The JSON object should be in the following format:
             {schema_str}
         """)
         prompt = prompt_template.format(
-            text=text,
+            dietary_preferences=dietary_preferences,
+            max_prep_time=max_prep_time,
+            ingredients=[ingredient.model_dump() for ingredient in ingredients],
             schema_str=json.dumps(schema),
+            min_num_meals=min_num_meals,
+            max_num_meals=max_num_meals,
         )
-        logger.debug("Parsing text with prompt: %s", prompt)
+        logger.debug("Prompt: %s", prompt)
 
         if self.provider == "openai":
             data_obj = self._openai(
@@ -84,9 +102,7 @@ class IngredientParser:
 
         if not isinstance(data_obj, list):
             data_obj = [data_obj]
-        ingredients : Ingredients = Ingredients(ingredients=data_obj)
-
-        return ingredients
+        return Meals(meals=data_obj)
 
     def _mistral(
             self,
@@ -94,10 +110,16 @@ class IngredientParser:
             prompt: str,
             schema: dict,
     ) -> dict:
-        model_name = self.mistral_model_name  # "ministral-8b-latest"
-
-        logger.debug("Using model: %s with respose format: %s", model_name, schema)
-        chat_response = self.mistral_client.chat.complete(
+        """Call mistral API."""
+        mistral_client = Mistral(api_key=self.api_key)
+        logger.debug("Mistral client initialized")
+        response_format : ResponseFormat = ResponseFormat(
+            schema = [schema],
+            response_format = "json",
+        )
+        model_name = self.model_name
+        logger.debug("Using model: %s with respose format: %s", model_name, response_format.__dict__)
+        chat_response = mistral_client.chat.complete(
             model = model_name,
             messages = [
                 {"role": "system", "content": system_msg},

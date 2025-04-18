@@ -1,24 +1,38 @@
 from __future__ import annotations
 
-from typing import List  # noqa: UP035
+from typing import List, Optional, Union  # noqa: UP035
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+
 from src.models.ingredients import Ingredient
 
 
-class Meal(BaseModel):
-    """Model for a meal."""
+# docscrigs are above the class definition
+# becase the scema will use the docsring stored inside the class
+"""Model for meal images."""
+class MealImages(BaseModel):
 
+    model_config = ConfigDict(extra="forbid")
+    placeholder_emoji: str
+
+"""Model for meal preview."""
+class MealPreview(BaseModel):
+
+    model_config = ConfigDict(extra="forbid")
     id: str
     name: str
     description: str
-    ingredients: List[Ingredient]  # noqa: UP006
-    required_equipment: List[str]   # noqa: UP006
+    images: MealImages
+
+"""Model for a meal."""
+class Meal(MealPreview):
+
+    ingredients: Optional[List[Ingredient]]  # noqa: UP006
 
 class Meals(BaseModel):
     """Model for meals."""
 
-    meals: List[Meal]   # noqa: UP006
+    meals: List[Union[Meal, MealPreview]]   # noqa: UP006
 
 
 Meal.model_rebuild()

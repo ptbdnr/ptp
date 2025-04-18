@@ -12,13 +12,13 @@ Useful links:
 * [Manage Credentials](https://docs.vultr.com/products/cloud-storage/object-storage/management/manage-credentials)
 * [Python SDK](https://docs.vultr.com/how-to-use-vultr-object-storage-in-python)
 
-## NoSQL
+## NoSQL: TODO
 
 <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
 
 | label           | IPv4              | user	    | spec                                  | OS         | location	      | cost/mo |
 |---	            |---	              |---	      |---	                                  |---         |---	            |--:	    |
-| `ptpvmtstnl004` | `78.141.223.247`	| `root` 	  | 2 vCPU, 16GB RAM, 100GB NVMe, 5TB/mo  | Ubuntu 22  | Amsterdam, NL  | $96     |
+| `TOTO` | `TODO`	| `root` 	  | 2 vCPU, 16GB RAM, 100GB NVMe, 5TB/mo  | Ubuntu 22  | Amsterdam, NL  | $96     |
 
 admin user: `mongoadmin`
 admin pass: ask!
@@ -78,11 +78,24 @@ Useful links:
 
 | label           | IPv4              | user	    | spec                                  | OS         | location	      | cost/mo |
 |---	            |---	              |---	      |---	                                  |---         |---	            |--:	    |
-| `ptpvmtstnl001` | `95.179.135.1`	  | `root` 	  | 1 vCPU, 2GB RAM, 25GB NVMe, 4TB/mo    | Ubuntu 24  | Amsterdam, NL  | $28     |
-| `ptpvmtstnl002` | `95.179.158.91`	  | `root` 	  | 2 vCPU, 8GB RAM, 50GB NVMe, 5TB/mo    | Ubuntu 22  | Amsterdam, NL  | $70     |
-| `ptpvmtstnl003` | `136.244.104.56`	| `root` 	  | 2 vCPU, 8GB RAM, 50GB NVMe, 5TB/mo    | Ubuntu 22  | Amsterdam, NL  | $70     |
-| `ptpvmtstnl004` | `78.141.223.247`	| `root` 	  | 2 vCPU, 16GB RAM, 100GB NVMe, 5TB/mo  | Ubuntu 22  | Amsterdam, NL  | $96     |
+| `ptpvmtstnl001` | `78.141.223.176`	| `root` 	  | 2 vCPU, 8GB RAM, 50GB NVMe, 5TB/mo    | Ubuntu 22  | Amsterdam, NL  | $72     |
+| `ptpvmtstnl002` | `136.244.104.56`	| `root` 	  | 2 vCPU, 8GB RAM, 50GB NVMe, 5TB/mo    | Ubuntu 22  | Amsterdam, NL  | $72     |
 
+## Kubernetes
+
+<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
+
+label: `ptpk8ststnl001`
+
+endpoint: `https://8a8bfe90-613a-49a4-9d88-1141a9faaaeb.vultr-k8s.com:6443`
+
+| nodes | version       | IPv4              | total spec        | location	      | cost/mo |
+|---	|---	        |---	            |---                |---              |--:	    |
+| 2     | `v1.32.2+1`   | `136.244.107.235` | 2 CPU, 4GB RAM    | Amsterdam, NL  | $20     |
+
+
+Useful links:
+* [How to use Python on Kubernetes](https://docs.vultr.com/how-to/use-python-on-kubernetes)
 
 ## AMD
 
@@ -103,9 +116,10 @@ Useful links:
 <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
 
 
-| label            | address          | IP Type	| location	     | cost/mo |
+| label            | address            | IP Type	| location	     | cost/mo |
 |---	             |---	              |---	    |---	           |--:      |
-| `ptpriptstnl001` | `199.247.26.104`	| v4 	    | Amsterdam, NL  | $3      |
+| `ptpriptstnl001` | `45.63.43.17`	    | v4 	    | Amsterdam, NL  | $3      |
+| `ptpriptstnl002` | `199.247.26.104`	| v4 	    | Amsterdam, NL  | $3      |
 
 
 ## Model as a Service

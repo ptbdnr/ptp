@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { Meal } from '@/types/meals';
+import { Ingredient } from '@/types/ingredients';
+
 import Carousel from 'react-bootstrap/Carousel';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
+import { Bookmark, ShoppingCart, Star, WandSparkles } from 'lucide-react';
 
-import { Meal } from '@/types/meals';
-import { Ingredient } from '@/types/ingredients';
 import styles from './MealDetails.module.css';
 
 interface MealDetailsProps {
@@ -15,6 +17,8 @@ interface MealDetailsProps {
 
 export default function MealDetails({ meal }: MealDetailsProps) {
   const [activeTab, setActiveTab] = useState('ingredients');
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isRated, setIsRated] = useState(false);
   const servings = 4;
   const prepTime = 30;
   const difficulty = 'Med'
@@ -22,7 +26,10 @@ export default function MealDetails({ meal }: MealDetailsProps) {
 
   // Determine which ingredients the user has/doesn't have
   const userHasIngredient = (ingredient: Ingredient): boolean => {
-    return !ingredient.name.includes(meal.ingredients.ingredients[0].name);
+    if (meal.ingredients) {
+      return !ingredient.name.includes(meal.ingredients.ingredients[0].name);
+    }
+    return false;
   };
 
   return (
@@ -32,15 +39,15 @@ export default function MealDetails({ meal }: MealDetailsProps) {
         <div className={styles.heroImageContainer}>
           <HeroCarousel meal={meal} />
           <div className={styles.heroContent}>
-            <h1 className={styles.recipeTitle}>{meal.name}</h1>
-            <p className={styles.recipeDescription}>{meal.desciption}</p>
+            <h1 className={styles.mealTitle}>{meal.name}</h1>
+            <p className={styles.mealDescription}>{meal.description}</p>
           </div>
         </div>
         
         {/* Meal Stats */}
-        <div className={styles.recipeStats}>
+        <div className={styles.mealStats}>
           <div className={styles.statItem}>
-            <span className={styles.statIcon}>⏱</span>
+            <span className={styles.statIcon}>⏱️</span>
             <span className={styles.statValue}>{prepTime}</span>
             <span className={styles.statLabel}>min</span>
           </div>
@@ -55,7 +62,7 @@ export default function MealDetails({ meal }: MealDetailsProps) {
             <span className={styles.statLabel}>difficulty</span>
           </div>
           <div className={styles.statItem}>
-            <span className={styles.statIcon}>💲</span>
+            <span className={styles.statIcon}>💰</span>
             <span className={styles.statValue}>£{price}</span>
             <span className={styles.statLabel}>total</span>
           </div>
@@ -69,12 +76,14 @@ export default function MealDetails({ meal }: MealDetailsProps) {
       
       {/* Tabs */}
       <div className={styles.tabs}>
+        { meal.ingredients &&
         <button 
           className={`${styles.tab} ${activeTab === 'ingredients' ? styles.activeTab : ''}`}
           onClick={() => setActiveTab('ingredients')}
         >
           Ingredients
         </button>
+        }
         { meal.instructions &&
         <button 
           className={`${styles.tab} ${activeTab === 'instructions' ? styles.activeTab : ''}`}
@@ -87,11 +96,11 @@ export default function MealDetails({ meal }: MealDetailsProps) {
       
       {/* Tab Content */}
       <div className={styles.tabContent}>
-        {activeTab === 'ingredients' && (
+        {activeTab === 'ingredients' && meal.ingredients && (
           <div className={styles.ingredientsContainer}>
             <div className={styles.ingredientsHeader}>
               <span>{meal.ingredients.ingredients.length} ingredients</span>
-              <button className={styles.adjustButton}>Adjust</button>
+              {/* <button className={styles.adjustButton}>Adjust</button> */}
             </div>
             <ul className={styles.ingredientsList}>
               {meal.ingredients.ingredients.map((ingredient) => (
@@ -99,12 +108,26 @@ export default function MealDetails({ meal }: MealDetailsProps) {
                   key={ingredient.id} 
                   className={`${styles.ingredientItem} ${userHasIngredient(ingredient) ? styles.hasIngredient : styles.missingIngredient}`}
                 >
-                  <span className={styles.ingredientCheck}>
-                    {userHasIngredient(ingredient) ? '✓' : '✕'}
-                  </span>
-                  <span className={styles.ingredientName}>
-                    {ingredient.quantity} {ingredient.unit} {ingredient.name}
-                  </span>
+                  <div className={styles.IngredientDetails}>
+                    <span className={styles.ingredientCheck}>
+                      {userHasIngredient(ingredient) ? '✓' : '✕'}
+                    </span>
+                    <span className={styles.ingredientName}>
+                      {ingredient.quantity} {ingredient.unit} {ingredient.name}
+                    </span>
+                  </div>
+                  <div className={styles.ingredientActions}>
+                  {!userHasIngredient(ingredient) && 
+                    <button 
+                      disabled
+                    >
+                      <ShoppingCart className={styles.actionIcon} />
+                    </button>
+                  }
+                    <button>
+                      <WandSparkles className={styles.actionIcon} />
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -122,8 +145,18 @@ export default function MealDetails({ meal }: MealDetailsProps) {
       
       {/* Action Buttons */}
       <div className={styles.actionButtons}>
-        <button className={styles.actionButton} disabled>Add to Meal Plan</button>
-        <button className={styles.actionButton} disabled>Add to Shopping</button>
+        <button 
+          className={styles.actionButton}
+          onClick={() => setIsBookmarked(!isBookmarked)}
+        >
+          <Bookmark className={styles.icon} fill={isBookmarked ? '#fc3b00' : 'transparent'} /> <span>Save</span>
+        </button>
+        <button 
+          className={styles.actionButton}
+          onClick={() => setIsRated(!isRated)}
+        >
+          <Star className={styles.icon} fill={isRated ? 'yellow' : 'transparent'}/> <span>Rate</span>
+        </button>
       </div>
     </div>
   );
