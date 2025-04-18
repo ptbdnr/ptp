@@ -34,7 +34,7 @@ export const mockupMeals: Meal[] = [
     description: "Delicious vegan and gluten-free tacos with roasted sweet potatoes.",
     images: {
       placeholder_emoji: "🌮",
-      hero_url: "https://raw.githubusercontent.com/ptbdnr/ptp/main/assets/mockupData/meal-images/Sweet_Potato_Tacos_caa4afc6-87d6-47c5-a9c8-4cab74b2710f.jpg",
+      hero_url: "https://raw.githubusercontent.com/ptbdnr/ptp/main/assets/mockupData/meal-images/Sweet_Potato_Tacos_53629b63-19e1-4910-884e-cd3034b9c602.jpg",
     },
     ingredients: {
       ingredients: [
@@ -61,7 +61,7 @@ export const mockupMeals: Meal[] = [
     description: "A protein-packed vegan and gluten-free salad with chickpeas and fresh veggies.",
     images: {
       placeholder_emoji: "🥙",
-      hero_url: "https://raw.githubusercontent.com/ptbdnr/ptp/main/assets/mockupData/meal-images/Chickpea_Salad_e8697213-ca58-4795-a1fd-58c5b54ca32c.jpg",
+      hero_url: "https://raw.githubusercontent.com/ptbdnr/ptp/main/assets/mockupData/meal-images/Chickpea_Salad_e26a0743-93d9-4632-98d8-2871ec05a828.jpg",
     },
     ingredients: {
       ingredients: [
