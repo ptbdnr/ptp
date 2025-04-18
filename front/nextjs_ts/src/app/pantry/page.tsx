@@ -106,7 +106,7 @@ export default function Page() {
       setInputText("");
       setNewPantryItems(newIngredients);
       // Use functional update to ensure the latest state is used.
-      const updatedIngredients = ingredients.ingredients.concat(newIngredients);
+      const updatedIngredients = newIngredients.concat(ingredients.ingredients);
       upsertPantry(updatedIngredients);
       setIngredients({ ingredients: updatedIngredients });
     } catch (error) {
