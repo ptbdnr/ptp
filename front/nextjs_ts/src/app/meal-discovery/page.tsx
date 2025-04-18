@@ -14,7 +14,7 @@ import MealDiscoveryLayout from './meal-discovery-layout';
 import { ToastContainer, toast, Id } from 'react-toastify';
 import MealSwipeCard from '@/components/meal-swipe-card/MealSwipeCard';
 import MealCard from "@/components/meal-card/MealCard";
-import { Trash } from "lucide-react";
+// import { Trash } from "lucide-react";
 
 import styles from './meal-discovery.module.css';
 
