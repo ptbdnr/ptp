@@ -7,6 +7,7 @@ from textwrap import dedent
 from typing import Literal, Optional
 
 from mistralai import Mistral, ResponseFormat
+from openai import OpenAI
 
 from src.models.ingredients import Ingredient
 from src.models.meals import Meal, MealPreview, Meals
@@ -21,20 +22,30 @@ logger.addHandler(handler)
 class MealGenerator:
     """Generate meal using AI."""
 
-    mistral_client: Mistral
-    mistral_model_name: str
+    provider: Literal["openai", "mistral"]
+    model_name: str
+    api_key: str
 
     def __init__(
         self,
-        mistral_api_key: Optional[str] = None,
-        mistral_model_name: Optional[str] = None,
+        api_key: Optional[str] = None,
+        model_name: Optional[str] = None,
+        provider: Optional[Literal["openai", "mistral"]] = None,
     ) -> None:
         """Initialize the instance."""
-        mistral_api_key = mistral_api_key or os.getenv("MISTRAL_API_KEY")
-        self.mistral_model_name = mistral_model_name or os.getenv("MISTRAL_MODEL_NAME")
-
-        self.mistral_client = Mistral(api_key=mistral_api_key)
-        logger.debug("Mistral client initialized")
+        self.provider = provider or "mistral"
+        self.api_key = api_key or (
+            os.getenv("MISTRAL_API_KEY")
+            if self.provider == "mistral"
+            else os.getenv("OPENAI_API_KEY")
+        )
+        self.model_name = model_name or (
+            os.getenv("MISTRAL_MODEL_NAME")
+            if self.provider == "mistral"
+            else os.getenv("OPENAI_MODEL_NAME")
+        )
+        logger.debug("MealGenerator initialized with provider: %s", self.provider)
+        logger.debug("Model name: %s", self.model_name)
 
     def recommend(
         self,
@@ -48,10 +59,6 @@ class MealGenerator:
         """Convert text to ingredients."""
         ingredients = ingredients or []
         schema = model.model_json_schema(by_alias=False)
-        response_format : ResponseFormat = ResponseFormat(
-            schema = [schema],
-            response_format = "json",
-        )
         system_msg = "As a customer focused chef, you recommend meals."
         prompt_template = dedent("""
             Given the dietary preferences:
@@ -74,12 +81,45 @@ class MealGenerator:
             min_num_meals=min_num_meals,
             max_num_meals=max_num_meals,
         )
-        logger.debug("Parsing text with prompt: %s", prompt)
+        logger.debug("Prompt: %s", prompt)
 
-        model_name = self.mistral_model_name  # "ministral-8b-latest"
+        if self.provider == "openai":
+            data_obj = self._openai(
+                system_msg=system_msg,
+                prompt=prompt,
+                schema=schema,
+            )
+        elif self.provider == "mistral":
+            data_obj = self._mistral(
+                system_msg=system_msg,
+                prompt=prompt,
+                schema=schema,
+            )
+        else:
+            msg = f"Unknown provider: {self.provider}"
+            logger.error(msg)
+            raise ValueError(msg)
 
+        if not isinstance(data_obj, list):
+            data_obj = [data_obj]
+        return Meals(meals=data_obj)
+
+    def _mistral(
+            self,
+            system_msg: str,
+            prompt: str,
+            schema: dict,
+    ) -> dict:
+        """Call mistral API."""
+        mistral_client = Mistral(api_key=self.api_key)
+        logger.debug("Mistral client initialized")
+        response_format : ResponseFormat = ResponseFormat(
+            schema = [schema],
+            response_format = "json",
+        )
+        model_name = self.model_name
         logger.debug("Using model: %s with respose format: %s", model_name, response_format.__dict__)
-        chat_response = self.mistral_client.chat.complete(
+        chat_response = mistral_client.chat.complete(
             model = model_name,
             messages = [
                 {"role": "system", "content": system_msg},
@@ -91,7 +131,31 @@ class MealGenerator:
         logger.debug("Chat response: %s", chat_response)
 
         logger.debug(chat_response.choices[0].message.content)
-        data_obj = json.loads(chat_response.choices[0].message.content)
-        if not isinstance(data_obj, list):
-            data_obj = [data_obj]
-        return Meals(meals=data_obj)
+        return json.loads(chat_response.choices[0].message.content)
+
+    def _openai(
+            self,
+            system_msg: str,
+            prompt: str,
+            schema: dict,
+    ) -> dict:
+        """Call OpenAI API."""
+        openai_client = OpenAI(api_key=self.api_key)
+
+        response = openai_client.responses.create(
+            model=self.model_name,
+            input=[
+                {"role": "system", "content": system_msg},
+                {"role": "user", "content": prompt},
+            ],
+            text={
+                "format": {
+                    "type": "json_schema",
+                    "name": "meals",
+                    "schema": schema,
+                },
+            },
+        )
+        logger.debug("OpenAI response: %s", response)
+
+        return json.loads(response.output_text)
