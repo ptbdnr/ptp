@@ -54,12 +54,12 @@ db = {
         # Sample user data
         DEFAULT_USER_ID: {
             "ingredients": Ingredients(ingredients=[
-                Ingredient(name="Tomato", quantity=5, unit="pieces"),
-                Ingredient(name="Onion", quantity=3, unit="pieces"),
+                Ingredient(id="1", name="Tomato", quantity=5, unit="pieces"),
+                Ingredient(id="1", name="Onion", quantity=3, unit="pieces"),
             ]),
             "equipments": Equipments(equipments=[
-                Equipment(name="Knife", quantity=2),
-                Equipment(name="Pan", quantity=1),
+                Equipment(id="1", name="Knife", quantity=2),
+                Equipment(id="2", name="Pan", quantity=1),
             ]),
             "preferences": UserPreferences(preferences=["vegetarian", "gluten-free"]),
         },

@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import type { Meal } from '@/types/meals'
 
 import { mockupMeals } from '@/data/meals'
+import { Ingredient } from '@/types/ingredients';
 
 type ResponseData = {
   error?: string;
@@ -29,7 +30,14 @@ export default async function handler(
       userId: process.env.DEFAULT_USER_ID,
       dietaryPreferences: dietaryPreferences,
       maxPrepTime: maxPrepTime,
-      ingredients: ingredients,
+      ingredients: ingredients.map((ingredient: Ingredient) => {
+        return {
+          id: ingredient.id,
+          name: ingredient.name,
+          quantity: ingredient.quantity,
+          unit: ingredient.unit,
+        }
+      }),
     };
     console.log('Request Body:', req_body);
     try {
