@@ -12,7 +12,7 @@
   align-content: center;
   align-items: center;
   margin: 20px;
-  margin-bottom: 200px; /* Adjusted margifn-bottom to prevent overlap with footer */
+  margin-bottom: 120px; /* Adjusted margifn-bottom to prevent overlap with footer */
 }
 
 .menuInstruction {
@@ -22,16 +22,16 @@
 
 .menuCards {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   padding: 20px;
   gap: 10px;
   overflow-x: visible;
   overflow-y: visible;
-  height: 150;
+  max-height: 250;
 }
 
 .menuCard {
-  max-height: 150;
+  max-height: 250;
   max-width: 150;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
