@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Optional, Union  # noqa: UP035
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from src.models.ingredients import Ingredient
 
@@ -10,11 +10,13 @@ from src.models.ingredients import Ingredient
 class MealImages(BaseModel):
     """Model for meal images."""
 
+    model_config = ConfigDict(extra="forbid")
     placeholder_emoji: str
 
 class MealPreview(BaseModel):
     """Model for meal preview."""
 
+    model_config = ConfigDict(extra="forbid")
     id: str
     name: str
     description: str

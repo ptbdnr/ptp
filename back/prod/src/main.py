@@ -85,7 +85,7 @@ async def recommend_meal(
     ingredients = request_body.ingredients
     logger.info("Received request: %s", request_body)
 
-    recommender = MealGenerator()
+    recommender = MealGenerator(provider="openai")
     meals: Meals = recommender.recommend(
         model=MealPreview,
         dietary_preferences=dietary_preferences,
