@@ -6,7 +6,12 @@ const nextConfig: NextConfig = {
   // swcMinify: true,
   output: "standalone",
   images: {
-    domains: ['github.com', 'raw.githubusercontent.com'],
+    domains: [
+      'github.com',
+      'raw.githubusercontent.com',
+      'meal-images.ams1.vultrobjects.com',
+      'meal-videos.ams1.vultrobjects.com',
+    ],
   },
   async rewrites() {
     return [

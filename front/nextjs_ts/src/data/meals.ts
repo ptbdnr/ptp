@@ -7,7 +7,10 @@ export const mockupMeals: Meal[] = [
     description: "A hearty bowl of quinoa and fresh veggies, perfect for vegans and gluten-free diets.",
     images: {
       placeholder_emoji: "🥗",
-      hero_url: "https://raw.githubusercontent.com/ptbdnr/ptp/main/assets/mockupData/meal-images/Quinoa_Veggie_Bowl_53d13b2d-b7e3-4691-a66a-811849c7aff4.jpg",
+      hero_url: "https://meal-images.ams1.vultrobjects.com/Quinoa_Veggie_Bowl_53d13b2d-b7e3-4691-a66a-811849c7aff4.jpg",
+    },
+    videos: {
+      hero_url: "https://meal-videos.ams1.vultrobjects.com/Quinoa_Veggie_Bowl_241e23d9-357a-42a2-81c5-bdebc6f75dc3.mp4",
     },
     ingredients: {
       ingredients: [
@@ -34,7 +37,10 @@ export const mockupMeals: Meal[] = [
     description: "Delicious vegan and gluten-free tacos with roasted sweet potatoes.",
     images: {
       placeholder_emoji: "🌮",
-      hero_url: "https://raw.githubusercontent.com/ptbdnr/ptp/main/assets/mockupData/meal-images/Sweet_Potato_Tacos_53629b63-19e1-4910-884e-cd3034b9c602.jpg",
+      hero_url: "https://meal-images.ams1.vultrobjects.com/Sweet_Potato_Tacos_53629b63-19e1-4910-884e-cd3034b9c602.jpg",
+    },
+    videos: {
+      hero_url: "https://meal-videos.ams1.vultrobjects.com/Sweet_Potato_Tacos_35ef5922-37c9-49b0-8fe1-bf2aca7224a6.mp4",
     },
     ingredients: {
       ingredients: [
@@ -61,7 +67,10 @@ export const mockupMeals: Meal[] = [
     description: "A protein-packed vegan and gluten-free salad with chickpeas and fresh veggies.",
     images: {
       placeholder_emoji: "🥙",
-      hero_url: "https://raw.githubusercontent.com/ptbdnr/ptp/main/assets/mockupData/meal-images/Chickpea_Salad_e26a0743-93d9-4632-98d8-2871ec05a828.jpg",
+      hero_url: "https://meal-images.ams1.vultrobjects.com/Chickpea_Salad_e26a0743-93d9-4632-98d8-2871ec05a828.jpg",
+    },
+    videos: {
+      hero_url: "https://meal-videos.ams1.vultrobjects.com/Chickpea_Salad_19efa421-5965-4a28-b7ed-a7de47661636.mp4",
     },
     ingredients: {
       ingredients: [
@@ -88,7 +97,10 @@ export const mockupMeals: Meal[] = [
     description: "A low-carb vegan and gluten-free dish made with spiralized zucchini.",
     images: {
       placeholder_emoji: "🍝",
-      hero_url: "https://raw.githubusercontent.com/ptbdnr/ptp/main/assets/mockupData/meal-images/Zucchini_Noodles_cdf08385-40fc-44d2-95b2-d632d7b01712.jpg",
+      hero_url: "https://meal-images.ams1.vultrobjects.com/Zucchini_Noodles_cdf08385-40fc-44d2-95b2-d632d7b01712.jpg",
+    },
+    videos: {
+      hero_url: "https://meal-videos.ams1.vultrobjects.com/Zucchini_Noodles_4813756a-363d-4648-b20c-1b5b93ceeb3e.mp4",
     },
     ingredients: {
       ingredients: [
@@ -115,7 +127,10 @@ export const mockupMeals: Meal[] = [
     description: "A colorful and nutritious vegan and gluten-free bowl filled with grains and veggies.",
     images: {
       placeholder_emoji: "🍚",
-      hero_url: "https://raw.githubusercontent.com/ptbdnr/ptp/main/assets/mockupData/meal-images/Vegan_Buddha_Bowl_21fe6842-d12a-4ede-9023-6237bd120295.jpg",
+      hero_url: "https://meal-images.ams1.vultrobjects.com/Vegan_Buddha_Bowl_21fe6842-d12a-4ede-9023-6237bd120295.jpg",
+    },
+    videos: {
+      hero_url: "https://meal-videos.ams1.vultrobjects.com/Vegan_Buddha_Bowl_fe232b47-ac7f-44c8-9668-14483cd28031.mp4",
     },
     ingredients: {
       ingredients: [
@@ -144,7 +159,10 @@ export const mockupSupriseMeal: Meal = {
   description: "A surprise vegan and gluten-free meal just for you!",
   images: {
     placeholder_emoji: "🍽️",
-    hero_url: "https://raw.githubusercontent.com/ptbdnr/ptp/main/assets/mockupData/meal-images/Chickpea_Salad_e8697213-ca58-4795-a1fd-58c5b54ca32c.jpg",
+    hero_url: "https://meal-images.ams1.vultrobjects.com/Chickpea_Salad_e8697213-ca58-4795-a1fd-58c5b54ca32c.jpg",
+  },
+  videos: {
+    hero_url: "https://meal-videos.ams1.vultrobjects.com/Chickpea_Salad_19efa421-5965-4a28-b7ed-a7de47661636.mp4",
   },
   ingredients: {
     ingredients: [
