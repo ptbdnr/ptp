@@ -2,7 +2,7 @@ import { Meal } from "@/types/meals";
 
 export const mockupMeals: Meal[] = [
   {
-    id: "1",
+    id: "64b7f9c8a1e2d3f4b5c6d7e8",
     name: "Quinoa Veggie Bowl",
     description: "A hearty bowl of quinoa and fresh veggies, perfect for vegans and gluten-free diets.",
     images: {
@@ -32,7 +32,7 @@ export const mockupMeals: Meal[] = [
       "1. Rinse quinoa and cook according to package instructions.\n2. Dice cherry tomatoes, cucumber, and avocado.\n3. Combine cooked quinoa, diced veggies, and lemon juice in a bowl.\n4. Mix well and serve fresh.",
   },
   {
-    id: "2",
+    id: "64b7f9c8a1e2d3f4b5c6d7e9",
     name: "Sweet Potato Tacos",
     description: "Delicious vegan and gluten-free tacos with roasted sweet potatoes.",
     images: {
@@ -62,7 +62,7 @@ export const mockupMeals: Meal[] = [
       "1. Preheat oven to 400°F (200°C).\n2. Peel and dice sweet potatoes, then roast on a baking sheet for 20-25 minutes.\n3. Warm corn tortillas in a skillet.\n4. Fill tortillas with roasted sweet potatoes, black beans, and chopped cilantro.\n5. Squeeze lime juice over tacos and serve.",
   },
   {
-    id: "3",
+    id: "64b7f9c8a1e2d3f4b5c6d7ea",
     name: "Chickpea Salad",
     description: "A protein-packed vegan and gluten-free salad with chickpeas and fresh veggies.",
     images: {
@@ -92,7 +92,7 @@ export const mockupMeals: Meal[] = [
       "1. Rinse and drain chickpeas.\n2. Dice red bell pepper and cucumber.\n3. Chop parsley finely.\n4. Combine chickpeas, diced veggies, and parsley in a mixing bowl.\n5. Drizzle with olive oil, mix well, and serve.",
   },
   {
-    id: "4",
+    id: "64b7f9c8a1e2d3f4b5c6d7eb",
     name: "Zucchini Noodles",
     description: "A low-carb vegan and gluten-free dish made with spiralized zucchini.",
     images: {
@@ -122,7 +122,7 @@ export const mockupMeals: Meal[] = [
       "1. Spiralize zucchini into noodles.\n2. Mince garlic and halve cherry tomatoes.\n3. Heat olive oil in a skillet, add garlic and tomatoes, and sauté for 3-4 minutes.\n4. Add zucchini noodles to the skillet and cook for another 2-3 minutes.\n5. Garnish with fresh basil and serve.",
   },
   {
-    id: "5",
+    id: "64b7f9c8a1e2d3f4b5c6d7ec",
     name: "Vegan Buddha Bowl",
     description: "A colorful and nutritious vegan and gluten-free bowl filled with grains and veggies.",
     images: {
@@ -154,7 +154,7 @@ export const mockupMeals: Meal[] = [
 ];
 
 export const mockupSupriseMeal: Meal = {
-  id: "surprise",
+  id: "64b7f9c8a1e2d3f4b5c6d7ed",
   name: "Surprise Vegan Delight",
   description: "A surprise vegan and gluten-free meal just for you!",
   images: {
