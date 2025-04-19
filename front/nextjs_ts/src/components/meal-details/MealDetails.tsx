@@ -4,9 +4,8 @@ import { useState } from 'react';
 import { Meal } from '@/types/meals';
 import { Ingredient } from '@/types/ingredients';
 
-import Carousel from 'react-bootstrap/Carousel';
-import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
+import MealDetailsHero from './MealDetailsHero';
 import { Bookmark, ShoppingCart, Star, WandSparkles } from 'lucide-react';
 
 import styles from './MealDetails.module.css';
@@ -36,8 +35,8 @@ export default function MealDetails({ meal }: MealDetailsProps) {
     <div className={styles.container}>
       <div className={styles.header}>
         {/* Meal Hero Image */}
-        <div className={styles.heroImageContainer}>
-          <HeroCarousel meal={meal} />
+        <div className={styles.heroContainer}>
+          <MealDetailsHero meal={meal} />
           <div className={styles.heroContent}>
             <h1 className={styles.mealTitle}>{meal.name}</h1>
             <p className={styles.mealDescription}>{meal.description}</p>
@@ -159,30 +158,5 @@ export default function MealDetails({ meal }: MealDetailsProps) {
         </button>
       </div>
     </div>
-  );
-}
-
-function HeroCarousel({meal}: {meal: Meal}) {
-  const interval = 100;
-
-  return (
-    <Carousel>
-      <Carousel.Item interval={interval}>
-        <Image 
-            src={meal.images.hero_url || "/placeholder-dish_16x4.jpg"}
-            alt=""
-            fill
-            className={styles.heroImage}
-        />
-      </Carousel.Item>
-      <Carousel.Item interval={interval}>
-        <Image 
-            src={meal.images.hero_url || "/placeholder-dish2_16x4.jpg"}
-            alt=""
-            fill
-            className={styles.heroImage}
-        />
-      </Carousel.Item>
-    </Carousel>
   );
 }
