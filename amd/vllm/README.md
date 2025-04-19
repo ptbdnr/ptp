@@ -38,7 +38,7 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-### Install vllm
+### Download the model
 
 in your browser, go to https://huggingface.co/settings/tokens/new?tokenType=write and create a new token
 
@@ -47,11 +47,50 @@ in your browser, go to https://huggingface.co/settings/tokens/new?tokenType=writ
 huggingface-cli login
 ```
 
-in your browser, go to https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct and request access to the model
+if you choose model `meta-llama/Llama-3.3-70B-Instruct`, you need to request access to the model:
+1. in your browser, go to https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct 
+2. request access to the model, it can take a few hours to get access
 
 ```shell
 # download the model
-huggingface-cli download meta-llama/Llama-3.3-70B-Instruct
+huggingface-cli download $REPO/$MODEL_NAME
+# example1: huggingface-cli download meta-llama/Llama-3.3-70B-Instruct
+# example2: huggingface-cli download deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+
+# list the downloaded models
+huggingface-cli scan-cache -v
+```
+
+### Serve the model with vLLM
+
+```shell
 # serve the model
-vllm serve meta-llama/Llama-3.3-70B-Instruct --port 8006
+export VLLM_LOGGING_LEVEL=DEBUG
+vllm serve $REPO/$MODEL_NAME -port 8000
+# example1: vllm serve meta-llama/Llama-3f.3-70B-Instruct --port 8000
+# example2: vllm serve deepseek-ai/DeepSeek-R1-Distill-Qwen-32B --port 8000
+```
+
+```shell
+# test POST /v1/completions
+# replace model value with $REPO/$MODEL_NAME based on the model you are using
+curl -X POST \
+  http://$HOST:8006/v1/completions \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "prompt": "Hello, how are you?",
+    "max_tokens": 50
+}'
+# test POST /v1/chat/completions
+curl -X POST \
+  http://$HOST:8006/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "meta-llama/Llama-3.3-70B-Instruct",
+    "messages": [
+      {"role": "user", "content": "Hello, how are you?"}
+    ],
+    "max_tokens": 50
+}'
 ```
