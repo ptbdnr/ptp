@@ -37,7 +37,7 @@ export default function MealSwipeCard({ meal, tags, onSwipe }: MealSwipeCardProp
   };
 
   
-  const handleDragEnd = (event: MouseEvent | TouchEvent, info: { offset: { x: number } }) => {
+  const handleDragEnd = (event: MouseEvent | TouchEvent | undefined, info: { offset: { x: number } }) => {
     if (info.offset.x > 100) {
       if (onSwipe) {
         onSwipe("right");
@@ -61,6 +61,8 @@ export default function MealSwipeCard({ meal, tags, onSwipe }: MealSwipeCardProp
         meal={meal} 
         display_details={true} display_tags={tags && display_tags(tags)} 
         display_feedbackbuttons={true} 
+        onDisliked={() => onSwipe && onSwipe("left")}
+        onLiked={() => onSwipe && onSwipe("right")}
       />
     </motion.div>
   );
