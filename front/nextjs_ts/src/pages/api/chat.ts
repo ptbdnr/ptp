@@ -12,6 +12,7 @@ interface ChatMessage {
 
 interface ChatRequest {
   messages: ChatMessage[];
+  stream?: boolean;
 }
 
 interface FinishStep {
@@ -23,6 +24,27 @@ interface FinishStep {
   isContinued: boolean;
 }
 
+interface WebSocketMessage {
+  type?: 'end';
+  content?: string;
+  error?: string;
+}
+
+// Validate request body
+function validateRequest(body: any): body is ChatRequest {
+  if (!body || typeof body !== 'object') return false;
+  if (!Array.isArray(body.messages)) return false;
+  if (body.messages.length === 0) return false;
+  
+  return body.messages.every((msg: any) => (
+    msg &&
+    typeof msg === 'object' &&
+    typeof msg.role === 'string' &&
+    ['user', 'assistant'].includes(msg.role) &&
+    typeof msg.content === 'string'
+  ));
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const func_name = 'chat';
   console.log('[Chat API] Starting request handling');
@@ -32,13 +54,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Validate request body
+  if (!validateRequest(req.body)) {
+    console.error('[Chat API] Invalid request body:', req.body);
+    return res.status(400).json({ error: 'Invalid request body' });
+  }
+
   const { messages } = req.body;
   console.log('[Chat API] Received messages:', JSON.stringify(messages, null, 2));
-
-  if (!messages || !Array.isArray(messages) || messages.length === 0) {
-    console.error('[Chat API] Invalid messages:', messages);
-    return res.status(400).json({ error: 'Messages array is required' });
-  }
 
   try {
     console.log('[Chat API] Setting up streaming response');
@@ -56,19 +79,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const ws = new WebSocket(`${wsUrl}/chat`);
     let currentMessage = '';
     let isStreaming = true;
+    let hasError = false;
 
     const sendFinishStep = (isContinued: boolean, error?: string) => {
-      const finishStep: FinishStep = {
-        finishReason: error ? 'error' : 'stop',
-        usage: { promptTokens: 0, completionTokens: 0 },
-        isContinued
-      };
-      const finishStepChunk = `e:${JSON.stringify(finishStep)}\n`;
-      console.log('[Chat API] Sending finish step:', finishStepChunk);
-      res.write(finishStepChunk);
+      try {
+        const finishStep: FinishStep = {
+          finishReason: error ? 'error' : 'stop',
+          usage: { promptTokens: 0, completionTokens: 0 },
+          isContinued
+        };
+        const finishStepChunk = `e:${JSON.stringify(finishStep)}\n`;
+        console.log('[Chat API] Sending finish step:', finishStepChunk);
+        res.write(finishStepChunk);
+      } catch (e) {
+        console.error('[Chat API] Error sending finish step:', e);
+      }
     };
 
     const sendError = (error: string) => {
+      if (hasError) return; // Prevent sending multiple errors
+      hasError = true;
       console.error('[Chat API] Error:', error);
       sendFinishStep(false, error);
       const errorChunk = `e:"${error}"\n`;
@@ -79,14 +109,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const flushResponse = () => {
       if (currentMessage) {
-        const textChunk = `0:"${currentMessage}"\n`;
-        console.log('[Chat API] Sending chunk:', textChunk);
-        res.write(textChunk);
-        currentMessage = '';
+        try {
+          const textChunk = `0:"${currentMessage}"\n`;
+          console.log('[Chat API] Sending chunk:', textChunk);
+          res.write(textChunk);
+          currentMessage = '';
+        } catch (e) {
+          console.error('[Chat API] Error flushing response:', e);
+        }
       }
     };
 
-    ws.on('error', (error) => {
+    const cleanupAndEnd = () => {
+      if (!isStreaming) return; // Prevent multiple cleanups
+      
+      try {
+        isStreaming = false;
+        flushResponse();
+        sendFinishStep(false);
+        const finishMessage = {
+          finishReason: 'stop',
+          usage: { promptTokens: 0, completionTokens: 0 }
+        };
+        const finishChunk = `d:${JSON.stringify(finishMessage)}\n`;
+        console.log('[Chat API] Sending finish message:', finishChunk);
+        res.write(finishChunk);
+        res.end();
+      } catch (e) {
+        console.error('[Chat API] Error during cleanup:', e);
+        try {
+          res.end();
+        } catch (e) {
+          // Final attempt to close response
+        }
+      }
+    };
+
+    ws.on('error', (error: Error) => {
       console.error('[Chat API] WebSocket error:', error);
       sendError(error.message || 'Failed to connect to backend service');
     });
@@ -94,13 +153,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     ws.on('open', () => {
       console.log('[Chat API] WebSocket connected, sending messages');
       try {
-        ws.send(JSON.stringify({ messages }));
+        ws.send(JSON.stringify({ messages, stream: true }));
       } catch (error) {
         sendError('Failed to send messages to backend');
       }
     });
 
-    ws.on('message', (data) => {
+    ws.on('message', (data: WebSocket.Data) => {
       try {
         const rawMessage = data.toString();
         console.log('[Chat API] Raw WebSocket message:', rawMessage);
@@ -108,19 +167,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Check if this is a control message
         if (rawMessage.startsWith('{')) {
           try {
-            const message = JSON.parse(rawMessage);
+            const message = JSON.parse(rawMessage) as WebSocketMessage;
             if (message.type === 'end') {
-              flushResponse();
-              isStreaming = false;
-              sendFinishStep(false);
-              const finishMessage = {
-                finishReason: 'stop',
-                usage: { promptTokens: 0, completionTokens: 0 }
-              };
-              const finishChunk = `d:${JSON.stringify(finishMessage)}\n`;
-              console.log('[Chat API] Sending finish message:', finishChunk);
-              res.write(finishChunk);
-              res.end();
+              cleanupAndEnd();
               return;
             }
           } catch (e) {
@@ -132,8 +181,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           currentMessage += rawMessage;
         }
 
-        // Send the accumulated message periodically
-        if (currentMessage.length > 0 && (currentMessage.endsWith('. ') || currentMessage.endsWith('! ') || currentMessage.endsWith('? '))) {
+        // Send the accumulated message on sentence boundaries
+        if (currentMessage.length > 0 && (
+          currentMessage.endsWith('. ') || 
+          currentMessage.endsWith('! ') || 
+          currentMessage.endsWith('? ') ||
+          currentMessage.endsWith('\n')
+        )) {
           flushResponse();
           sendFinishStep(true);
         }
@@ -144,18 +198,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     ws.on('close', () => {
       console.log('[Chat API] WebSocket closed');
-      if (isStreaming) {
-        flushResponse();
-        sendFinishStep(false);
-        const finishMessage = {
-          finishReason: 'stop',
-          usage: { promptTokens: 0, completionTokens: 0 }
-        };
-        const finishChunk = `d:${JSON.stringify(finishMessage)}\n`;
-        console.log('[Chat API] Sending finish message:', finishChunk);
-        res.write(finishChunk);
-        res.end();
-      }
+      cleanupAndEnd();
     });
 
     // Handle client disconnect
