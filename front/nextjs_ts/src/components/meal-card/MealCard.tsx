@@ -20,8 +20,8 @@ type MealCardProps = {
   },
   display_feedbackbuttons?: boolean;
   display_cancel?: boolean;
-  onDisliked?: (id: string) => void;
-  onLiked?: (id: string) => void;
+  onDisliked?: () => void;
+  onLiked?: () => void;
 };
 
 export default function MealCard({ 
@@ -41,8 +41,8 @@ export default function MealCard({
   },
   display_feedbackbuttons = false, 
   display_cancel = false,
-  onDisliked = (id: string) => {},
-  onLiked = (id: string) => {},
+  onDisliked = () => {},
+  onLiked = () => {},
 }: MealCardProps) {
   const { profile } = useProfileContext();
   const difficultyOptions = getDifficultyOptions(profile.difficultyLevel);
@@ -95,7 +95,7 @@ export default function MealCard({
           <button
             className={`${styles.actionButton} ${styles.dislikeButton}`}
             aria-label="Dislike meal"
-            onClick={() => onDisliked(meal.id)}
+            onClick={onDisliked}
           >
             <ThumbsDown size={24} />
           </button>
@@ -103,7 +103,7 @@ export default function MealCard({
           <button 
             className={`${styles.actionButton} ${styles.likeButton}`}
             aria-label="Like meal"
-            onClick={() => onLiked(meal.id)}
+            onClick={onLiked}
           >
             <ThumbsUp size={24} />
           </button>
