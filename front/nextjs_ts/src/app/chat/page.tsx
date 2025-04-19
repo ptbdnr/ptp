@@ -13,15 +13,20 @@ export default function ChatPage() {
   const { data: session } = useSession();
 
   const handler = useChat({
+    streamProtocol: 'data',
     api: '/api/chat',
     headers: {
       'Authorization': `Bearer ${session?.user?.accessToken || ''}`,
       'Content-Type': 'application/json',
+      'x-vercel-ai-data-stream': 'v1'
     },
-    initialMessages: [], // Start with empty chat
+    initialMessages: [],
     onError: (error) => {
       console.error('Chat error:', error);
       toast.error('Failed to send message. Please try again.');
+    },
+    body: {
+      stream: true,
     },
   });
 
@@ -40,7 +45,7 @@ export default function ChatPage() {
               [&_.copy-button]:bg-transparent [&_.copy-button]:text-gray-400 [&_.copy-button]:hover:bg-gray-100 [&_.copy-button]:hover:text-gray-600 [&_.copy-button]:rounded-md [&_.copy-button]:h-8 [&_.copy-button]:w-8 [&_.copy-button]:transition-colors
               [&_form]:fixed [&_form]:bottom-[100px] [&_form]:left-0 [&_form]:right-0 [&_form]:mx-auto [&_form]:max-w-[480px] [&_form]:px-4 [&_form]:!flex [&_form]:!flex-col [&_form]:!gap-3
               [&_textarea]:w-full [&_textarea]:p-4 [&_textarea]:rounded-xl [&_textarea]:bg-gray-100 [&_textarea]:resize-none [&_textarea]:outline-none [&_textarea]:min-h-[60px] [&_textarea]:max-h-[200px] [&_textarea]:text-sm
-              [&_form_button]:w-full [&_form_button]:px-6 [&_form_button]:py-3 [&_form_button]:rounded-full [&_form_button]:bg-[#FF7043] [&_form_button]:text-white [&_form_button]:font-medium [&_form_button]:hover:bg-[#FF7043]/90 [&_form_button]:transition-colors [&_form_button]:disabled:opacity-50"
+              [&_form button]:w-full [&_form button]:px-6 [&_form button]:py-3 [&_form button]:rounded-full [&_form button]:bg-[#FF7043] [&_form button]:text-white [&_form button]:font-medium [&_form button]:hover:bg-[#FF7043]/90 [&_form button]:transition-colors [&_form button]:disabled:opacity-50"
           />
         </div>
       </div>
