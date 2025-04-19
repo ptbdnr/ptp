@@ -135,6 +135,17 @@ export default function MealDetails({ meal }: MealDetailsProps) {
         
         {activeTab === 'instructions' && (
           <div className={styles.instructionsContainer}>
+            {meal.videos?.hero_url &&
+            <video 
+                width="100%" 
+                height="100%" 
+                controls 
+                autoPlay 
+                preload="auto"
+                src={meal.videos?.hero_url || "/placeholder_meal-hero_16x4.mp4"}
+                playsInline
+              />
+            }
             <ReactMarkdown>
               {meal.instructions}
             </ReactMarkdown>
