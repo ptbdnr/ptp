@@ -12,7 +12,7 @@ from pydantic import BaseModel
 
 from src.models.equipments import Equipment, Equipments
 from src.models.ingredients import Ingredient, Ingredients
-from src.models.meals import Meals, MealPreview
+from src.models.meals import Meals, PreviewMeals
 from src.models.preferences import UserPreferences
 from src.recommender.meal_generator import MealGenerator
 from src.text_to_img.meal_image import MealImageGenerator
@@ -85,9 +85,9 @@ async def recommend_meal(
     ingredients = request_body.ingredients
     logger.info("Received request: %s", request_body)
 
-    recommender = MealGenerator(provider="openai")
+    recommender = MealGenerator()
     meals: Meals = recommender.recommend(
-        model=MealPreview,
+        model=PreviewMeals,
         dietary_preferences=dietary_preferences,
         max_prep_time=max_prep_time,
         ingredients=ingredients,
@@ -226,7 +226,7 @@ async def text2ingredients(
     text: str,
 ) -> Ingredients:
     """Generate an image based on text input."""
-    parser = IngredientParser(provider="hosted_ai")
+    parser = IngredientParser()
     return parser.text_to_ingredients(text=text)
 
 if __name__ == "__main__":
