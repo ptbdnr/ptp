@@ -37,6 +37,9 @@ export default function Page() {
     }
     toastId.current = toast(`✨ Ingredient validation`, {autoClose: 5000});
   };
+  const alertError = (err: string) => {
+      toast.error(`Error: ${err}`, {autoClose: 1500});
+  };
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -68,6 +71,7 @@ export default function Page() {
       }
       );
       if (!res.ok) {
+        alertError(`${res.statusText} (${res.status})`);
         throw new Error('Failed to fetch description of image.');
       }
       const data = await res.json();
@@ -76,6 +80,7 @@ export default function Page() {
       handleDictation(data.text);
     } catch (error) {
       console.error(error);
+      alertError(`${error}`);
     }
   };
 
@@ -115,6 +120,7 @@ export default function Page() {
       upsertPantry(updatedIngredients);
       setIngredients({ ingredients: updatedIngredients });
     } catch (error) {
+      alertError(`${error}`);
       console.error(error);
     }    
   };
@@ -129,12 +135,14 @@ export default function Page() {
         body: JSON.stringify({ ingredients: items }),
       });
       if (!res.ok) {
+        alertError(`${res.statusText} (${res.status})`);
         throw new Error('Failed to upsert pantry items');
       }
       const data = await res.json();
       console.log('Response from API upsert:', data);
     }
     catch (error) {
+      alertError(`${error}`);
       console.error(error);
     }
   }
