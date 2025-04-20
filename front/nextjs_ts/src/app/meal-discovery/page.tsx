@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 
 import type { Meal } from "@/types/meals";
 
+import { calculateProgress } from "@/utils/progress";
+
 import { useProfileContext } from '@/contexts/ProfileContext';
 import { usePantryContext } from '@/contexts/PantryContext';
 import { useMenuContext } from '@/contexts/MenuContext';
@@ -30,18 +32,41 @@ export default function Page() {
   const surpriseMeal: Meal = mockupSupriseMeal;
   const [likedMeals, setLikedMeals] = useState<Meal[]>([]);
   const router = useRouter();
-
+  const [ aiProcess, setAiProcess ] = useState<boolean>(false);  
   const toastId = useRef<Id | undefined>(undefined);
+  
   const notifyAIRecommendationStart = () => {
     if (toastId.current) {
       toast.dismiss(toastId.current);
     }
-    toastId.current = toast("✨ Smart Recipe Generator", {autoClose: 14000});
+
+    const startTime = Date.now();
+    const duration = 14000; // 14s total
+    const interval = 50; // Update every 50ms
+
+    const currtoastId = toast.loading('✨ Smart Recipe Generator', {
+      autoClose: duration,
+      closeButton: false,
+    });
+    toastId.current = currtoastId;
+
+    const timer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = calculateProgress(elapsed, duration);
+      
+      toast.update(currtoastId, {
+        progress: Math.min(progress, 0.99), // Never reach 1.0
+        render: `✨ Smart Recipe Generator`,
+      });
+
+      if (!aiProcess || elapsed >= duration ) clearInterval(timer);
+    }, interval);
   }
 
   useEffect(() => {
     const fetchMeals = async () => {
       try {
+        setAiProcess(true);
         notifyAIRecommendationStart();
         const res = await fetch('/api/meals', {
           method: 'POST',
@@ -54,6 +79,7 @@ export default function Page() {
             ingredients: ingredients.ingredients,
            }),
         });
+        setAiProcess(false);
         toast.dismiss(toastId.current);
         if (!res.ok) {
           throw new Error('Failed to fetch meals');
