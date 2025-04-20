@@ -7,6 +7,7 @@ from textwrap import dedent
 from typing import Optional
 
 import dotenv
+import requests
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -14,7 +15,7 @@ handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
 logger.addHandler(handler)
 
-dotenv.load_dotenv(".env.local")g
+dotenv.load_dotenv(".env.local")
 
 HOSTED_AI_IP = os.getenv("HOSTED_AI_IP")
 HOSTED_AI_PORT = os.getenv("HOSTED_AI_PORT")
@@ -72,8 +73,7 @@ def _hosted_ai(
         schema: dict,
 ) -> dict:
     """Call mistral API."""
-    logger.debug("Mistral client initialized")
-    model_name = MISTRAL_MODEL_NAME
+    model_name = HOSTED_AI_MODEL_NAME
     logger.debug("Using model: %s with respose format: %s", model_name, schema)
     response = requests.post(
         f"http://{HOSTED_AI_IP}:{HOSTED_AI_PORT}/v1/chat/completions",
@@ -84,15 +84,16 @@ def _hosted_ai(
             "model": HOSTED_AI_MODEL_NAME,
             "messages": [
                 {"role": "system", "content": system_msg},
-                {"role": "user", "content": prompt}
+                {"role": "user", "content": prompt},
             ],
-            "max_tokens": 500,
+            "max_tokens": 2000,
         },
+        timeout=300,
     )
-    logger.debug("Chat response: %s", chat_response)
-
-    logger.debug(chat_response.choices[0].message.content)
-    return json.loads(chat_response.choices[0].message.content)
+    logger.debug("response: %s", response.text)
+    chat_response = response.json().get("choices", [{}])[0].get("message", {}).get("content", "")
+    logger.debug(chat_response)
+    return json.loads(chat_response)
 
 
 if __name__ == "__main__":
