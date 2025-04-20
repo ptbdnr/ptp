@@ -4,8 +4,6 @@ import { MicIcon } from 'lucide-react';
 
 import styles from './ModalDictation.module.css';
 
-
-
 interface ModalDictationProps {
   open: boolean;
   onClose: () => void;
