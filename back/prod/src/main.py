@@ -226,7 +226,7 @@ async def text2ingredients(
     text: str,
 ) -> Ingredients:
     """Generate an image based on text input."""
-    parser = IngredientParser(provider="openai")
+    parser = IngredientParser(provider="hosted_ai")
     return parser.text_to_ingredients(text=text)
 
 if __name__ == "__main__":
