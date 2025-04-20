@@ -38,7 +38,7 @@ export default function Page() {
     toastId.current = toast(`✨ Ingredient validation`, {autoClose: 5000});
   };
   const alertError = (err: string) => {
-      toast.error(`Error: ${err}`, {autoClose: 1500});
+      toast.error(`Error: ${err}`, {autoClose: 2000});
   };
 
   useEffect(() => {

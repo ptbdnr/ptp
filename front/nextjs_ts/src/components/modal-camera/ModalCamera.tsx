@@ -65,7 +65,7 @@ export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: 
     };
 
     const alertCameraError = () => {
-        toast.error("Unable to access the camera. Please check your device permissions or browser compatibility.'", {autoClose: 1500});
+        toast.error("Unable to access the camera. Please check your device permissions or browser compatibility.'", {autoClose: 2000});
       }
 
     if (!open) return null;

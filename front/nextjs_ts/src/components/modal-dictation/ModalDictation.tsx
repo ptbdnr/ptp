@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { MicIcon } from 'lucide-react';
 
@@ -11,7 +11,9 @@ interface ModalDictationProps {
 }
 
 export default function ModalDictation({ open, onClose, onCapture }: ModalDictationProps) {
+  const [listening, setListening] = useState(false);
   const [dictatedText, setDictatedText] = useState('');
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDictatedText(e.target.value);
@@ -20,6 +22,37 @@ export default function ModalDictation({ open, onClose, onCapture }: ModalDictat
   const handleCapture = () => {
     onCapture(dictatedText);
     onClose();
+  };
+
+  const toggleVoiceInput = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert('Speech recognition not supported in this browser.');
+      return;
+    }
+
+    // if already listening, stop
+    if (listening && recognitionRef.current) {
+      recognitionRef.current.stop();
+      return;
+    }
+
+    // otherwise start listening
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-GB';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.continuous = true;
+
+    recognition.onstart = () => setListening(true);
+    recognition.onend = () => setListening(false);
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = event.results[0][0].transcript;
+      setDictatedText((prev) => prev + ' ' + transcript);
+    }
+    recognition.start();
+    recognitionRef.current = recognition;
   };
 
   if (!open) return null;
@@ -31,13 +64,6 @@ export default function ModalDictation({ open, onClose, onCapture }: ModalDictat
           &times;
         </button>
         <h2 className={styles.title}>Dictate or Type</h2>
-        {/* 
-        <p className={styles.instructions}>
-          Tap the microphone icon on your keyboard, if available.
-          <br />
-          Or type your text in the input field.
-        </p> 
-        */}
         <div className={styles.inputContainer}>
           <textarea
             placeholder="Type here..."
@@ -47,21 +73,8 @@ export default function ModalDictation({ open, onClose, onCapture }: ModalDictat
             rows={4}
           />
             <button 
-            className={styles.startButton}
-            onClick={() => {
-              if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-              navigator.mediaDevices.getUserMedia({ audio: true })
-                .then((stream) => {
-                console.log('Microphone access granted:', stream);
-                // You can add further logic to handle the audio stream here
-                })
-                .catch((error) => {
-                console.error('Microphone access denied:', error);
-                });
-              } else {
-              console.error('getUserMedia is not supported in this browser.');
-              }
-            }}
+              className={styles.startButton}
+              onClick={toggleVoiceInput}
             >
             <MicIcon size={'64px'} />
             </button>
