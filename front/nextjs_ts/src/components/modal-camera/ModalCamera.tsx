@@ -1,4 +1,9 @@
+'use client';
+
 import React, { useRef, useEffect } from 'react';
+
+import { ToastContainer, toast } from 'react-toastify';
+
 import styles from './ModalCamera.module.css';
 
 interface ModalCameraProps {
@@ -11,7 +16,7 @@ interface ModalCameraProps {
 export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: ModalCameraProps) {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
+    
     useEffect(() => {
         if (open) {
             navigator.mediaDevices.getUserMedia({
@@ -22,7 +27,10 @@ export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: 
                         videoRef.current.srcObject = stream;
                     }
                 })
-                .catch(err => console.error('Error accessing camera:', err));
+                .catch(err => {
+                    console.error('Error accessing camera:', err);
+                    alertCameraError();
+                });
         } else {
             // Stop video stream on close
             if (videoRef.current && videoRef.current.srcObject) {
@@ -53,8 +61,12 @@ export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: 
                 const imageData = canvasRef.current.toDataURL('image/png').split(',')[1]; // Extract base64 part
                 onCapture(imageData);
             }
-        }
+    }
     };
+
+    const alertCameraError = () => {
+        toast.error("Unable to access the camera. Please check your device permissions or browser compatibility.'", {autoClose: 1500});
+      }
 
     if (!open) return null;
 
@@ -82,6 +94,7 @@ export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: 
                     </button>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }
