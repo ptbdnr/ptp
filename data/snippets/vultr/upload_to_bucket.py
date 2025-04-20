@@ -19,12 +19,17 @@ dotenv.load_dotenv(".env.local")
 HOSTNAME = os.environ.get("VULTR_OBJECT_STORAGE_HOSTNAME")
 ACCESS_KEY = os.environ.get("VULTR_OBJECT_STORAGE_ACCESS_KEY")
 SECRET_KEY = os.environ.get("VULTR_OBJECT_STORAGE_SECRET_KEY")
-BUCKET_NAME = "ptpbcktdist01"
-
-FILEPATH = "./tmp_data/ptp20250414t1859.mp4"
-OBJECT_KEY = "ptp20250414t1859.mp4"
-OBJECT_KEY2 = "ptplatest.mp4"
+BUCKET_NAME = "meal-images"
 ACCESS_LEVEL = "public-read"
+
+PATH_TO_FILES = "./.tmp"
+FILENAMES = [
+    "Chickpea_Salad_e26a0743-93d9-4632-98d8-2871ec05a828.jpg",
+    "Quinoa_Veggie_Bowl_53d13b2d-b7e3-4691-a66a-811849c7aff4.jpg",
+    "Sweet_Potato_Tacos_53629b63-19e1-4910-884e-cd3034b9c602.jpg",
+    "Vegan_Buddha_Bowl_21fe6842-d12a-4ede-9023-6237bd120295.jpg",
+    "Zucchini_Noodles_cdf08385-40fc-44d2-95b2-d632d7b01712.jpg",
+]
 
 # Print env variables
 logger.info("HOSTNAME: %s", HOSTNAME)
@@ -59,10 +64,7 @@ if not bucket_exists:
     logger.info("Bucket %s created", BUCKET_NAME)
 
 # Upload file to bucket
-for object_key in [
-    # OBJECT_KEY,
-    OBJECT_KEY2,
-]:
+for filename in FILENAMES:
     # with Path(FILEPATH).open("rb") as file:
     #     response = client.put_object(
     #         Bucket=BUCKET_NAME,
@@ -72,6 +74,7 @@ for object_key in [
     # )
     # logger.info(response)
 
+    object_key = filename
     signed_url = client.generate_presigned_url(
         "put_object",
         Params={
@@ -83,7 +86,7 @@ for object_key in [
     )
 
     # Upload using signed URL
-    with Path(FILEPATH).open("rb") as file:
+    with Path(f"{PATH_TO_FILES}/{filename}").open("rb") as file:
         content = file.read()
         response = requests.put(
             signed_url,
@@ -92,7 +95,7 @@ for object_key in [
                 # "Content-Type": "image/png",
                 "x-amz-acl": "public-read",
             },
-            timeout=300,
+            timeout=30000,
         )
         response.raise_for_status()
 

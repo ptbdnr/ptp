@@ -116,10 +116,10 @@ Useful links:
 <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
 
 
-| label            | address            | IP Type	| location	     | cost/mo |
-|---	             |---	              |---	    |---	           |--:      |
-| `ptpriptstnl001` | `45.63.43.17`	    | v4 	    | Amsterdam, NL  | $3      |
-| `ptpriptstnl002` | `199.247.26.104`	| v4 	    | Amsterdam, NL  | $3      |
+| label         | address           | IP Type	| location	     | cost/mo |
+|---	        |---	            |---	    |---	         |--:      |
+| `forBackend`  | `45.63.43.17`	    | v4 	    | Amsterdam, NL  | $3      |
+| `forFrontend` | `199.247.26.104`	| v4 	    | Amsterdam, NL  | $3      |
 
 
 ## Model as a Service

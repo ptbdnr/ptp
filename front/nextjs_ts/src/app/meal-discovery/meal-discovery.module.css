@@ -7,27 +7,42 @@
 
 .menu {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-content: center;
+  align-items: center;
   margin: 20px;
-  padding: 20px;
-  gap: 1rem;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  margin-bottom: 120px; /* Adjusted margifn-bottom to prevent overlap with footer */
 }
 
 .menuInstruction {
-  margin: 20px;
-  max-width: 250px;
   text-align: center;
   color: #333;
 }
 
+.menuCards {
+  display: flex;
+  flex-direction: row;
+  max-height: 250;
+  padding: 20px;
+  gap: 10px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+}
+
 .menuCard {
-  max-height: 150;
+  max-height: 250;
   max-width: 150;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
-  margin: 10px;
+}
+
+.clearMenu {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  color: darkgray
 }

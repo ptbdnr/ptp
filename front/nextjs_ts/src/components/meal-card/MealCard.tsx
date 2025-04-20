@@ -4,7 +4,7 @@ import { useProfileContext } from '@/contexts/ProfileContext';
 
 import { getDifficultyOptions } from '@/utils/profile';
 
-import { ThumbsDown, ThumbsUp } from 'lucide-react';
+import { ThumbsDown, ThumbsUp, X } from 'lucide-react';
 
 import styles from './MealCard.module.css';
 
@@ -19,6 +19,9 @@ type MealCardProps = {
     display_suprisetag?: boolean
   },
   display_feedbackbuttons?: boolean;
+  display_cancel?: boolean;
+  onDisliked?: () => void;
+  onLiked?: () => void;
 };
 
 export default function MealCard({ 
@@ -36,7 +39,10 @@ export default function MealCard({
     display_aitag: false,
     display_suprisetag: false
   },
-  display_feedbackbuttons = false 
+  display_feedbackbuttons = false, 
+  display_cancel = false,
+  onDisliked = () => {},
+  onLiked = () => {},
 }: MealCardProps) {
   const { profile } = useProfileContext();
   const difficultyOptions = getDifficultyOptions(profile.difficultyLevel);
@@ -75,11 +81,21 @@ export default function MealCard({
       <div className={`${styles.mealImage} ${styles[`mealImage${card_size}`]}`}>
         {meal.images.placeholder_emoji}
         
+        {display_cancel &&
+        <button
+          className={styles.cancelButton}
+          aria-label="Cancel meal"
+        >
+          <X size={24} />
+        </button>
+        }
+
         {display_feedbackbuttons &&
         <div className={styles.actionButtons}>
           <button
             className={`${styles.actionButton} ${styles.dislikeButton}`}
             aria-label="Dislike meal"
+            onClick={onDisliked}
           >
             <ThumbsDown size={24} />
           </button>
@@ -87,6 +103,7 @@ export default function MealCard({
           <button 
             className={`${styles.actionButton} ${styles.likeButton}`}
             aria-label="Like meal"
+            onClick={onLiked}
           >
             <ThumbsUp size={24} />
           </button>

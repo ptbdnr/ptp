@@ -11,15 +11,10 @@
     color: white;
   }
   
-  .heroImageContainer {
+  .heroContainer {
     position: relative;
     width: 100%;
     height: 200px;
-  }
-  
-  .heroImage {
-    object-fit: cover;
-    filter: brightness(70%);
   }
   
   .heroContent {

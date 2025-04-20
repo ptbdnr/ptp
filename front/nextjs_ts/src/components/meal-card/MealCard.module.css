@@ -5,6 +5,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: relative;
   width: 100%;
+  height: 100%;
 }
 
 .tag {
@@ -63,6 +64,21 @@
   font-size: 75px;
 }
 
+.cancelButton{
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  /* background: #e74c3c; */
+  /* border-radius: 50%; */
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: darkgray
+}
+
 .actionButtons {
   position: absolute;
   left: 0;
@@ -98,6 +114,7 @@
   padding: 1rem;
   background: #333;
   color: white;
+  height: 100%
 }
 
 .mealName {

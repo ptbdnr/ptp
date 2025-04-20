@@ -29,6 +29,11 @@ class Meal(MealPreview):
 
     ingredients: Optional[List[Ingredient]]  # noqa: UP006
 
+class PreviewMeals(BaseModel):
+    """Model for meals."""
+
+    meals: List[MealPreview]
+
 class Meals(BaseModel):
     """Model for meals."""
 
