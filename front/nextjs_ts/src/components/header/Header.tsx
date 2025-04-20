@@ -5,10 +5,11 @@ import { CircleUser, EllipsisVertical } from 'lucide-react';
 import styles from './Header.module.css';
 
 interface HeaderProps {
+  showAvatar?: boolean;
   tagline?: string;
 }
 
-export default function Header({ tagline }: HeaderProps) {
+export default function Header({ tagline, showAvatar = true }: HeaderProps) {
   return (
     <div className={styles.header}>
       <div className={styles.titleLine}>
@@ -22,10 +23,12 @@ export default function Header({ tagline }: HeaderProps) {
         />
         <h1>PLATO</h1>
         </div>
-        <div className={styles.iconsContainer}>
-          <EllipsisVertical size={40} className={styles.menuIcon} />
-          <CircleUser size={40} className={styles.userIcon} />
-        </div>
+        {showAvatar &&
+          <div className={styles.iconsContainer}>
+            <EllipsisVertical size={40} className={styles.menuIcon} />
+            <CircleUser size={40} className={styles.userIcon} />
+          </div>
+      }
       </div>
       {tagline && <p className={styles.tagline}>{tagline}</p>}
     </div>
