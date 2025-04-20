@@ -75,7 +75,12 @@
     border-radius: 0.5rem; /* rounded-lg */
     cursor: pointer;
     font-size: 1rem;
+    transition: background-color 0.2s;
   }
+
+  .startButton:hover, .stopButton:hover {
+    background-color: #ea580c; /* bg-orange-600 */
+}
   
   .cancelButton {
     padding: 0.5rem 1rem;
@@ -109,4 +114,9 @@
     border-radius: 0.5rem; /* rounded-lg */
     cursor: pointer;
     font-size: 1rem;
+    transition: background-color 0.2s;
   }
+
+  .captureButton:hover {
+    background-color: #ea580c; /* bg-orange-600 */
+}

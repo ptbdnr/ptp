@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import { MicIcon } from 'lucide-react';
+import { MicIcon, MicOffIcon } from 'lucide-react';
 
 import styles from './ModalDictation.module.css';
 
@@ -72,12 +72,21 @@ export default function ModalDictation({ open, onClose, onCapture }: ModalDictat
             className={styles.textInput}
             rows={4}
           />
-            <button 
-              className={styles.startButton}
-              onClick={toggleVoiceInput}
-            >
-            <MicIcon size={'64px'} />
-            </button>
+            {listening ? 
+              <button 
+                className={styles.startButton}
+                onClick={toggleVoiceInput}
+              >
+                <MicOffIcon size={'64px'} />
+              </button>
+            : 
+              <button 
+                className={styles.startButton}
+                onClick={toggleVoiceInput}
+              >
+                <MicIcon size={'64px'} />
+              </button>
+            }
         </div>
         <div className={styles.buttons}>
           <button
