@@ -6,27 +6,11 @@ import { useEffect, useState } from 'react';
 import ChatLayout from './chat-layout';
 import { useSession } from 'next-auth/react';
 import { ToastContainer, toast } from 'react-toastify';
-import { ErrorBoundary } from 'react-error-boundary';
 
 import '@llamaindex/chat-ui/styles/markdown.css' // code, latex and custom markdown styling
 import '@llamaindex/chat-ui/styles/pdf.css' // pdf styling
 import 'react-toastify/dist/ReactToastify.css';
 
-// Error fallback component
-function ErrorFallback({ error, resetErrorBoundary }) {
-  return (
-    <div className="p-4 border border-red-300 rounded bg-red-50 text-red-800">
-      <h2 className="text-lg font-semibold mb-2">Something went wrong</h2>
-      <p className="mb-4">{error.message}</p>
-      <button
-        onClick={resetErrorBoundary}
-        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-      >
-        Try again
-      </button>
-    </div>
-  );
-}
 
 export default function ChatPage() {
   const { data: session, status } = useSession();
@@ -70,7 +54,6 @@ export default function ChatPage() {
 
   return (
     <ChatLayout>
-      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => window.location.reload()}>
         <div className="flex flex-col h-[calc(100vh-160px)] overflow-hidden bg-white">
           <div className="flex-1 overflow-y-auto px-4 pb-4">
             <ChatSection 
@@ -88,7 +71,6 @@ export default function ChatPage() {
             />
           </div>
         </div>
-      </ErrorBoundary>
       <ToastContainer position="bottom-center" autoClose={3000} />
     </ChatLayout>
   );

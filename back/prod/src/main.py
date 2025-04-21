@@ -6,9 +6,10 @@ import os
 import uuid
 from datetime import date
 from typing import Annotated, cast, List, Dict
+import json
 
 import dotenv
-from fastapi import FastAPI, Form, HTTPException, Path, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Path, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -20,6 +21,7 @@ from src.orchestrator.meal_detailer import MealDetailer
 from src.recommender.meal_generator import MealGenerator
 from src.text_to_img.meal_image import MealImageGenerator
 from src.text_to_schema.ingredient_parser import IngredientParser
+from src.chat.chat_handler import ChatHandler
 
 from src.chat.chat_handler import ChatHandler
 
@@ -265,30 +267,56 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             # Receive message from client
             data = await websocket.receive_json()
+            logger.debug(f"WebSocket received: {json.dumps(data)}")
+            
             messages = data.get("messages", [])
             stream = data.get("stream", True)
             
-            if stream:
-                # Stream response
-                async for chunk in await chat_handler.chat_complete(
-                    messages=messages,
-                    stream=True
-                ):
-                    await websocket.send_text(chunk)
-                # Send end marker
+            try:
+                if stream:
+                    # Stream response with better error handling
+                    response_generator = await chat_handler.chat_complete(
+                        messages=messages,
+                        stream=True
+                    )
+                    
+                    sent_chunks = False
+                    try:
+                        async for chunk in response_generator:
+                            if chunk:  # Only send non-empty chunks
+                                sent_chunks = True
+                                await websocket.send_text(chunk)
+                    except Exception as stream_error:
+                        logger.error(f"Streaming error: {str(stream_error)}")
+                        if not sent_chunks:
+                            # If we didn't send any chunks, send a fallback message
+                            await websocket.send_text("I'm sorry, I'm having trouble connecting right now.")
+                    
+                    # Always send end marker after completion
+                    await websocket.send_json({"type": "end"})
+                else:
+                    # Send complete response
+                    response = await chat_handler.chat_complete(
+                        messages=messages,
+                        stream=False
+                    )
+                    await websocket.send_text(response)
+            except Exception as e:
+                logger.error(f"Chat error: {str(e)}")
+                # Send error and end marker
+                await websocket.send_json({"type": "error", "error": str(e)})
                 await websocket.send_json({"type": "end"})
-            else:
-                # Send complete response
-                response = await chat_handler.chat_complete(
-                    messages=messages,
-                    stream=False
-                )
-                await websocket.send_text(response)
     except WebSocketDisconnect:
         logger.info("Client disconnected")
     except Exception as e:
         logger.error(f"WebSocket error: {str(e)}")
-        await websocket.close()
+        try:
+            await websocket.send_json({"type": "error", "error": str(e)})
+            await websocket.send_json({"type": "end"})
+        except:
+            pass
+        finally:
+            await websocket.close()
 
 @app.post("/api/chat")
 async def chat(

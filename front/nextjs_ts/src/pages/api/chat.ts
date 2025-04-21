@@ -31,11 +31,13 @@ interface WebSocketMessage {
 }
 
 // Validate request body
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function validateRequest(body: any): body is ChatRequest {
   if (!body || typeof body !== 'object') return false;
   if (!Array.isArray(body.messages)) return false;
   if (body.messages.length === 0) return false;
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return body.messages.every((msg: any) => (
     msg &&
     typeof msg === 'object' &&
@@ -46,7 +48,6 @@ function validateRequest(body: any): body is ChatRequest {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const func_name = 'chat';
   console.log('[Chat API] Starting request handling');
   
   if (req.method !== 'POST') {
@@ -72,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader('x-vercel-ai-data-stream', 'v1');
 
     // Create WebSocket connection to backend
-    const backendUrl = 'http://backend:80';
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://backend:80';
     const wsUrl = backendUrl.replace('http://', 'ws://');
     console.log('[Chat API] Connecting to WebSocket:', wsUrl);
     
@@ -101,23 +102,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       hasError = true;
       console.error('[Chat API] Error:', error);
       sendFinishStep(false, error);
-      const errorChunk = `e:"${error}"\n`;
+      // Use JSON.stringify for proper escaping
+      const errorChunk = `3:${JSON.stringify(error)}\n`;
       console.log('[Chat API] Sending error chunk:', errorChunk);
       res.write(errorChunk);
       res.end();
-    };
-
-    const flushResponse = () => {
-      if (currentMessage) {
-        try {
-          const textChunk = `0:"${currentMessage}"\n`;
-          console.log('[Chat API] Sending chunk:', textChunk);
-          res.write(textChunk);
-          currentMessage = '';
-        } catch (e) {
-          console.error('[Chat API] Error flushing response:', e);
-        }
-      }
     };
 
     const cleanupAndEnd = () => {
@@ -125,10 +114,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       
       try {
         isStreaming = false;
-        flushResponse();
-        sendFinishStep(false);
+        
+        // Send the final finish message
         const finishMessage = {
-          finishReason: 'stop',
+          finishReason: 'stop', 
           usage: { promptTokens: 0, completionTokens: 0 }
         };
         const finishChunk = `d:${JSON.stringify(finishMessage)}\n`;
@@ -138,9 +127,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       } catch (e) {
         console.error('[Chat API] Error during cleanup:', e);
         try {
-          res.end();
-        } catch (e) {
-          // Final attempt to close response
+          // Attempt to end response even if error occurs during cleanup
+          if (!res.writableEnded) {
+             res.end();
+          }
+        } catch (finalError) {
+          console.error('[Chat API] Final attempt to close response failed:', finalError);
         }
       }
     };
@@ -154,7 +146,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log('[Chat API] WebSocket connected, sending messages');
       try {
         ws.send(JSON.stringify({ messages, stream: true }));
-      } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (_error) {
         sendError('Failed to send messages to backend');
       }
     });
@@ -162,36 +155,56 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     ws.on('message', (data: WebSocket.Data) => {
       try {
         const rawMessage = data.toString();
-        console.log('[Chat API] Raw WebSocket message:', rawMessage);
+        console.log('[Chat API] Raw WebSocket message:', JSON.stringify(rawMessage));
 
-        // Check if this is a control message
+        // Check if this is a control message from backend (e.g., end signal)
         if (rawMessage.startsWith('{')) {
           try {
             const message = JSON.parse(rawMessage) as WebSocketMessage;
             if (message.type === 'end') {
-              cleanupAndEnd();
+              // If there's any remaining buffered text, flush it before ending
+              if (currentMessage) {
+                 // Send any remaining text
+                 const textChunk = `0:${JSON.stringify(currentMessage)}\n`;
+                 console.log('[Chat API] Sending final text chunk:', textChunk);
+                 res.write(textChunk);
+                 currentMessage = '';
+                 
+                 // Indicate last step before final message
+                 sendFinishStep(false);
+              }
+              cleanupAndEnd(); // Send d:{...} and close
               return;
             }
-          } catch (e) {
+            // If it's a non-end JSON message, we shouldn't receive this in our current setup
+            // But keep it here for future extensions
+            console.log('[Chat API] Received JSON message (not end):', message);
+          } catch {
             // Not a valid JSON control message, treat as text
-            currentMessage += rawMessage;
+            console.log('[Chat API] Invalid JSON, treating as text:', rawMessage);
+            
+            // Send the raw message directly as a text chunk
+            // This is important as Python sends plain text, not JSON
+            const textChunk = `0:${JSON.stringify(rawMessage)}\n`;
+            console.log('[Chat API] Sending text chunk:', textChunk);
+            res.write(textChunk);
+            
+            // Signal continuation
+            sendFinishStep(true);
           }
         } else {
-          // Accumulate the message
-          currentMessage += rawMessage;
-        }
-
-        // Send the accumulated message on sentence boundaries
-        if (currentMessage.length > 0 && (
-          currentMessage.endsWith('. ') || 
-          currentMessage.endsWith('! ') || 
-          currentMessage.endsWith('? ') ||
-          currentMessage.endsWith('\n')
-        )) {
-          flushResponse();
+          // It's a plain text chunk from Python (word + space)
+          // Important: We send the raw text as is, properly JSON encoded
+          const textChunk = `0:${JSON.stringify(rawMessage)}\n`;
+          console.log('[Chat API] Sending text chunk:', textChunk);
+          res.write(textChunk);
+          
+          // Signal that more content is coming (required for the Vercel SDK)
           sendFinishStep(true);
         }
+
       } catch (error) {
+        console.error('[Chat API] Error processing WebSocket message:', error);
         sendError('Failed to process message');
       }
     });
