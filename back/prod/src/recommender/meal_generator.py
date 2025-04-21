@@ -9,7 +9,7 @@ from typing import Literal, Optional
 
 from src.ai_capability.textgen import textgen
 from src.models.ingredients import Ingredient
-from src.models.meals import Meal, MealImages, MealPreview, Meals
+from src.models.meals import Meal, MealImagesPreview, MealPreview, Meals
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -109,7 +109,7 @@ class MealGenerator:
             meals_with_unique_id = []
             for meal in meals_with_any_id:
                 logger.debug("Meal (%s): %s", type(meal), meal)
-                images = MealImages(placeholder_emoji=meal.get("images", {}).get("placeholder_emoji", "🍽️"))
+                images = MealImagesPreview(placeholder_emoji=meal.get("images", {}).get("placeholder_emoji", "🍽️"))
                 meal_preview = MealPreview(
                     id=uuid.uuid4().hex,
                     name=meal["name"],
