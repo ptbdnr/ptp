@@ -2,7 +2,9 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { usePantryContext } from '@/contexts/PantryContext';
+
 import { ToastContainer, toast, Id } from 'react-toastify';
+import { notifyToastCustomProgress } from "@/components/toast-customprogress/ToastCustomProgress";
 
 import { Ingredient } from '@/types/ingredients';
 
@@ -23,22 +25,18 @@ export default function Page() {
   const { ingredients, setIngredients, isLoading } = usePantryContext();
 
   const [newPantryItems, setNewPantryItems] = useState<Ingredient[]>([]);
-  
   const toastId = useRef<Id | undefined>(undefined);
+  
   const notifyImageProcessStart = () => {
-    if (toastId.current) {
-      toast.dismiss(toastId.current);
-    }
-    toastId.current = toast("👀 AI vision", {autoClose: 8000});
-  }
-  const notifyTextProcessStart = () => {
-    if (toastId.current) {
-      toast.dismiss(toastId.current);
-    }
-    toastId.current = toast(`✨ Ingredient validation`, {autoClose: 5000});
+    notifyToastCustomProgress('👀 AI vision', 10000, toastId, () => inputText.length > 0);
   };
+  
+  const notifyTextProcessStart = () => {
+    notifyToastCustomProgress('✨ Ingredient validation', 5000, toastId, () => newPantryItems.length > 0);
+  };
+  
   const alertError = (err: string) => {
-      toast.error(`Error: ${err}`, {autoClose: 2000});
+      toast.error(`${err}`, {autoClose: 2000});
   };
 
   useEffect(() => {
@@ -60,7 +58,7 @@ export default function Page() {
 
   async function handleCapture (imageData: string) {
     setCameraOpen(false);
-    notifyImageProcessStart()
+    notifyImageProcessStart();
     try {
       const res = await fetch('/api/img_to_text', {
         method: 'POST',
