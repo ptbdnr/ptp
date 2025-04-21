@@ -15,6 +15,7 @@ interface ModalCameraProps {
 
 const WIDTH = 430;
 const HEIGHT = 250;
+const objectContentType = 'image/png'; // "image/jpeg"
 
 const videoConstraints = {
     width: WIDTH,
@@ -27,7 +28,7 @@ export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: 
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     
     const handleCapture = React.useCallback(() => {
-        const imageSrc = webcamRef?.current?.getScreenshot();
+        const imageSrc = webcamRef.current?.getScreenshot();
         if (imageSrc) {
             onCapture(imageSrc);
         };
@@ -46,7 +47,7 @@ export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: 
                     audio={false}
                     width={WIDTH}
                     height={HEIGHT}
-                    screenshotFormat="image/jpeg"
+                    screenshotFormat={objectContentType}
                     videoConstraints={videoConstraints}
                     ref={webcamRef}
                 />

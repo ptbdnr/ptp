@@ -28,7 +28,7 @@ export default function Page() {
   const toastId = useRef<Id | undefined>(undefined);
   
   const notifyImageProcessStart = () => {
-    notifyToastCustomProgress('👀 AI vision', 10000, toastId, () => inputText.length > 0);
+    notifyToastCustomProgress('👀 AI vision', 15000, toastId, () => inputText.length > 0);
   };
   
   const notifyTextProcessStart = () => {
