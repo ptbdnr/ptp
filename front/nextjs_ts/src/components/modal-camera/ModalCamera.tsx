@@ -25,7 +25,9 @@ export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: 
     
     const handleCapture = React.useCallback(() => {
         const imageSrc = webcamRef?.current?.getScreenshot();
-        imageSrc && onCapture(imageSrc);
+        if (imageSrc) {
+            onCapture(imageSrc);
+        };
     }, [webcamRef]);
 
     if (!open) return null;
