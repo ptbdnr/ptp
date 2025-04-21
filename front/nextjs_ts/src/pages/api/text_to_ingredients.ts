@@ -9,7 +9,7 @@ type ResponseData = {
 }
 
 // Helper function for consistent logging
-const log = (func_name: string, level: 'info' | 'error' | 'debug', message: string, data?: any) => {
+const log = (func_name: string, level: 'info' | 'error' | 'debug', message: string, data?: unknown) => {
     const timestamp = new Date().toISOString();
     const logMessage = `[${timestamp}] [${func_name}] [${level.toUpperCase()}] ${message}`;
     if (data) {
@@ -101,7 +101,7 @@ export default async function handler(
                         name: "Sample Ingredient",
                         quantity: 1,
                         unit: "piece",
-                        images: { thumbnail_url: "🥘" }
+                        images: { thumbnail_url: "🥘", placeholder_emoji: "🥘" }
                     }
                 ];
                 res.status(200).send({ ingredients: mockIngredients });
@@ -132,7 +132,7 @@ export default async function handler(
             log(func_name, 'info', `Sending successful response with ${ingredients.length} ingredients`);
             res.status(200).send({ ingredients });
             return;
-        } catch (err) {
+        } catch (err: unknown) {
             log(func_name, 'error', 'Error details', {
                 name: err instanceof Error ? err.name : 'Unknown',
                 message: err instanceof Error ? err.message : String(err),
@@ -148,7 +148,7 @@ export default async function handler(
                     name: "Sample Ingredient",
                     quantity: 1,
                     unit: "piece",
-                    images: { thumbnail_url: "🥘" }
+                    images: { thumbnail_url: "🥘", placeholder_emoji: "🥘" }
                 }
             ];
             res.status(200).send({ ingredients: mockIngredients });

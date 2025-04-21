@@ -11,3 +11,5 @@ boto3==1.37.33
 lumaai==1.7.3
 mistralai==1.6.0
 openai==1.75.0
+aiohttp==3.8.5
+sseclient-py==1.7.2

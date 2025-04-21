@@ -3,7 +3,7 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./front/nextjs_ts
+      context: ../front/nextjs_ts
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -20,7 +20,7 @@ services:
 
   backend:
     build:
-      context: ./back/sample
+      context: ../back/prod
       dockerfile: Dockerfile
     ports:
       - "8000:80" # Map to 8000 externally to avoid conflicts
