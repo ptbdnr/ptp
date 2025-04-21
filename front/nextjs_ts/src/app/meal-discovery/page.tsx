@@ -32,42 +32,50 @@ export default function Page() {
   const surpriseMeal: Meal = mockupSupriseMeal;
   const [likedMeals, setLikedMeals] = useState<Meal[]>([]);
   const router = useRouter();
-  const [ aiProcess, setAiProcess ] = useState<boolean>(false);  
   const toastId = useRef<Id | undefined>(undefined);
   
   const notifyAIRecommendationStart = () => {
     if (toastId.current) {
       toast.dismiss(toastId.current);
-    }
+    };
 
     const startTime = Date.now();
-    const duration = 14000; // 14s total
+    const duration = 10000; // 14s total
     const interval = 50; // Update every 50ms
 
-    const currtoastId = toast.loading('✨ Smart Recipe Generator', {
+    const currToastId = toast.loading('✨ Smart Recipe Generator', {
       autoClose: duration,
-      closeButton: false,
+      closeButton: true,
     });
-    toastId.current = currtoastId;
+    toastId.current = currToastId;
 
-    const timer = setInterval(() => {
+    const toastTimer = setInterval((stage: string) => {
       const elapsed = Date.now() - startTime;
-      const progress = calculateProgress(elapsed, duration);
-      
-      toast.update(currtoastId, {
-        progress: Math.min(progress, 0.99), // Never reach 1.0
-        render: `✨ Smart Recipe Generator`,
-      });
 
-      if (!aiProcess || elapsed >= duration ) clearInterval(timer);
+      const progress = Math.min(calculateProgress(elapsed, duration), 0.98); // Never reach end
+      toast.update(currToastId, {
+        progress: progress,
+        render: `✨ Smart Recipe Generator (${(progress * 100).toFixed(0)}%)`,
+      });
+      
+      if (elapsed >= duration || aiMeals.length > 0) {
+        clearInterval(toastTimer);
+        toast.dismiss(currToastId);
+      }
     }, interval);
+  }
+
+  const notifyAIRecommendationError = () => {
+    const currToastId = toast.error('✨ Smart Recipe Generator Error', {
+      autoClose: 3000,
+      closeButton: true,
+    });
   }
 
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        setAiProcess(true);
-        notifyAIRecommendationStart();
+        !aiMeals.length  && notifyAIRecommendationStart();
         const res = await fetch('/api/meals', {
           method: 'POST',
           headers: {
@@ -79,9 +87,9 @@ export default function Page() {
             ingredients: ingredients.ingredients,
            }),
         });
-        setAiProcess(false);
         toast.dismiss(toastId.current);
         if (!res.ok) {
+          notifyAIRecommendationError();
           throw new Error('Failed to fetch meals');
         }
         const data = await res.json();
