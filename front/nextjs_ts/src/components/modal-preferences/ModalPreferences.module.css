@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: center;
     z-index: 50;
+    overflow-y: scroll;
 }
 
 .modal {
@@ -47,7 +48,7 @@
 .checkboxGroup {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem; /* space-y-3 */
+    gap: 0.2rem;
 }
 
 .optionLabel {
