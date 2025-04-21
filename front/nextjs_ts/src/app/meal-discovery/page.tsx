@@ -44,7 +44,7 @@ export default function Page() {
   }
 
   const notifyAIRecommendationError = () => {
-    const currToastId = toast.error('✨ Smart Recipe Generator Error', {
+    toast.error('✨ Smart Recipe Generator Error', {
       autoClose: 3000,
       closeButton: true,
     });
@@ -53,7 +53,9 @@ export default function Page() {
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        !aiMeals.length  && notifyAIRecommendationStart();
+        if (!aiMeals.length) {
+          notifyAIRecommendationStart();
+        };
         const res = await fetch('/api/meals', {
           method: 'POST',
           headers: {

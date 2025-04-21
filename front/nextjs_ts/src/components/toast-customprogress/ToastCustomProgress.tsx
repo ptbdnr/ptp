@@ -22,7 +22,7 @@ export const notifyToastCustomProgress = (
     });
     toastId.current = currToastId;
 
-    const toastTimer = setInterval((stage: string) => {
+    const toastTimer = setInterval(() => {
       const elapsed_millis = Date.now() - startTime;
 
       const progress = Math.min(calculateProgress(elapsed_millis, duration_millis), 0.98); // Never reach end
