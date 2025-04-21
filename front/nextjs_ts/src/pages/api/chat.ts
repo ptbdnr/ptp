@@ -1,6 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import WebSocket from 'ws';
 
+// Define a type for the response we're using that includes flush method
+type ResponseWithFlush = NextApiResponse & {
+  flush?: () => void;
+  flushHeaders?: () => void;
+};
+
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
@@ -31,24 +37,39 @@ interface WebSocketMessage {
 }
 
 // Validate request body
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function validateRequest(body: any): body is ChatRequest {
+function validateRequest(body: unknown): body is ChatRequest {
   if (!body || typeof body !== 'object') return false;
-  if (!Array.isArray(body.messages)) return false;
-  if (body.messages.length === 0) return false;
+  const reqBody = body as Partial<ChatRequest>;
+  if (!Array.isArray(reqBody.messages)) return false;
+  if (reqBody.messages.length === 0) return false;
   
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return body.messages.every((msg: any) => (
-    msg &&
-    typeof msg === 'object' &&
-    typeof msg.role === 'string' &&
-    ['user', 'assistant'].includes(msg.role) &&
-    typeof msg.content === 'string'
-  ));
+  return reqBody.messages.every((msg: unknown) => {
+    if (!msg || typeof msg !== 'object') return false;
+    const message = msg as Partial<ChatMessage>;
+    return (
+      typeof message.role === 'string' &&
+      ['user', 'assistant'].includes(message.role) &&
+      typeof message.content === 'string'
+    );
+  });
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: ResponseWithFlush) {
   console.log('[Chat API] Starting request handling');
+  
+  // Set no delay to ensure data is sent immediately
+  if (res.socket) {
+    res.socket.setNoDelay(true);
+  }
+  
+  // Helper to write and flush if possible
+  const writeAndFlush = (chunk: string) => {
+    res.write(chunk);
+    // Enable immediate flush in Node.js
+    if (typeof res.flush === 'function') {
+      res.flush();
+    }
+  };
   
   if (req.method !== 'POST') {
     console.error(`[Chat API] Method not allowed: ${req.method}`);
@@ -60,7 +81,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error('[Chat API] Invalid request body:', req.body);
     return res.status(400).json({ error: 'Invalid request body' });
   }
-
+  
   const { messages } = req.body;
   console.log('[Chat API] Received messages:', JSON.stringify(messages, null, 2));
 
@@ -71,6 +92,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
     res.setHeader('x-vercel-ai-data-stream', 'v1');
+    // Flush headers to establish streaming connection
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (typeof (res as any).flushHeaders === 'function') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (res as any).flushHeaders();
+    }
 
     // Create WebSocket connection to backend
     const backendUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://backend:80';
@@ -91,7 +118,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         };
         const finishStepChunk = `e:${JSON.stringify(finishStep)}\n`;
         console.log('[Chat API] Sending finish step:', finishStepChunk);
-        res.write(finishStepChunk);
+        writeAndFlush(finishStepChunk);
       } catch (e) {
         console.error('[Chat API] Error sending finish step:', e);
       }
@@ -105,7 +132,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Use JSON.stringify for proper escaping
       const errorChunk = `3:${JSON.stringify(error)}\n`;
       console.log('[Chat API] Sending error chunk:', errorChunk);
-      res.write(errorChunk);
+      writeAndFlush(errorChunk);
       res.end();
     };
 
@@ -122,7 +149,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         };
         const finishChunk = `d:${JSON.stringify(finishMessage)}\n`;
         console.log('[Chat API] Sending finish message:', finishChunk);
-        res.write(finishChunk);
+        writeAndFlush(finishChunk);
         res.end();
       } catch (e) {
         console.error('[Chat API] Error during cleanup:', e);
@@ -167,7 +194,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                  // Send any remaining text
                  const textChunk = `0:${JSON.stringify(currentMessage)}\n`;
                  console.log('[Chat API] Sending final text chunk:', textChunk);
-                 res.write(textChunk);
+                 writeAndFlush(textChunk);
                  currentMessage = '';
                  
                  // Indicate last step before final message
@@ -187,7 +214,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // This is important as Python sends plain text, not JSON
             const textChunk = `0:${JSON.stringify(rawMessage)}\n`;
             console.log('[Chat API] Sending text chunk:', textChunk);
-            res.write(textChunk);
+            writeAndFlush(textChunk);
             
             // Signal continuation
             sendFinishStep(true);
@@ -197,7 +224,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           // Important: We send the raw text as is, properly JSON encoded
           const textChunk = `0:${JSON.stringify(rawMessage)}\n`;
           console.log('[Chat API] Sending text chunk:', textChunk);
-          res.write(textChunk);
+          writeAndFlush(textChunk);
           
           // Signal that more content is coming (required for the Vercel SDK)
           sendFinishStep(true);
