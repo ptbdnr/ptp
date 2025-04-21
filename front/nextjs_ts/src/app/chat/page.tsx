@@ -11,6 +11,20 @@ import '@llamaindex/chat-ui/styles/markdown.css' // code, latex and custom markd
 import '@llamaindex/chat-ui/styles/pdf.css' // pdf styling
 import 'react-toastify/dist/ReactToastify.css';
 
+// Debug wrapper to log ChatSection props
+function DebugChatSection({ handler, className }: { handler: ReturnType<typeof useChat>; className?: string }) {
+  // Log whenever messages update
+  useEffect(() => {
+    console.debug('[DebugChatSection] messages:', handler.messages);
+    const last = handler.messages[handler.messages.length - 1];
+    console.debug('[DebugChatSection] last message parts:', last?.parts);
+  }, [handler.messages]);
+  // Log status updates
+  useEffect(() => {
+    console.debug('[DebugChatSection] status:', handler.status);
+  }, [handler.status]);
+  return <ChatSection handler={handler} className={className} />;
+}
 
 export default function ChatPage() {
   const { data: session, status } = useSession();
@@ -36,10 +50,24 @@ export default function ChatPage() {
       console.error('Chat error:', error);
       toast.error('Failed to send message. Please try again.');
     },
+    onResponse: (res) => console.debug('[ChatPage] onResponse:', res),
+    onFinish: (message, { usage, finishReason }) => console.debug('[ChatPage] onFinish:', message, usage, finishReason),
+    experimental_throttle: 50,
     body: {
       stream: true,
     },
   });
+
+  // Override isLoading: hide loader once streaming begins
+  const uiHandler = { ...handler, isLoading: handler.status === 'submitted' };
+
+  // Log message and status updates for debugging
+  useEffect(() => {
+    console.debug('[ChatPage] messages updated:', handler.messages);
+  }, [handler.messages]);
+  useEffect(() => {
+    console.debug('[ChatPage] status updated:', handler.status);
+  }, [handler.status]);
 
   // Show loading state while session is loading
   if (!isReady) {
@@ -56,8 +84,9 @@ export default function ChatPage() {
     <ChatLayout>
         <div className="flex flex-col h-[calc(100vh-160px)] overflow-hidden bg-white">
           <div className="flex-1 overflow-y-auto px-4 pb-4">
-            <ChatSection 
-              handler={handler}
+            {/* Use DebugChatSection to trace render timings */}
+            <DebugChatSection
+              handler={uiHandler}
               className="flex flex-col gap-4 h-full
                 [&_.user-avatar]:flex [&_.user-avatar]:h-8 [&_.user-avatar]:w-8 [&_.user-avatar]:items-center [&_.user-avatar]:justify-center [&_.user-avatar]:border [&_.user-avatar]:border-gray-200 [&_.user-avatar]:rounded-full
                 [&_.flex-1.flex-col.gap-5>div]:mb-4 [&_.flex-1.flex-col.gap-5>div:last-child]:mb-0
