@@ -52,39 +52,39 @@ class MealDetailer:
         logger.debug("meal: %s", meal)
         self.save_meal(meal=meal)
 
-        # ingredients: list[Ingredient] = self.get_ingredients(
-        #     name=name,
-        #     description=description,
-        #     placeholder_emoji=placeholder_emoji,
-        # )
-        # meal.ingredients = ingredients
-        # self.save_meal(meal=meal)
+        ingredients: list[Ingredient] = self.get_ingredients(
+            name=name,
+            description=description,
+            placeholder_emoji=placeholder_emoji,
+        )
+        meal.ingredients = ingredients
+        self.save_meal(meal=meal)
 
-        # instructions: str = get_instructions(
-        #     name=name,
-        #     description=description,
-        #     ingredients=ingredients,
-        # )
-        # meal.instructions = instructions
-        # save_meal(meal=meal)
+        instructions: str = self.get_instructions(
+            name=name,
+            description=description,
+            ingredients=ingredients,
+        )
+        meal.instructions = instructions
+        self.save_meal(meal=meal)
 
-        # hero_image_url: str = get_hero_image_url(
-        #     name=name,
-        #     description=description,
-        #     ingredients=ingredients,
-        #     instructions=instructions,
-        # )
-        # meal.images.hero_image_url = hero_image_url
-        # save_meal(meal=meal)
+        image_hero_url: str = self.get_hero_image_url(
+            name=name,
+            description=description,
+            ingredients=ingredients,
+            instructions=instructions,
+        )
+        meal.images.hero_url = image_hero_url
+        self.save_meal(meal=meal)
 
-        # hero_video_url: str = get_hero_video_url(
-        #     name=name,
-        #     description=description,
-        #     ingredients=ingredients,
-        #     instructions=instructions,
-        # )
-        # meal.images.hero_video_url = hero_video_url
-        # save_meal(meal=meal)
+        video_hero_url: str = self.get_hero_video_url(
+            name=name,
+            description=description,
+            ingredients=ingredients,
+            instructions=instructions,
+        )
+        meal.videos.hero_url = video_hero_url
+        self.save_meal(meal=meal)
 
     def get_ingredients(
         self,
@@ -140,10 +140,11 @@ class MealDetailer:
             "_id": meal.id,
             "name": meal.name,
             "description": meal.description,
+            "ingredients": [i.model_dump_json() for i in meal.ingredients],
+            "instructions": meal.instructions,
+            "images": meal.images.model_dump_json(),
+            "videos": meal.videos.model_dump_json(),
         }
-        for key in ["ingredients", "instructions", "images", "videos"]:
-            if key in meal:
-                item[key] = meal[key]
         response = self.nosql_client.insert(
             collection_name=COLLECTION_NAME,
             payload=item,
