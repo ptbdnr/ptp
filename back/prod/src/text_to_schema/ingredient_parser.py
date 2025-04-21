@@ -58,11 +58,13 @@ class IngredientParser:
         text: str,
     ) -> dict:
         """Convert text to ingredients."""
-        schema = Ingredient.model_json_schema(by_alias=False)
-        system_msg = "Extract the ingredients information."
+        schema = Ingredients.model_json_schema(by_alias=False)
+        system_msg = "Extract ingredients information."
         prompt_template = dedent("""
-            {text}.
-            Extract the ingredients in short JSON object. Don't include any other information. Be concise.
+            Given the following text:
+            {text}
+
+            Extract ingredients in short JSON object. Don't include any other information. Be concise.
             The JSON object should be in the following format:
             {schema_str}
         """)
@@ -82,11 +84,7 @@ class IngredientParser:
             schema=schema,
         )
 
-        if not isinstance(data_obj, list):
-            data_obj = [data_obj]
-        logger.debug("Parsed data (%s): %s", type(data_obj), [json.dumps(d) for d in data_obj])
-        ingredients : Ingredients = Ingredients(ingredients=data_obj)
-
-        return ingredients
+        logger.debug("Parsed data (%s): %s", type(data_obj), json.dumps(data_obj))
+        return Ingredients(**data_obj)
 
 
