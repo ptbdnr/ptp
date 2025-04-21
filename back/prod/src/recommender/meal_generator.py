@@ -11,11 +11,12 @@ from src.ai_capability.textgen import textgen
 from src.models.ingredients import Ingredient
 from src.models.meals import Meal, MealImagesPreview, MealPreview, Meals
 
+logging.basicConfig(
+    format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
+    datefmt="%Y-%m-%d:%H:%M:%S",
+    level=logging.DEBUG,
+)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-logger.addHandler(handler)
 
 UNIQUE_MEAL_ID_REQUIRED = True
 

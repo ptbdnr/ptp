@@ -1,9 +1,8 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
-from datetime import date
-import asyncio
 from typing import Annotated, cast
 
 import dotenv
@@ -15,16 +14,17 @@ from src.models.equipments import Equipment, Equipments
 from src.models.ingredients import Ingredient, Ingredients
 from src.models.meals import Meals, PreviewMeals
 from src.models.preferences import UserPreferences
+from src.orchestrator.meal_detailer import MealDetailer
 from src.recommender.meal_generator import MealGenerator
 from src.text_to_img.meal_image import MealImageGenerator
 from src.text_to_schema.ingredient_parser import IngredientParser
-from src.orchestrator.meal_detailer import MealDetailer
 
+logging.basicConfig(
+    format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
+    datefmt="%Y-%m-%d:%H:%M:%S",
+    level=logging.DEBUG,
+)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-logger.addHandler(handler)
 
 dotenv.load_dotenv("./.env.local")
 

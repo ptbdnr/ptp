@@ -7,11 +7,12 @@ from typing import Optional
 import dotenv
 from pymongo import MongoClient, ReturnDocument, database
 
+logging.basicConfig(
+    format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
+    datefmt="%Y-%m-%d:%H:%M:%S",
+    level=logging.DEBUG,
+)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-logger.addHandler(handler)
 
 dotenv.load_dotenv(".env.local")
 
@@ -69,9 +70,9 @@ class NoSQLMongoClient:
         """Insert a payload."""
         collection = self.create_collection(collection_name=collection_name)
         # if payload contains an _id, use it as filter for upsert, otherwise use payload as filter
-        filter = {"_id": payload["_id"]} if "_id" in payload else payload
+        _filter = {"_id": payload["_id"]} if "_id" in payload else payload
         return collection.find_one_and_update(
-            filter,
+            _filter,
             {"$set": payload},
             upsert=True,
             return_document=ReturnDocument.AFTER,
@@ -85,32 +86,3 @@ class NoSQLMongoClient:
         """Find items."""
         collection = self.create_collection(collection_name=collection_name)
         return collection.find(filter=filter)
-
-
-# mongodb_client = NoSQLMongoClient()
-# mongodb_client.create_collection(
-#     collection_name=COLLECTION_NAME,
-#     drop_old_collection=True,
-# )
-
-
-# item = {
-#     "_id": meal["id"],
-#     "name": meal["name"],
-#     "description": meal["description"],
-# }
-# for key in ["ingredients", "instructions", "images", "videos"]:
-#     if key in meal:
-#         item[key] = meal[key]
-# response = mongodb_client.insert(
-#     collection_name=COLLECTION_NAME,
-#     payload=item,
-# )
-# logger.debug("Inserted item %s", response)
-
-# # list items
-# meals = mongodb_client.find(
-#     collection_name=COLLECTION_NAME,
-#     filter={},
-# )
-# logger.info("Meals %s", meals)

@@ -2,16 +2,18 @@ from __future__ import annotations
 
 import json
 import logging
+from typing import Optional
 
 import requests
 from mistralai import Mistral
 from openai import OpenAI
 
+logging.basicConfig(
+    format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
+    datefmt="%Y-%m-%d:%H:%M:%S",
+    level=logging.DEBUG,
+)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-logger.addHandler(handler)
 
 ENDPOINT_ROUTE = "/v1/chat/completions"
 
@@ -22,7 +24,7 @@ def textgen(
         endpoint: str,
         system_msg: str,
         prompt: str,
-        schema: dict,
+        schema: Optional[dict] = None,
 ) -> dict:
     """Route the request to the appropriate provider."""
     if provider == "openai":
@@ -58,7 +60,7 @@ def mistral_textgen(
         model_name: str,
         system_msg: str,
         prompt: str,
-        schema: dict,
+        schema: Optional[dict] = None,
 ) -> dict:
     """Handle request with Mistral API."""
     mistral_client = Mistral(api_key=api_key)
@@ -71,20 +73,19 @@ def mistral_textgen(
             {"role": "system", "content": system_msg},
             {"role": "user", "content": prompt},
         ],
-        response_format = {"type": "json_object"},
+        response_format = {"type": "json_object"} if schema else None,
         temperature = 0,
     )
-    logger.debug("Chat response: %s", chat_response)
-
-    logger.debug(chat_response.choices[0].message.content)
-    return json.loads(chat_response.choices[0].message.content)
+    logger.debug("Mistral chat response: %s", chat_response)
+    content = chat_response.choices[0].message.content
+    return json.loads(content) if schema else {"content": content}
 
 def openai_textgen(
         api_key: str,
         model_name: str,
         system_msg: str,
         prompt: str,
-        schema: dict,
+        schema: Optional[dict] = None,
 ) -> dict:
     """Handle request with OpenAI API."""
     openai_client = OpenAI(api_key=api_key)
@@ -100,19 +101,19 @@ def openai_textgen(
                 "type": "json_schema",
                 "name": "meals",
                 "schema": schema,
-            },
+            } if schema else None,
         },
     )
     logger.debug("OpenAI response: %s", response)
-
-    return json.loads(response.output_text)
+    content = response.output_text
+    return json.loads(content) if schema else {"content": content}
 
 def hosted_ai_textgen(
         endpoint: str,
         model_name: str,
         system_msg: str,
         prompt: str,
-        schema: dict,
+        schema: Optional[dict] = None,
 ) -> dict:
     """Handle request with Hosted API."""
     model_name = model_name
@@ -132,7 +133,6 @@ def hosted_ai_textgen(
         },
         timeout=300,
     )
-    logger.debug("response: %s", response.text)
-    chat_response = response.json().get("choices", [{}])[0].get("message", {}).get("content", "")
-    logger.debug(chat_response)
-    return json.loads(chat_response)
+    logger.debug("Hosted AI response: %s", response.text)
+    content = response.json().get("choices", [{}])[0].get("message", {}).get("content", "")
+    return json.loads(content) if schema else {"content": content}
