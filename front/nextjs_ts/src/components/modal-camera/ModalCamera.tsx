@@ -13,9 +13,12 @@ interface ModalCameraProps {
     onCapture: (imageData: string) => void;
 }
 
+const WIDTH = 430;
+const HEIGHT = 250;
+
 const videoConstraints = {
-    width: 1280,
-    height: 720,
+    width: WIDTH,
+    height: HEIGHT,
     facingMode: "environment"
 };
 
@@ -41,11 +44,11 @@ export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: 
                 <div className={styles.videoContainer}>
                 <Webcam
                     audio={false}
-                    height={720}
-                    ref={webcamRef}
-                    screenshotFormat="image/png"
-                    width={1280}
+                    width={WIDTH}
+                    height={HEIGHT}
+                    screenshotFormat="image/jpeg"
                     videoConstraints={videoConstraints}
+                    ref={webcamRef}
                 />
                 <canvas ref={canvasRef} style={{ display: 'none' }} />
                     {open && scan_barcode && (
