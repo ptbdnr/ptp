@@ -12,24 +12,16 @@ Useful links:
 * [Manage Credentials](https://docs.vultr.com/products/cloud-storage/object-storage/management/manage-credentials)
 * [Python SDK](https://docs.vultr.com/how-to-use-vultr-object-storage-in-python)
 
-## NoSQL: TODO
+## NoSQL
 
-<img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100"/>
+MongoDB
 
-| label           | IPv4              | user	    | spec                                  | OS         | location	      | cost/mo |
-|---	            |---	              |---	      |---	                                  |---         |---	            |--:	    |
-| `TOTO` | `TODO`	| `root` 	  | 2 vCPU, 16GB RAM, 100GB NVMe, 5TB/mo  | Ubuntu 22  | Amsterdam, NL  | $96     |
-
-admin user: `mongoadmin`
+admin user: `ptpnosql`
 admin pass: ask!
-
-```shell
-mongosh "mongodb://mongoadmin:$pass@78.141.223.247:27017/defaultdb" --authenticationDatabase admin
-```
+database: `ptpnosql001`
+host: `kipxqyn.mongodb.net`
 
 Useful links:
-* [Deployment](https://www.vultr.com/marketplace/apps/mongodb/?slug=mongodb&utm_source=performance-max-emea&utm_medium=paidmedia&obility_id=17097441281&&utm_campaign=EMEA_-_UK_-_Performance_Max_-_1001&utm_term=&utm_content=&gad_source=1&gclid=CjwKCAjw--K_BhB5EiwAuwYoymUWBk46fD7yR9pQ8C15mmc4I4pH9sGrYCVE4VtpqaQe0zqX3ZJVkxoCTE8QAvD_BwE#general-information)
-* [How to use MongoDB in Python with mongoengine](https://docs.vultr.com/how-to-use-mongodb-in-python-with-mongoengine)
 * [How to use Python with MongoDB](https://www.mongodb.com/resources/languages/python)
 
 ## Vector Storage
