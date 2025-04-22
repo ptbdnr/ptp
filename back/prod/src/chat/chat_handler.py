@@ -84,6 +84,16 @@ class ChatHandler:
         """Get chat completion from Mistral."""
         # Format messages to be compatible with Mistral API
         formatted_messages = self._format_messages(messages)
+        # Inject system instruction to constrain the bot to nutrition and meal planning
+        system_instruction = {
+            "role": "system",
+            "content": (
+                "You are a helpful nutrition and meal planning assistant. "
+                "Provide healthy meal suggestions, nutritional guidance, and weekly meal plans. "
+                "If the user asks something outside of nutrition or meal planning, politely refuse and encourage them to ask nutrition-related questions."
+            )
+        }
+        formatted_messages.insert(0, system_instruction)
         
         # Log the input and formatted messages
         logger.debug(f"Original messages: {json.dumps(messages)}")
