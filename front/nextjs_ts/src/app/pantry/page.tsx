@@ -42,6 +42,16 @@ export default function Page() {
   useEffect(() => {
     const fetchMeals = async () => {
       try {
+        // Check for stored pantry data in localStorage first
+        const storedPantryData = localStorage.getItem('pantry-data');
+        if (storedPantryData) {
+          const parsedData = JSON.parse(storedPantryData);
+          console.log('Using pantry data from localStorage:', parsedData);
+          setIngredients({ingredients: parsedData});
+          return;
+        }
+        
+        // Fall back to API if no localStorage data exists
         const res = await fetch('/api/ingredients');
         if (!res.ok) {
           throw new Error('Failed to fetch meals');
@@ -117,6 +127,8 @@ export default function Page() {
       const updatedIngredients = newIngredients.concat(ingredients.ingredients);
       upsertPantry(updatedIngredients);
       setIngredients({ ingredients: updatedIngredients });
+      // Save to localStorage for persistence
+      localStorage.setItem('pantry-data', JSON.stringify(updatedIngredients));
     } catch (error) {
       alertError(`${error}`);
       console.error(error);
@@ -226,7 +238,18 @@ export default function Page() {
         </div>
         
         <section className={styles.pantryItemsSection}>
-          <h2 className={styles.sectionTitle}>Your Pantry Items</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className={styles.sectionTitle}>Your Pantry Items</h2>
+            <button 
+              onClick={() => {
+                localStorage.removeItem('pantry-data');
+                window.location.reload();
+              }}
+              className="text-sm text-red-500 hover:underline"
+            >
+              Reset to Default
+            </button>
+          </div>
           
           <div className={styles.pantryList}>
             {ingredients.ingredients.map(item => {

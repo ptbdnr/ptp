@@ -1,11 +1,12 @@
 'use client';
 
 import { ChatSection } from '@llamaindex/chat-ui';
-import { useChat } from '@ai-sdk/react';
+import { useChat, type Message } from '@ai-sdk/react';
 import { useEffect, useState } from 'react';
 import ChatLayout from './chat-layout';
 import { useSession } from 'next-auth/react';
 import { ToastContainer, toast } from 'react-toastify';
+import { usePantryContext } from '@/contexts/PantryContext';
 
 import '@llamaindex/chat-ui/styles/markdown.css' // code, latex and custom markdown styling
 import '@llamaindex/chat-ui/styles/pdf.css' // pdf styling
@@ -29,6 +30,7 @@ function DebugChatSection({ handler, className }: { handler: ReturnType<typeof u
 export default function ChatPage() {
   const { data: session, status } = useSession();
   const [isReady, setIsReady] = useState(false);
+  const { ingredients } = usePantryContext();
   
   // Add delay to ensure session is loaded
   useEffect(() => {
@@ -37,6 +39,26 @@ export default function ChatPage() {
     }
   }, [status]);
 
+  // Create pantry system message
+  const formatPantryMessage = () => {
+    if (!ingredients || !ingredients.ingredients || ingredients.ingredients.length === 0) {
+      return null;
+    }
+    
+    const pantryList = ingredients.ingredients
+      .map(item => `• ${item.name} (${item.quantity} ${item.unit})`)
+      .join('\n');
+    
+    return {
+      id: 'pantry-system-message',
+      role: 'user',
+      content: `Your pantry contains:\n${pantryList}\n\nWhen asked for recipes, suggest ones that use these ingredients as much as possible. At the end of recipe suggestions, explicitly mention which pantry items you incorporated and how you used them.`
+    } as Message;
+  };
+
+  const pantrySystemMessage = formatPantryMessage();
+  const initialMessages: Message[] = pantrySystemMessage ? [pantrySystemMessage] : [];
+  
   const handler = useChat({
     streamProtocol: 'data',
     api: '/api/chat',
@@ -45,7 +67,7 @@ export default function ChatPage() {
       'Content-Type': 'application/json',
       'x-vercel-ai-data-stream': 'v1'
     },
-    initialMessages: [],
+    initialMessages: initialMessages,
     onError: (error) => {
       console.error('Chat error:', error);
       toast.error('Failed to send message. Please try again.');
@@ -60,6 +82,45 @@ export default function ChatPage() {
 
   // Override isLoading: hide loader once streaming begins
   const uiHandler = { ...handler, isLoading: handler.status === 'submitted' };
+
+  // Create a function to handle sending messages with pantry awareness
+  const sendPantryAwareMessage = (content: string) => {
+    // Check if this is a recipe request
+    if (content.toLowerCase().includes('recipe')) {
+      // Get current pantry items
+      const pantryList = ingredients.ingredients
+        .map(item => `• ${item.name} (${item.quantity} ${item.unit})`)
+        .join('\n');
+      
+      // Enhance the message with pantry information
+      const enhancedContent = `${content}
+
+For this recipe request, please consider the ingredients currently in my pantry:
+${pantryList}
+
+Try to use these pantry ingredients when possible, and at the end please mention which specific pantry items you incorporated into the recipe.`;
+      
+      // Send the enhanced message
+      return handler.append({
+        role: 'user',
+        id: `pantry-recipe-${Date.now()}`,
+        content: enhancedContent
+      });
+    }
+    
+    // For non-recipe messages, just send as is
+    return handler.append({
+      role: 'user',
+      id: `message-${Date.now()}`,
+      content: content
+    });
+  };
+
+  // Create a copy of the handler with the sendMessage function overridden
+  const pantryAwareHandler = {
+    ...uiHandler,
+    sendMessage: sendPantryAwareMessage
+  };
 
   // Log message and status updates for debugging
   useEffect(() => {
@@ -86,7 +147,7 @@ export default function ChatPage() {
           <div className="flex-1 overflow-y-auto px-4 pb-4">
             {/* Use DebugChatSection to trace render timings */}
             <DebugChatSection
-              handler={uiHandler}
+              handler={pantryAwareHandler}
               className="flex flex-col gap-4 h-full
                 [&_.user-avatar]:flex [&_.user-avatar]:h-8 [&_.user-avatar]:w-8 [&_.user-avatar]:items-center [&_.user-avatar]:justify-center [&_.user-avatar]:border [&_.user-avatar]:border-gray-200 [&_.user-avatar]:rounded-full
                 [&_.flex-1.flex-col.gap-5>div]:mb-4 [&_.flex-1.flex-col.gap-5>div:last-child]:mb-0

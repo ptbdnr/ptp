@@ -59,14 +59,17 @@ class IngredientParser:
     ) -> dict:
         """Convert text to ingredients."""
         schema = Ingredients.model_json_schema(by_alias=False)
-        system_msg = "Extract ingredients information."
+        system_msg = "Extract ingredients into a concise JSON object matching the schema."
         prompt_template = dedent("""
             Given the following text:
             {text}
 
-            Extract ingredients in short JSON object. Don't include any other information. Be concise.
-            The JSON object should be in the following format:
-            {schema_str}
+            Extract the ingredients as a JSON object, following these rules:
+            - The JSON must strictly conform to this schema: {schema_str}
+            - The "quantity" field must be numeric only (no words).
+            - Adjectives or descriptors must be part of the "name" field.
+            - The "unit" field should reflect any unit mentioned; if missing, use "piece" as default.
+            Do not include any other information or explanatory text.
         """)
         prompt = prompt_template.format(
             text=text,
