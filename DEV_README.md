@@ -17,8 +17,11 @@ Useful links:
 MongoDB
 
 admin user: `ptpnosql`
+
 admin pass: ask!
+
 database: `ptpnosql001`
+
 host: `kipxqyn.mongodb.net`
 
 Useful links:
