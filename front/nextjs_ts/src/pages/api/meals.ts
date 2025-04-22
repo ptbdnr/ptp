@@ -71,10 +71,10 @@ export default async function handler(
       return;
     } catch (e) {
         console.error(e);
-        // Handle the error gracefully
-        res.status(200).json({ meals: mockupMeals });
-        return;
     }
+    // Handle the error gracefully
+    res.status(200).json({ meals: mockupMeals });
+    return;
   };
   
   if (req.method === 'POST') {
