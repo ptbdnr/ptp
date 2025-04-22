@@ -98,11 +98,11 @@ export default function MealDetails({ meal }: MealDetailsProps) {
         {activeTab === 'ingredients' && meal.ingredients && (
           <div className={styles.ingredientsContainer}>
             <div className={styles.ingredientsHeader}>
-              <span>{meal.ingredients.ingredients.length} ingredients</span>
+              <span>{meal.ingredients?.ingredients?.length} ingredients</span>
               {/* <button className={styles.adjustButton}>Adjust</button> */}
             </div>
             <ul className={styles.ingredientsList}>
-              {meal.ingredients.ingredients.map((ingredient) => (
+              {meal.ingredients?.ingredients?.map((ingredient) => (
                 <li 
                   key={ingredient.id} 
                   className={`${styles.ingredientItem} ${userHasIngredient(ingredient) ? styles.hasIngredient : styles.missingIngredient}`}
