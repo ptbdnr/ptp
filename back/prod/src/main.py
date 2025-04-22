@@ -3,10 +3,12 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
-from typing import Annotated, cast
+from datetime import date
+from typing import Annotated, cast, List, Dict
+import json
 
 import dotenv
-from fastapi import FastAPI, HTTPException, Path
+from fastapi import FastAPI, HTTPException, Path, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -18,6 +20,7 @@ from src.orchestrator.meal_detailer import MealDetailer
 from src.recommender.meal_generator import MealGenerator
 from src.text_to_img.meal_image import MealImageGenerator
 from src.text_to_schema.ingredient_parser import IngredientParser
+from src.chat.chat_handler import ChatHandler
 
 logging.basicConfig(
     format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
@@ -245,6 +248,83 @@ async def text2ingredients(
     """Generate an image based on text input."""
     parser = IngredientParser()
     return parser.text_to_ingredients(text=text)
+
+@app.websocket("/chat")
+async def websocket_endpoint(websocket: WebSocket):
+    """Handle WebSocket connections for streaming chat."""
+    await websocket.accept()
+    chat_handler = ChatHandler()
+    
+    try:
+        while True:
+            # Receive message from client
+            data = await websocket.receive_json()
+            logger.debug(f"WebSocket received: {json.dumps(data)}")
+            
+            messages = data.get("messages", [])
+            stream = data.get("stream", True)
+            
+            try:
+                if stream:
+                    # Stream response with better error handling
+                    response_generator = await chat_handler.chat_complete(
+                        messages=messages,
+                        stream=True
+                    )
+                    
+                    sent_chunks = False
+                    try:
+                        async for chunk in response_generator:
+                            if chunk:  # Only send non-empty chunks
+                                sent_chunks = True
+                                await websocket.send_text(chunk)
+                    except Exception as stream_error:
+                        logger.error(f"Streaming error: {str(stream_error)}")
+                        if not sent_chunks:
+                            # If we didn't send any chunks, send a fallback message
+                            await websocket.send_text("I'm sorry, I'm having trouble connecting right now.")
+                    
+                    # Always send end marker after completion
+                    await websocket.send_json({"type": "end"})
+                else:
+                    # Send complete response
+                    response = await chat_handler.chat_complete(
+                        messages=messages,
+                        stream=False
+                    )
+                    await websocket.send_text(response)
+            except Exception as e:
+                logger.error(f"Chat error: {str(e)}")
+                # Send error and end marker
+                await websocket.send_json({"type": "error", "error": str(e)})
+                await websocket.send_json({"type": "end"})
+    except WebSocketDisconnect:
+        logger.info("Client disconnected")
+    except Exception as e:
+        logger.error(f"WebSocket error: {str(e)}")
+        try:
+            await websocket.send_json({"type": "error", "error": str(e)})
+            await websocket.send_json({"type": "end"})
+        except:
+            pass
+        finally:
+            await websocket.close()
+
+@app.post("/api/chat")
+async def chat(
+    messages: List[Dict[str, str]],
+    stream: bool = False
+) -> dict:
+    """Handle regular HTTP chat requests."""
+    chat_handler = ChatHandler()
+    try:
+        response = await chat_handler.chat_complete(
+            messages=messages,
+            stream=stream
+        )
+        return {"response": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
