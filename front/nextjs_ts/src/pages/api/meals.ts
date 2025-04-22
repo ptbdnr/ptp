@@ -11,6 +11,16 @@ type ResponseData = {
   error?: string;
   meals?: Meal[]
 }
+
+interface MongoDBMeal {
+  _id: mongoDB.ObjectId;
+  name: string;
+  description: string;
+  ingredients?: string[];
+  instructions?: string;
+  images?: string;
+  videos?: string;
+}
  
 export default async function handler(
   req: NextApiRequest,
@@ -41,14 +51,16 @@ export default async function handler(
       const collection: mongoDB.Collection = db.collection(collection_name)
       const items = await collection.find({}).sort({ metacritic: -1 }).limit(10).toArray();
       console.log('items:', items);
-      const meals : Meal[] = items.map((item: any) => {
+      const meals : Meal[] = (items as MongoDBMeal[]).map((item: MongoDBMeal) => {
         return {
           id: item._id.toString(),
           name: item.name,
           description: item.description,
-          ingredients: {ingredients: item.ingredients?.map((ingredient: string) => {
-            return JSON.parse(ingredient);
-          })},
+          ingredients: {
+            ingredients: item.ingredients 
+              ? item.ingredients.map((ingredient: string) => {return JSON.parse(ingredient)})
+              : [],
+          },
           instructions: item.instructions,
           images: item.images && JSON.parse(item.images),
           videos: item.videos && JSON.parse(item.videos),

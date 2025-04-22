@@ -1,5 +1,7 @@
 import { headers } from 'next/headers';
 
+import { Meal } from '@/types/meals';
+
 import MealsLayout from './meals-layout';
 import MealDetails from '@/components/meal-details/MealDetails';
 
@@ -23,7 +25,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   }
   const mealData = await response.json();
   const meal = mockupMeals.find(
-    (meal) => meal.id === slug) || mealData.meals.find((meal: any) => meal.id === slug);
+    (meal) => meal.id === slug) || mealData.meals.find((meal: Meal) => meal.id === slug);
   
   return (
     <MealsLayout>
