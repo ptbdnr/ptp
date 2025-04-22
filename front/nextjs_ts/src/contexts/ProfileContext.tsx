@@ -15,7 +15,7 @@ const defaultProfile: Profile = {
   weeklyBudget: 50,
   maxPrepTime: 60,
   difficultyLevel: 'Medium',
-  dietaryPreferences: ['vegetarian', 'gluten-free'],
+  dietaryPreferences: ['Gluten-Free', 'Vegetarian'],
 };
 const ProfileContext = createContext<ProfileContextType>({
   profile: defaultProfile,

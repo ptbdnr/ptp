@@ -1,0 +1,88 @@
+from __future__ import annotations
+
+import logging
+import os
+from typing import Optional
+
+import dotenv
+from pymongo import MongoClient, ReturnDocument, database
+
+logging.basicConfig(
+    format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
+    datefmt="%Y-%m-%d:%H:%M:%S",
+    level=logging.DEBUG,
+)
+logger = logging.getLogger(__name__)
+
+dotenv.load_dotenv(".env.local")
+
+class NoSQLMongoClient:
+    """MongoDB NoSQL database."""
+
+    client: MongoClient
+    db: database.Database
+
+    def __init__(
+            self,
+            connection_string: Optional[str] = None,
+            db_name: Optional[str] = None,
+    ) -> None:
+        """Initialize instance."""
+        connection_string = connection_string or os.environ.get("MONGODB_CONNECTION_STRING")
+        self.db_name = db_name or os.environ.get("MONGODB_DATABASE_NAME")
+        logger.debug("MongoDB connection parameters: %s", {
+            "connection_string": connection_string,
+            "db_name": self.db_name,
+        })
+
+        self.client = MongoClient(connection_string)
+        logger.info("MongoDB client created")
+        self.db = self.client[self.db_name]
+        logger.info("MongoDB database %s selected", self.db_name)
+
+    def create_collection(
+            self,
+            collection_name: str,
+            drop_old_database: bool = False,
+            drop_old_collection: bool = False,
+    ) -> database.Collection:
+        """Create a collection."""
+        if self.client is None:
+            msg = "MongoDB client not found"
+            raise ValueError(msg)
+
+        if drop_old_database:
+            self.client.drop_database(self.db_name)
+        self.db = self.client[self.db_name]
+
+        collection_names = self.db.list_collection_names()
+        if drop_old_collection and collection_name in collection_names:
+            self.db.drop_collection(collection_name)
+        if collection_name not in self.db.list_collection_names():
+            self.db.create_collection(collection_name)
+        return self.db[collection_name]
+
+    def insert(
+            self,
+            collection_name: str,
+            payload: dict,
+    ) -> dict:
+        """Insert a payload."""
+        collection = self.create_collection(collection_name=collection_name)
+        # if payload contains an _id, use it as filter for upsert, otherwise use payload as filter
+        _filter = {"_id": payload["_id"]} if "_id" in payload else payload
+        return collection.find_one_and_update(
+            _filter,
+            {"$set": payload},
+            upsert=True,
+            return_document=ReturnDocument.AFTER,
+        )
+
+    def find(
+        self,
+        collection_name: str,
+        filter: Optional[dict] = None,
+    ) -> list:
+        """Find items."""
+        collection = self.create_collection(collection_name=collection_name)
+        return collection.find(filter=filter)

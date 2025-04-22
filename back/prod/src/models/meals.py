@@ -9,8 +9,8 @@ from src.models.ingredients import Ingredient
 
 # docscrigs are above the class definition
 # becase the scema will use the docsring stored inside the class
-"""Model for meal images."""
-class MealImages(BaseModel):
+"""Model for meal preview images."""
+class MealImagesPreview(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
     placeholder_emoji: str
@@ -22,12 +22,23 @@ class MealPreview(BaseModel):
     id: str
     name: str
     description: str
-    images: MealImages
+    images: MealImagesPreview
+
+"""Model for meal preview images."""
+class MealImages(MealImagesPreview):
+    hero_url: Optional[str] = None
+
+"""Model for meal preview images."""
+class MealVideos(BaseModel):
+    hero_url: Optional[str] = None
 
 """Model for a meal."""
 class Meal(MealPreview):
 
-    ingredients: Optional[List[Ingredient]]  # noqa: UP006
+    ingredients: Optional[List[Ingredient]] = None # noqa: UP006
+    instructions: Optional[str] = None
+    images: MealImages
+    videos: MealVideos
 
 class PreviewMeals(BaseModel):
     """Model for meals."""

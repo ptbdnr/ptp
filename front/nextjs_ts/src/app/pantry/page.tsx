@@ -2,7 +2,9 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { usePantryContext } from '@/contexts/PantryContext';
+
 import { ToastContainer, toast, Id } from 'react-toastify';
+import { notifyToastCustomProgress } from "@/components/toast-customprogress/ToastCustomProgress";
 
 import { Ingredient } from '@/types/ingredients';
 
@@ -23,19 +25,18 @@ export default function Page() {
   const { ingredients, setIngredients, isLoading } = usePantryContext();
 
   const [newPantryItems, setNewPantryItems] = useState<Ingredient[]>([]);
-  
   const toastId = useRef<Id | undefined>(undefined);
+  
   const notifyImageProcessStart = () => {
-    if (toastId.current) {
-      toast.dismiss(toastId.current);
-    }
-    toastId.current = toast("👀 AI vision", {autoClose: 8000});
-  }
+    notifyToastCustomProgress('👀 AI vision', 15000, toastId, () => inputText.length > 0);
+  };
+  
   const notifyTextProcessStart = () => {
-    if (toastId.current) {
-      toast.dismiss(toastId.current);
-    }
-    toastId.current = toast(`✨ Ingredient validation`, {autoClose: 5000});
+    notifyToastCustomProgress('✨ Ingredient validation', 5000, toastId, () => newPantryItems.length > 0);
+  };
+  
+  const alertError = (err: string) => {
+      toast.error(`${err}`, {autoClose: 2000});
   };
 
   useEffect(() => {
@@ -57,7 +58,7 @@ export default function Page() {
 
   async function handleCapture (imageData: string) {
     setCameraOpen(false);
-    notifyImageProcessStart()
+    notifyImageProcessStart();
     try {
       const res = await fetch('/api/img_to_text', {
         method: 'POST',
@@ -68,6 +69,7 @@ export default function Page() {
       }
       );
       if (!res.ok) {
+        alertError(`${res.statusText} (${res.status})`);
         throw new Error('Failed to fetch description of image.');
       }
       const data = await res.json();
@@ -76,6 +78,7 @@ export default function Page() {
       handleDictation(data.text);
     } catch (error) {
       console.error(error);
+      alertError(`${error}`);
     }
   };
 
@@ -115,6 +118,7 @@ export default function Page() {
       upsertPantry(updatedIngredients);
       setIngredients({ ingredients: updatedIngredients });
     } catch (error) {
+      alertError(`${error}`);
       console.error(error);
     }    
   };
@@ -129,12 +133,14 @@ export default function Page() {
         body: JSON.stringify({ ingredients: items }),
       });
       if (!res.ok) {
+        alertError(`${res.statusText} (${res.status})`);
         throw new Error('Failed to upsert pantry items');
       }
       const data = await res.json();
       console.log('Response from API upsert:', data);
     }
     catch (error) {
+      alertError(`${error}`);
       console.error(error);
     }
   }

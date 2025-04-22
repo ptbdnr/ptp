@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
 from datetime import date
@@ -15,16 +16,18 @@ from src.models.equipments import Equipment, Equipments
 from src.models.ingredients import Ingredient, Ingredients
 from src.models.meals import Meals, PreviewMeals
 from src.models.preferences import UserPreferences
+from src.orchestrator.meal_detailer import MealDetailer
 from src.recommender.meal_generator import MealGenerator
 from src.text_to_img.meal_image import MealImageGenerator
 from src.text_to_schema.ingredient_parser import IngredientParser
 from src.chat.chat_handler import ChatHandler
 
+logging.basicConfig(
+    format="%(asctime)s,%(msecs)03d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s",
+    datefmt="%Y-%m-%d:%H:%M:%S",
+    level=logging.DEBUG,
+)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
-logger.addHandler(handler)
 
 dotenv.load_dotenv("./.env.local")
 
@@ -96,6 +99,21 @@ async def recommend_meal(
         min_num_meals=3,
         max_num_meals=5,
     )
+
+    meal_detailer = MealDetailer()
+    background_tasks = set()
+    for meal in meals.meals:
+        logger.info("Starting meal orchestration for meal: %s", meal)
+        task = asyncio.create_task(
+            meal_detailer.orchestrate(
+                meal_preview=meal,
+                user_preferences=UserPreferences(
+                    preferences=dietary_preferences,
+                ),
+            ),
+        )
+        background_tasks.add(task)
+        task.add_done_callback(background_tasks.discard)
     return meals
 
     # if user_id not in db["users"]:

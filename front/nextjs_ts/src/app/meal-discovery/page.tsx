@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 
 import type { Meal } from "@/types/meals";
 
+import { notifyToastCustomProgress } from "@/components/toast-customprogress/ToastCustomProgress";
+
 import { useProfileContext } from '@/contexts/ProfileContext';
 import { usePantryContext } from '@/contexts/PantryContext';
 import { useMenuContext } from '@/contexts/MenuContext';
@@ -30,19 +32,30 @@ export default function Page() {
   const surpriseMeal: Meal = mockupSupriseMeal;
   const [likedMeals, setLikedMeals] = useState<Meal[]>([]);
   const router = useRouter();
-
   const toastId = useRef<Id | undefined>(undefined);
+  
   const notifyAIRecommendationStart = () => {
-    if (toastId.current) {
-      toast.dismiss(toastId.current);
-    }
-    toastId.current = toast("✨ Smart Recipe Generator", {autoClose: 14000});
+    notifyToastCustomProgress(
+      '✨ Smart Recipe Generator',
+      10000,
+      toastId,
+      () => aiMeals.length > 0,
+    );
+  }
+
+  const notifyAIRecommendationError = () => {
+    toast.error('✨ Smart Recipe Generator Error', {
+      autoClose: 3000,
+      closeButton: true,
+    });
   }
 
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        notifyAIRecommendationStart();
+        if (!aiMeals.length) {
+          notifyAIRecommendationStart();
+        };
         const res = await fetch('/api/meals', {
           method: 'POST',
           headers: {
@@ -56,6 +69,7 @@ export default function Page() {
         });
         toast.dismiss(toastId.current);
         if (!res.ok) {
+          notifyAIRecommendationError();
           throw new Error('Failed to fetch meals');
         }
         const data = await res.json();

@@ -40,12 +40,14 @@ export default async function handler(
                 return;
             }
             
-            // Upload image to S3 and get the URL  
-            const url = await byte64_to_s3(req.body.image);  
+            const imageData = req.body.image;
+            
+            // Upload image to S3 and get the URL
+            const url = await byte64_to_s3(imageData);
             console.log("Image URL:", url);  
             
             // Process the image URL with Mistral  
-            const message_text = await mistral_vision(url);  
+            const message_text = await mistral_vision(imageData, null);
             console.log("Message_text:", message_text);  
             
             res.status(200).send({ text: message_text });  
@@ -95,13 +97,26 @@ async function byte64_to_s3(image: string) {
     return imageUrl;
 }
 
-async function mistral_vision(imageUrl: string) {
+async function mistral_vision(
+    imageData: string | null,
+    objectUrl: string | null,
+) {
 
     const mistral_client = new Mistral({ apiKey: mistralApiKey });
     const prompt = 
         "List the edible objects in this image and provide the quantity for each? " + 
         "Example: rice 500g, lollipop 2 pieces. " +
         "Don't make up any if it is not there.";
+    
+    let imageUrl = '';
+    if (objectUrl) {
+        imageUrl = objectUrl;
+    } else if (imageData) {
+        imageUrl = imageData;
+    } else {
+        console.error("No image URL or data provided");
+        return;
+    }
     const chatResponse = await mistral_client.chat.complete({
         model: mistralModelName!,
         messages: [

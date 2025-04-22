@@ -1,4 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+'use client';
+
+import React, { useRef } from 'react';
+
+import Webcam from "react-webcam";
+
 import styles from './ModalCamera.module.css';
 
 interface ModalCameraProps {
@@ -8,53 +13,26 @@ interface ModalCameraProps {
     onCapture: (imageData: string) => void;
 }
 
+const WIDTH = 430;
+const HEIGHT = 250;
+const objectContentType = 'image/png'; // "image/jpeg"
+
+const videoConstraints = {
+    width: WIDTH,
+    height: HEIGHT,
+    facingMode: "environment"
+};
+
 export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: ModalCameraProps) {
-    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const webcamRef = React.useRef<Webcam | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-    useEffect(() => {
-        if (open) {
-            navigator.mediaDevices.getUserMedia({
-                video: { facingMode: { ideal: 'environment' } } // Default to rear camera
-            })
-                .then(stream => {
-                    if (videoRef.current) {
-                        videoRef.current.srcObject = stream;
-                    }
-                })
-                .catch(err => console.error('Error accessing camera:', err));
-        } else {
-            // Stop video stream on close
-            if (videoRef.current && videoRef.current.srcObject) {
-                const stream = videoRef.current.srcObject as MediaStream;
-                stream.getTracks().forEach(track => track.stop());
-                videoRef.current.srcObject = null;
-            }
-        }
-        // Cleanup on unmount
-        return () => {
-            if (videoRef.current && videoRef.current.srcObject) {
-                const stream = videoRef.current.srcObject as MediaStream;
-                stream.getTracks().forEach(track => track.stop());
-            }
+    
+    const handleCapture = React.useCallback(() => {
+        const imageSrc = webcamRef.current?.getScreenshot();
+        if (imageSrc) {
+            onCapture(imageSrc);
         };
-    }, [open]);
-
-    const handleCapture = () => {
-        if (videoRef.current && canvasRef.current) {
-            const width = videoRef.current.videoWidth;
-            const height = videoRef.current.videoHeight;
-            canvasRef.current.width = width;
-            canvasRef.current.height = height;
-
-            const context = canvasRef.current.getContext('2d');
-            if (context) {
-                context.drawImage(videoRef.current, 0, 0, width, height);
-                const imageData = canvasRef.current.toDataURL('image/png').split(',')[1]; // Extract base64 part
-                onCapture(imageData);
-            }
-        }
-    };
+    }, [webcamRef]);
 
     if (!open) return null;
 
@@ -65,8 +43,15 @@ export default function ModalCamera({ open, scan_barcode, onClose, onCapture }: 
                     &times;
                 </button>
                 <div className={styles.videoContainer}>
-                    <video ref={videoRef} autoPlay className={styles.video} />
-                    <canvas ref={canvasRef} style={{ display: 'none' }} />
+                <Webcam
+                    audio={false}
+                    width={WIDTH}
+                    height={HEIGHT}
+                    screenshotFormat={objectContentType}
+                    videoConstraints={videoConstraints}
+                    ref={webcamRef}
+                />
+                <canvas ref={canvasRef} style={{ display: 'none' }} />
                     {open && scan_barcode && (
                         <div className={styles.barScannerOverlay}>
                             <div className={styles.barScannerLine}></div>
