@@ -1,7 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
- 
+
 import type { Meal } from '@/types/meals'
 
+import * as mongoDB from "mongodb"; 
+import clientPromise from "@/utils/mongodb";
 import { mockupMeals } from '@/data/meals'
 import { Ingredient } from '@/types/ingredients';
 
@@ -10,6 +12,16 @@ type ResponseData = {
   meals?: Meal[]
 }
  
+interface MongoDBMeal {
+  _id: mongoDB.ObjectId;
+  name: string;
+  description: string;
+  ingredients?: string[];
+  instructions?: string;
+  images?: string;
+  videos?: string;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
@@ -17,6 +29,50 @@ export default async function handler(
   const func_name = 'meals';
   if (req.method === 'GET') {
     console.log(`GET API /${func_name}`);
+    console.log(`req.query: ${JSON.stringify(req.query)}`);
+    const { id } = req.query;
+    if (id) {
+      console.log(`id: ${id}`);
+    }
+    const db_name = process.env.MONGODB_DATABASE_NAME;
+    const collection_name = process.env.MONGODB_COLLECTION_NAME_MEALS;
+    console.log(`db_name: ${db_name}`);
+    console.log(`collection_name: ${collection_name}`);
+
+    if (db_name == undefined || collection_name === undefined) {
+      const msg = 'Invalid/Missing environment variable: "MONGODB_COLLECTION_NAME_MEALS"';
+      console.error(msg);
+      res.status(500).json({ error: msg });
+      return;
+    }
+    try {
+      const client = await clientPromise;
+      const db: mongoDB.Db = client.db(db_name);
+      const collection: mongoDB.Collection = db.collection(collection_name)
+      const items = await collection.find({}).sort({ name: -1 }).limit(10).toArray();
+      console.log('items:', items);
+      const meals : Meal[] = (items as MongoDBMeal[]).map((item: MongoDBMeal) => {
+        return {
+          id: item._id.toString(),
+          name: item.name,
+          description: item.description,
+          ingredients: {
+            ingredients: item.ingredients 
+              ? item.ingredients.map((ingredient: string) => {return JSON.parse(ingredient)})
+              : [],
+          },
+          instructions: item.instructions,
+          images: item.images && JSON.parse(item.images),
+          videos: item.videos && JSON.parse(item.videos),
+        }
+      });
+      console.log('meals:', meals);
+      res.status(200).send({ meals: meals});
+      return;
+    } catch (e) {
+        console.error(e);
+    }
+    // Handle the error gracefully
     res.status(200).json({ meals: mockupMeals });
     return;
   };
