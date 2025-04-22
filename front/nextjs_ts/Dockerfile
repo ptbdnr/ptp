@@ -33,6 +33,13 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
+# FIX: Copy lightningcss musl binary to the gnu location that's being looked for
+RUN if [ -f node_modules/lightningcss-linux-x64-musl/lightningcss.linux-x64-musl.node ]; then \
+      mkdir -p node_modules/lightningcss && \
+      cp node_modules/lightningcss-linux-x64-musl/lightningcss.linux-x64-musl.node \
+         node_modules/lightningcss/lightningcss.linux-x64-gnu.node; \
+    fi
+
 RUN ls -lah
 
 RUN echo "===================== END of Dependencies stage ====================="
@@ -69,7 +76,7 @@ FROM base AS runner
 RUN echo "===================== Runner stage ====================="
 
 WORKDIR /dependencies
-RUN dir -s 
+RUN ls -lah
 
 # Environment Production
 ENV NODE_ENV=production
@@ -91,6 +98,13 @@ RUN \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile --prod; \
   else echo "Lockfile not found." && exit 1; \
   fi
+
+# FIX: Copy lightningcss musl binary to the gnu location in the runner stage as well
+RUN if [ -f node_modules/lightningcss-linux-x64-musl/lightningcss.linux-x64-musl.node ]; then \
+      mkdir -p node_modules/lightningcss && \
+      cp node_modules/lightningcss-linux-x64-musl/lightningcss.linux-x64-musl.node \
+         node_modules/lightningcss/lightningcss.linux-x64-gnu.node; \
+    fi
 
 RUN ls -lah
 
