@@ -24,6 +24,7 @@
     "framer-motion": "^12.6.5",
     "lightningcss-wasm": "^1.29.1",
     "lucide-react": "^0.488.0",
+    "mongodb": "^6.16.0",
     "next": "15.3.0",
     "next-auth": "^5.0.0-beta.25",
     "postcss": "^8.5.3",
