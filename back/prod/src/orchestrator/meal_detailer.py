@@ -22,11 +22,10 @@ logger = logging.getLogger(__name__)
 
 dotenv.load_dotenv(".env.local")
 
+# constants
 BUCKET_NAME_MEAL_IMAGES = os.getenv("VULTR_OBJECT_STORAGE_BUCKET_NAME_MEAL_IMAGES")
 BUCKET_NAME_MEAL_VIDEOS = os.getenv("VULTR_OBJECT_STORAGE_BUCKET_NAME_MEAL_VIDEOS")
-
-# constants
-COLLECTION_NAME = "meals"
+COLLECTION_NAME = os.getenv("MONGODB_COLLECTION_NAME_MEALS")
 
 class MealDetailer:
     """Orchestrator for meal details."""
@@ -39,7 +38,7 @@ class MealDetailer:
         self.nosql_client = NoSQLMongoClient()
         self.nosql_client.create_collection(
             collection_name=COLLECTION_NAME,
-            drop_old_collection=True,  #  TODO: remove in production
+            drop_old_collection=False,
         )
         self.objstore_client = ObjectStoreClient()
         self.objstore_client.create_bucket(
