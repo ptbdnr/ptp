@@ -3,7 +3,6 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
-import uuid
 from datetime import date
 from typing import Annotated, cast, List, Dict
 import json
@@ -21,8 +20,6 @@ from src.orchestrator.meal_detailer import MealDetailer
 from src.recommender.meal_generator import MealGenerator
 from src.text_to_img.meal_image import MealImageGenerator
 from src.text_to_schema.ingredient_parser import IngredientParser
-from src.chat.chat_handler import ChatHandler
-
 from src.chat.chat_handler import ChatHandler
 
 logging.basicConfig(
@@ -124,30 +121,6 @@ async def recommend_meal(
             raise HTTPException(status_code=500, detail=msg) from e
     return meals
 
-    # if user_id not in db["users"]:
-    #     # Create new user with empty data
-    #     db["users"][user_id] = {
-    #         "ingredients": Ingredients(ingredients=[]),
-    #         "equipments": Equipments(equipments=[]),
-    #         "preferences": UserPreferences(preferences=[]),
-    #     }
-
-    # # Generate a sample recommendation
-    # return Meals(
-    #     meals=[
-    #         Meal(
-    #             id=str(uuid.uuid4()),
-    #             name="Tomato Pasta",
-    #             description="A simple and delicious tomato pasta dish.",
-    #             ingredients=[
-    #                 Ingredient(name="Tomato", quantity=3, unit="pieces"),
-    #                 Ingredient(name="Pasta", quantity=200, unit="grams"),
-    #                 Ingredient(name="Olive oil", quantity=2, unit="tablespoons"),
-    #             ],
-    #             required_equipment=["Pot", "Pan", "Knife"],
-    #         ),
-    #     ],
-    # )
 
 @app.get("/users/{userId}/ingredients", response_model=Ingredients)
 async def get_ingredients(
@@ -262,24 +235,24 @@ async def websocket_endpoint(websocket: WebSocket):
     """Handle WebSocket connections for streaming chat."""
     await websocket.accept()
     chat_handler = ChatHandler()
-    
+
     try:
         while True:
             # Receive message from client
             data = await websocket.receive_json()
             logger.debug(f"WebSocket received: {json.dumps(data)}")
-            
+
             messages = data.get("messages", [])
             stream = data.get("stream", True)
-            
+
             try:
                 if stream:
                     # Stream response with better error handling
                     response_generator = await chat_handler.chat_complete(
                         messages=messages,
-                        stream=True
+                        stream=True,
                     )
-                    
+
                     sent_chunks = False
                     try:
                         async for chunk in response_generator:
@@ -291,7 +264,7 @@ async def websocket_endpoint(websocket: WebSocket):
                         if not sent_chunks:
                             # If we didn't send any chunks, send a fallback message
                             await websocket.send_text("I'm sorry, I'm having trouble connecting right now.")
-                    
+
                     # Always send end marker after completion
                     await websocket.send_json({"type": "end"})
                 else:
@@ -321,14 +294,14 @@ async def websocket_endpoint(websocket: WebSocket):
 @app.post("/api/chat")
 async def chat(
     messages: List[Dict[str, str]],
-    stream: bool = False
+    stream: bool = False,
 ) -> dict:
     """Handle regular HTTP chat requests."""
     chat_handler = ChatHandler()
     try:
         response = await chat_handler.chat_complete(
             messages=messages,
-            stream=stream
+            stream=stream,
         )
         return {"response": response}
     except Exception as e:
