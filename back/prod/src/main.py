@@ -101,16 +101,21 @@ async def recommend_meal(
     background_tasks = set()
     for meal in meals.meals:
         logger.info("Starting meal orchestration for meal: %s", meal)
-        task = asyncio.create_task(
-            meal_detailer.orchestrate(
-                meal_preview=meal,
-                user_preferences=UserPreferences(
-                    preferences=dietary_preferences,
+        try:
+            task = asyncio.create_task(
+                meal_detailer.orchestrate(
+                    meal_preview=meal,
+                    user_preferences=UserPreferences(
+                        preferences=dietary_preferences,
+                    ),
                 ),
-            ),
-        )
-        background_tasks.add(task)
-        task.add_done_callback(background_tasks.discard)
+            )
+            background_tasks.add(task)
+            task.add_done_callback(background_tasks.discard)
+        except Exception as e:
+            msg = f"Error during meal orchestration: {e}"
+            logger.exception(msg)
+            raise HTTPException(status_code=500, detail=msg) from e
     return meals
 
     # if user_id not in db["users"]:
