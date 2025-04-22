@@ -100,11 +100,12 @@ export default async function handler(req: NextApiRequest, res: ResponseWithFlus
     }
 
     // Create WebSocket connection to backend
-    const backendUrl = process.env.PTP_API_URL ?? 'http://backend:80';
+    console.log('[Chat API] PTP_API_URL:', process.env.PTP_API_URL);
+    const backendUrl = process.env.PTP_API_URL ?? 'http://backend:80/';
     const wsUrl = backendUrl.replace('http://', 'ws://');
     console.log('[Chat API] Connecting to WebSocket:', wsUrl);
     
-    const ws = new WebSocket(`${wsUrl}/chat`);
+    const ws = new WebSocket(`${wsUrl}chat`);
     let currentMessage = '';
     let isStreaming = true;
     let hasError = false;
