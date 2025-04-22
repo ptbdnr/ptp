@@ -83,7 +83,7 @@ export default async function handler(
                 headers: Object.fromEntries(response.headers.entries()),
                 duration: `${endTime - startTime}ms`,
             });
-            
+
             if (!response.ok) {
                 const errorBody = await response.text();
                 log(func_name, 'error', 'Error response from backend', {
