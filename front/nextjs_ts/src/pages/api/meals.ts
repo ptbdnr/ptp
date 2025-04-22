@@ -49,7 +49,7 @@ export default async function handler(
       const client = await clientPromise;
       const db: mongoDB.Db = client.db(db_name);
       const collection: mongoDB.Collection = db.collection(collection_name)
-      const items = await collection.find({}).sort({ metacritic: -1 }).limit(10).toArray();
+      const items = await collection.find({}).sort({ name: -1 }).limit(10).toArray();
       console.log('items:', items);
       const meals : Meal[] = (items as MongoDBMeal[]).map((item: MongoDBMeal) => {
         return {
