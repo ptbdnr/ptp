@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 
 import HomeLayout from './home-layout';
 
+import YouTube, { YouTubeProps } from 'react-youtube';
+
 import styles from './home.module.css';
 
 const VIDEO_URL = 'https://ams1.vultrobjects.com/ptpbcktdist01/ptplatest.mp4';
@@ -11,24 +13,34 @@ const VIDEO_URL = 'https://ams1.vultrobjects.com/ptpbcktdist01/ptplatest.mp4';
 export default function Page() {
   const router = useRouter();
 
-    return (
-    <HomeLayout>
-        <button 
-          onClick={() => router.push('/profile')} 
-          className={styles.button}
-        >
-          <h3>Smarter Cooking Starts Here</h3>
-        </button>
+  const onPlayerReady: YouTubeProps['onReady'] = (event) => {
+    // access to player in all event handlers via event.target
+    event.target.pauseVideo();
+  }
 
-        <div className={styles.video} >
-          ... or watch the video before you go
-          <video 
-            controls
-          >
-            <source src={VIDEO_URL} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-    </HomeLayout>
+  const opts: YouTubeProps['opts'] = {
+    // height: '390',
+    width: '100%',
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 1,
+    },
+  };
+
+
+  return (
+    <HomeLayout>
+      <button 
+        onClick={() => router.push('/profile')} 
+        className={styles.button}
+      >
+        <h3>Smarter Cooking Starts Here</h3>
+      </button>
+
+      <div className={styles.video} >
+        ... or watch the video before you go
+        <YouTube videoId="B5o5uPj2KiY" opts={opts} onReady={onPlayerReady} />
+      </div>
+      </HomeLayout>
     );
 }
