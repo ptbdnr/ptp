@@ -359,3 +359,4 @@ next-env.d.ts
 
 # temporary data
 *.tmp
+secrets.md
