@@ -58,62 +58,86 @@ class MealDetailer:
         user_preferences: UserPreferences,
     ) -> Meal:
         """Detail a meal."""
-        name = meal_preview.name
-        description = meal_preview.description
-        placeholder_emoji = meal_preview.images.placeholder_emoji
+        meal: Meal = None
+        try:
+            name = meal_preview.name
+            description = meal_preview.description
+            placeholder_emoji = meal_preview.images.placeholder_emoji
 
-        logger.debug("Store in noSQL: %s", meal_preview)
-        meal_images = MealImages(
-            placeholder_emoji=placeholder_emoji,
-        )
-        meal = Meal(
-            id=meal_preview.id,
-            name=name,
-            description=description,
-            ingredients=[],
-            images=meal_images,
-            videos=MealVideos(),
-        )
-        logger.debug("meal: %s", meal)
-        self.save_meal(meal=meal)
+            logger.debug("Store in noSQL: %s", meal_preview)
+            meal_images = MealImages(
+                placeholder_emoji=placeholder_emoji,
+            )
+            meal = Meal(
+                id=meal_preview.id,
+                name=name,
+                description=description,
+                ingredients=[],
+                images=meal_images,
+                videos=MealVideos(),
+            )
+            logger.debug("meal: %s", meal)
+            self.save_meal(meal=meal)
+        except Exception as e:
+            msg = f"Error during meal orchestration: {e}"
+            logger.exception(msg)
+            return meal
 
         logger.debug("Generate ingredients for meal %s", meal_preview)
-        ingredients: list[Ingredient] = self.get_ingredients(
-            name=name,
-            description=description,
-            placeholder_emoji=placeholder_emoji,
-        )
-        meal.ingredients = ingredients
-        self.save_meal(meal=meal)
+        try:
+            ingredients: list[Ingredient] = self.get_ingredients(
+                name=name,
+                description=description,
+                placeholder_emoji=placeholder_emoji,
+            )
+            meal.ingredients = ingredients
+            self.save_meal(meal=meal)
+        except Exception as e:
+            msg = f"Error during meal orchestration: {e}"
+            logger.exception(msg)
 
         logger.debug("Generate instructions for meal %s", meal_preview)
-        instructions: str = self.get_instructions(
-            name=name,
-            description=description,
-            ingredients=ingredients,
-        )
-        meal.instructions = instructions
-        self.save_meal(meal=meal)
+        try:
+            instructions: str = self.get_instructions(
+                name=name,
+                description=description,
+                ingredients=ingredients,
+            )
+            meal.instructions = instructions
+            self.save_meal(meal=meal)
+        except Exception as e:
+            msg = f"Error during meal orchestration: {e}"
+            logger.exception(msg)
 
         logger.debug("Generate hero image and video for meal %s", meal_preview)
-        image_hero_url: str = self.get_hero_image_url(
-            name=name,
-            description=description,
-            ingredients=ingredients,
-            instructions=instructions,
-        )
-        meal.images.hero_url = image_hero_url
-        self.save_meal(meal=meal)
+        try:
+            image_hero_url: str = self.get_hero_image_url(
+                name=name,
+                description=description,
+                ingredients=ingredients,
+                instructions=instructions,
+            )
+            meal.images.hero_url = image_hero_url
+            self.save_meal(meal=meal)
+        except Exception as e:
+            msg = f"Error during meal orchestration: {e}"
+            logger.exception(msg)
 
         logger.debug("Generate hero video for meal %s", meal_preview)
-        video_hero_url: str = self.get_hero_video_url(
-            name=name,
-            description=description,
-            ingredients=ingredients,
-            instructions=instructions,
-        )
-        meal.videos.hero_url = video_hero_url
-        self.save_meal(meal=meal)
+        try:
+            video_hero_url: str = self.get_hero_video_url(
+                name=name,
+                description=description,
+                ingredients=ingredients,
+                instructions=instructions,
+            )
+            meal.videos.hero_url = video_hero_url
+            self.save_meal(meal=meal)
+        except Exception as e:
+            msg = f"Error during meal orchestration: {e}"
+            logger.exception(msg)
+
+        return meal
 
     def get_ingredients(
         self,
