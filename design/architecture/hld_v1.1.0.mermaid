@@ -1,0 +1,45 @@
+---
+config:
+  look: neo
+---
+flowchart LR
+ subgraph uiContainer["Vercel"]
+        webapp["WebApp"]
+  end
+ subgraph backContainer["Vultr"]
+        api["Reserved IP"]
+        backserver["Backend Server"]
+        objectstore["ObjectStore"]
+        llm["LLM on AMD"]
+  end
+ subgraph mistralContainer["Mistral"]
+        aivision["AI vision"]
+        mistralllm["LLM"]
+  end
+ subgraph nosqlContainer["MongoDB"]
+        nosqldb["NoSQL"]
+  end
+ subgraph lumaContainer["Luma"]
+        txt2media["Text-To-Image/Video"]
+  end
+ subgraph s1["Picture-to-Palatable"]
+        uiContainer
+        backContainer
+        nosqlContainer
+        mistralContainer
+        lumaContainer
+  end
+    client["Client"] --> webapp
+    webapp --> nosqldb & aivision & api
+    api --> backserver
+    backserver --> llm & objectstore & nosqldb & mistralllm & txt2media
+    webapp@{ icon: "fa:building"}
+    api@{ icon: "fa:map"}
+    backserver@{ icon: "fa:circle-play"}
+    objectstore@{ icon: "fa:folder-open"}
+    llm@{ icon: "fa:chess-pawn"}
+    aivision@{ icon: "fa:eye"}
+    mistralllm@{ icon: "fa:chess-pawn"}
+    txt2media@{ icon: "fa:chess-rook"}
+    nosqldb@{ icon: "fa:file-lines"}
+    client@{ icon: "fa:circle-user"}
