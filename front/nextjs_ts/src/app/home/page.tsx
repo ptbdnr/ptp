@@ -38,6 +38,7 @@ export default function Page() {
       <div className={styles.video} >
         ... or watch the video before you go
         <YouTube videoId="B5o5uPj2KiY" opts={opts} onReady={onPlayerReady} />
+        not loading? <a href="https://www.youtube.com/watch?v=B5o5uPj2KiY&feature=youtu.be" target='_blank'>click here</a>
       </div>
       </HomeLayout>
     );
