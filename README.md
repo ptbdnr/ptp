@@ -1,5 +1,7 @@
 # Picture-to-Palatable (PtP) 📸➡🍲
 
+`design name: Plato`
+
 ## AI-Powered Home Cooking Assistant
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
@@ -11,39 +13,45 @@ Picture-to-Palatable is a multi-modal AI application that transforms the way you
 
 Hackaton: [The Ultimate, Multi-modal, AI Acceleration Event LPB 25](https://www.kxsb.org/lpb25)
 
-PtP DEMO: TBC
+Delivered:
+- Product video: https://youtu.be/B5o5uPj2KiY
+- Product access (may break): [link](https://ptp-gamma.vercel.app)
+
 
 Partners:
 <div align="center">
   <p style="width: 80%; margin: 0 auto;">
     <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/vultr.svg" alt="Vultr" height="100" valign="middle" />
     &nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/AMD.svg" alt="AMD" height="100" valign="middle" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/hf.svg" alt="HuggingFace" height="100" valign="middle" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
     <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/mistral.svg" alt="Mistral" height="100" valign="middle" />
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/lumalabs.svg" alt="Luma" height="40" valign="middle" />
     &nbsp;&nbsp;&nbsp;&nbsp;
     <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/pinecone.svg" alt="Pinecone" height="100" valign="middle" />
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/lumalabs.svg" alt="LumaLab" height="40" valign="middle" />
   </p>
 </div>
 
 ## 🌟 Features
 
 - **Multi-Modal Input Processing**:
-  - 📝 Text descriptions (e.g., "I want something spicy with chicken")
-  - 🎤 Voice commands ("What can I make with eggs and spinach?")
-  - 📸 Food image analysis ("What can I cook with these ingredients?")
-  - 🎬 Video processing of your pantry or refrigerator
+  - 📝 Text descriptions (e.g., "I got 200g feta, one cucumber, and 200g tomatoes.")
+  - 🎤 Voice commands ("Just bought some salad and 3 peppers")
+  - 📸 Food image analysis (e.g. fridge content)
+
 
 - **Smart Recipe Generation**:
   - 🍽️ Personalized recipe recommendations
   - 📊 Nutrition analysis and dietary requirement matching
   - 🛒 Ingredient substitution suggestions
-  - 🥘 Multi-modal recipe output (text, images, voice guidance)
+  - 🥘 Multi-modal recipe output (text, images, video)
 
 - **Kitchen Management**:
   - ✅ Inventory tracking of available ingredients
-  - 🔍 Kitchen tools assessment
-  - 📅 Weekly meal planning integration
   - 🥦 Dietary requirements compliance checking
 
 ## 🛠️ Architecture
@@ -57,21 +65,18 @@ Picture-to-Palatable leverages a modular architecture:
 
 1. **Input Processing Module**:
    - Text processing
-   - Speech-to-text conversion (perhaps native support on device?)
+   - Speech-to-text conversion
    - Image recognition
-   - Video frame analysis (perhaps via video to image, then image recognition?)
 
 2. **AI Decision Engine**:
    - Dietary requirements analyzer
    - Kitchen inventory management
-   - Cooking tools assessment
    - Recipe matching (if available)
 
 4. **Recipe Generation System**:
    - Personalized recipe creation
    - Step-by-step instruction compilation
    - Visual guidance generation
-   - Voice instruction synthesis
 
 5. **User Interface**:
    - Web-based dashboard
@@ -82,8 +87,7 @@ Picture-to-Palatable leverages a modular architecture:
 
 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/openapi/openapi-original-wordmark.svg" width="150"/>
 
-[OpenAPI](https://swagger.io/specification/) specification is available [here](https://github.com/ptbdnr/ptp/blob/main/assets/openapi_v1.0.0.yaml).
-To review, use an editor like [SwaggerEditor](https://editor.swagger.io/).
+[OpenAPI](https://swagger.io/specification/) specification is [available](https://github.com/ptbdnr/ptp/blob/main/assets/openapi_v1.0.0.yaml), load it to [SwaggerEditor](https://editor.swagger.io/).
 
 
 ## 📋 Hackathon Schedule
@@ -116,14 +120,9 @@ Picture-to-Palatable helps you answer critical cooking questions:
 2. **"Do I have the necessary ingredients?"**
    - Inventory analysis with substitution suggestions
 
-3. **"Do I have the required tools?"**
-   - Kitchen equipment assessment for recipe feasibility
-
-4. **"Does this match my dietary requirements?"**
+3. **"Does this match my dietary requirements?"**
    - Nutrition analysis and dietary compliance checking
 
-5. **"Does this fit my weekly meal plan?"**
-   - Integration with meal planning and dietary goals
 
 ## 💡 Future Enhancements
 
@@ -155,6 +154,8 @@ This project is licensed under the MIT License - see the see the [LICENSE](LICEN
 **Made with ❤️ by Team Picture-to-Palatable**
 
 Members (in alphabetical order):
-* ptbdnr [GitHub](https://github.com/ptbdnr)
+* BZcreativ [GitHub](https://github.com/BZcreativ)
+* hirenumradia [GitHub](https://github.com/hirenumradia)
+* Peter [GitHub: ptbdnr](https://github.com/ptbdnr)
 * [Stefania Liashuk](mailto:stefanialiashuk@gmail.com)
 * [Zain Rehman](https://www.linkedin.com/in/zainrehman?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app)
