@@ -159,13 +159,20 @@ export default function MealDetails({ meal }: MealDetailsProps) {
           className={styles.actionButton}
           onClick={() => setIsBookmarked(!isBookmarked)}
         >
-          <Bookmark className={styles.icon} fill={isBookmarked ? '#fc3b00' : 'transparent'} /> <span>Save</span>
+          <Bookmark 
+            className={styles.icon} 
+            fill={isBookmarked ? '#fc3b00' : 'transparent'} 
+            color={isBookmarked ? "black" : "white"} 
+          /> <span>Save</span>
         </button>
         <button 
           className={styles.actionButton}
           onClick={() => setIsRated(!isRated)}
         >
-          <Star className={styles.icon} fill={isRated ? 'yellow' : 'transparent'}/> <span>Rate</span>
+          <Star 
+            className={styles.icon} 
+            fill={isRated ? 'yellow' : 'transparent'}
+          /> <span>Rate</span>
         </button>
       </div>
     </div>
