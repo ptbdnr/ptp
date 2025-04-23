@@ -104,42 +104,22 @@ async def recommend_meal(
     background_tasks = set()
     for meal in meals.meals:
         logger.info("Starting meal orchestration for meal: %s", meal)
-        task = asyncio.create_task(
-            meal_detailer.orchestrate(
-                meal_preview=meal,
-                user_preferences=UserPreferences(
-                    preferences=dietary_preferences,
+        try:
+            task = asyncio.create_task(
+                meal_detailer.orchestrate(
+                    meal_preview=meal,
+                    user_preferences=UserPreferences(
+                        preferences=dietary_preferences,
+                    ),
                 ),
-            ),
-        )
-        background_tasks.add(task)
-        task.add_done_callback(background_tasks.discard)
+            )
+            background_tasks.add(task)
+            task.add_done_callback(background_tasks.discard)
+        except Exception as e:
+            msg = f"Error during meal orchestration: {e}"
+            logger.exception(msg)
+            raise HTTPException(status_code=500, detail=msg) from e
     return meals
-
-    # if user_id not in db["users"]:
-    #     # Create new user with empty data
-    #     db["users"][user_id] = {
-    #         "ingredients": Ingredients(ingredients=[]),
-    #         "equipments": Equipments(equipments=[]),
-    #         "preferences": UserPreferences(preferences=[]),
-    #     }
-
-    # # Generate a sample recommendation
-    # return Meals(
-    #     meals=[
-    #         Meal(
-    #             id=str(uuid.uuid4()),
-    #             name="Tomato Pasta",
-    #             description="A simple and delicious tomato pasta dish.",
-    #             ingredients=[
-    #                 Ingredient(name="Tomato", quantity=3, unit="pieces"),
-    #                 Ingredient(name="Pasta", quantity=200, unit="grams"),
-    #                 Ingredient(name="Olive oil", quantity=2, unit="tablespoons"),
-    #             ],
-    #             required_equipment=["Pot", "Pan", "Knife"],
-    #         ),
-    #     ],
-    # )
 
 @app.get("/users/{userId}/ingredients", response_model=Ingredients)
 async def get_ingredients(
