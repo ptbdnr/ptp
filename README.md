@@ -25,7 +25,7 @@ Partners:
     &nbsp;&nbsp;&nbsp;&nbsp;
     <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/AMD.svg" alt="AMD" width="100" valign="middle" />
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/hf.svg" alt="HuggingFace" height="100" valign="middle" />
+    <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/hf.svg" alt="HuggingFace" height="50" valign="middle" />
     &nbsp;&nbsp;&nbsp;&nbsp;
     <img src="https://github.com/ptbdnr/ptp/blob/main/assets/images/mistral.svg" alt="Mistral" height="100" valign="middle" />
     &nbsp;&nbsp;&nbsp;&nbsp;
