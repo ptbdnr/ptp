@@ -61,8 +61,8 @@ class MealGenerator:
         dietary_preferences: list[str],
         max_prep_time: Optional[int] = 90,
         ingredients: Optional[list[Ingredient]] = None,
-        min_num_meals: Optional[int] = 3,
-        max_num_meals: Optional[int] = 5,
+        min_num_meals: Optional[int] = 1,
+        max_num_meals: Optional[int] = 2,
     ) -> Meals:
         """Convert text to ingredients."""
         ingredients = ingredients or []

@@ -96,8 +96,8 @@ async def recommend_meal(
         dietary_preferences=dietary_preferences,
         max_prep_time=max_prep_time,
         ingredients=ingredients,
-        min_num_meals=3,
-        max_num_meals=5,
+        min_num_meals=1,
+        max_num_meals=2,
     )
 
     meal_detailer = MealDetailer()
