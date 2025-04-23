@@ -274,7 +274,7 @@ export default function Page() {
             localStorage.removeItem('pantry-data');
             window.location.reload();
           }}
-          className={styles.editButton}
+          className={styles.resetButton}
         >
           Reset to Default
         </button>

@@ -183,6 +183,16 @@
   }
   
   .editButton {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    color: #666;
+    cursor: pointer;
+  }
+
+  .resetButton {
     margin: 1rem;
     padding: 0.5rem 1rem;
     background-color: #888;
