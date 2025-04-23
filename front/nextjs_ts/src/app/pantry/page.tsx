@@ -187,7 +187,7 @@ export default function Page() {
 
   return (
       <PantryLayout>
-
+        <div className={styles.container}>
         <div className={styles.inputs}>
           <div className={styles.actionButtons}>
             <button 
@@ -240,15 +240,6 @@ export default function Page() {
         <section className={styles.pantryItemsSection}>
           <div className="flex justify-between items-center mb-4">
             <h2 className={styles.sectionTitle}>Your Pantry Items</h2>
-            <button 
-              onClick={() => {
-                localStorage.removeItem('pantry-data');
-                window.location.reload();
-              }}
-              className="text-sm text-red-500 hover:underline"
-            >
-              Reset to Default
-            </button>
           </div>
           
           <div className={styles.pantryList}>
@@ -278,7 +269,17 @@ export default function Page() {
             })}
           </div>
         </section>
+        <button 
+          onClick={() => {
+            localStorage.removeItem('pantry-data');
+            window.location.reload();
+          }}
+          className={styles.editButton}
+        >
+          Reset to Default
+        </button>
         <ToastContainer />
+        </div>
       </PantryLayout>
   );
 }
