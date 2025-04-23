@@ -19,16 +19,16 @@ dotenv.load_dotenv(".env.local")
 HOSTNAME = os.environ.get("VULTR_OBJECT_STORAGE_HOSTNAME")
 ACCESS_KEY = os.environ.get("VULTR_OBJECT_STORAGE_ACCESS_KEY")
 SECRET_KEY = os.environ.get("VULTR_OBJECT_STORAGE_SECRET_KEY")
-BUCKET_NAME = "meal-images"
+BUCKET_NAME = "ptpbcktdist01"
 ACCESS_LEVEL = "public-read"
 
 PATH_TO_FILES = "./.tmp"
 FILENAMES = [
-    "Chickpea_Salad_e26a0743-93d9-4632-98d8-2871ec05a828.jpg",
-    "Quinoa_Veggie_Bowl_53d13b2d-b7e3-4691-a66a-811849c7aff4.jpg",
-    "Sweet_Potato_Tacos_53629b63-19e1-4910-884e-cd3034b9c602.jpg",
-    "Vegan_Buddha_Bowl_21fe6842-d12a-4ede-9023-6237bd120295.jpg",
-    "Zucchini_Noodles_cdf08385-40fc-44d2-95b2-d632d7b01712.jpg",
+    "Plato - Presentation - Final.mp4",
+    # "Quinoa_Veggie_Bowl_53d13b2d-b7e3-4691-a66a-811849c7aff4.jpg",
+    # "Sweet_Potato_Tacos_53629b63-19e1-4910-884e-cd3034b9c602.jpg",
+    # "Vegan_Buddha_Bowl_21fe6842-d12a-4ede-9023-6237bd120295.jpg",
+    # "Zucchini_Noodles_cdf08385-40fc-44d2-95b2-d632d7b01712.jpg",
 ]
 
 # Print env variables
@@ -74,7 +74,7 @@ for filename in FILENAMES:
     # )
     # logger.info(response)
 
-    object_key = filename
+    object_key = filename  # Use the original filename as the object key
     signed_url = client.generate_presigned_url(
         "put_object",
         Params={

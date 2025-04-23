@@ -12,6 +12,8 @@ import '@llamaindex/chat-ui/styles/markdown.css' // code, latex and custom markd
 import '@llamaindex/chat-ui/styles/pdf.css' // pdf styling
 import 'react-toastify/dist/ReactToastify.css';
 
+import styles from './chat.module.css';
+
 // Debug wrapper to log ChatSection props
 function DebugChatSection({ handler, className }: { handler: ReturnType<typeof useChat>; className?: string }) {
   // Log whenever messages update
@@ -134,8 +136,8 @@ Try to use these pantry ingredients when possible, and at the end please mention
   if (!isReady) {
     return (
       <ChatLayout>
-        <div className="flex flex-col h-[calc(100vh-160px)] items-center justify-center">
-          <div className="animate-pulse text-gray-500">Loading chat...</div>
+        <div className={styles.container}>
+          <div className={styles.loadingContainer}>Loading chat...</div>
         </div>
       </ChatLayout>
     );
@@ -143,8 +145,8 @@ Try to use these pantry ingredients when possible, and at the end please mention
 
   return (
     <ChatLayout>
-        <div className="flex flex-col h-[calc(100vh-160px)] overflow-hidden bg-white">
-          <div className="flex-1 overflow-y-auto px-4 pb-4">
+        <div className={styles.container}>
+          <div className={styles.chatContainer}>
             {/* Use DebugChatSection to trace render timings */}
             <DebugChatSection
               handler={pantryAwareHandler}

@@ -11,16 +11,6 @@ export default function Navigation() {
   
   return (
     <nav className={styles.bottomNav}>
-      <button 
-        className={`${styles.navItem} ${activeTab === 'chat' ? styles.active : ''}`}
-        onClick={() => {
-          setActiveTab('chat');
-          router.push('/chat')
-        }}
-      >
-        <span className={styles.navIcon}>💬</span>
-        <span className={styles.navLabel}>Chat</span>
-      </button>
 
       <button 
         className={`${styles.navItem} ${activeTab === 'profile' ? styles.active : ''}`}
@@ -55,6 +45,17 @@ export default function Navigation() {
         <span className={styles.navLabel}>Discover</span>
       </button>
       
+      <button 
+        className={`${styles.navItem} ${activeTab === 'chat' ? styles.active : ''}`}
+        onClick={() => {
+          setActiveTab('chat');
+          router.push('/chat')
+        }}
+      >
+        <span className={styles.navIcon}>💬</span>
+        <span className={styles.navLabel}>Chat</span>
+      </button>
+
       {/* 
       <button 
         className={`${styles.navItem} ${activeTab === 'plan' ? styles.active : ''}`}

@@ -73,10 +73,10 @@
 
 .barScannerOverlay {
     position: absolute;
-    top: 10%;
+    top: 5%;
     left: 10%;
     width: 80%;
-    height: 60%;
+    height: 75%;
     border: 2px solid rgba(0, 0, 0, 0.5); /* barcode frame border */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     display: flex;

@@ -16,7 +16,7 @@ export default function MealDetailsHero({meal}: {meal: Meal}) {
           {/* <div className={`embla__container`}> */}
             <div className="embla__slide" key={'hero-img-1'}>
               <Image 
-                src={meal.images.hero_url || "/placeholder_meal-hero_16x4.jpg"}
+                src={meal.images?.hero_url || "/placeholder_meal-hero_16x4.jpg"}
                 alt={meal.name}
                 fill
                 className={styles.heroImage}
