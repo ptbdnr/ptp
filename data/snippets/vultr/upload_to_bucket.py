@@ -74,7 +74,7 @@ for filename in FILENAMES:
     # )
     # logger.info(response)
 
-    object_key = 'ptplatest.mp4'
+    object_key = filename  # Use the original filename as the object key
     signed_url = client.generate_presigned_url(
         "put_object",
         Params={
