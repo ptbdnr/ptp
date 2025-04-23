@@ -59,7 +59,7 @@ Partners:
 Picture-to-Palatable leverages a modular architecture:
 <div align="center">
   <p style="width: 80%; margin: 0 auto;">
-    <img src="https://github.com/ptbdnr/ptp/blob/main/design/architecture/hld_v1.1.0.svg" alt="High Level Design" max-height="800" valign="middle" />
+    <img src="https://github.com/ptbdnr/ptp/blob/main/design/architecture/hld_v1.1.0.svg" alt="High Level Design" max-height="780" valign="middle" />
   </p>
 </div>
 
