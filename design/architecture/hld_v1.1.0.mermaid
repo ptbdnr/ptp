@@ -29,7 +29,7 @@ flowchart LR
         mistralContainer
         lumaContainer
   end
-    client["Client"] --> webapp
+    user["User"] --> webapp
     webapp --> nosqldb & aivision & api
     api --> backserver
     backserver --> llm & objectstore & nosqldb & mistralllm & txt2media
@@ -42,4 +42,4 @@ flowchart LR
     mistralllm@{ icon: "fa:chess-pawn"}
     txt2media@{ icon: "fa:chess-rook"}
     nosqldb@{ icon: "fa:file-lines"}
-    client@{ icon: "fa:circle-user"}
+    user@{ icon: "fa:circle-user"}
