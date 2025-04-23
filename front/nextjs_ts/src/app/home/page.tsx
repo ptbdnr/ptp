@@ -8,8 +8,6 @@ import YouTube, { YouTubeProps } from 'react-youtube';
 
 import styles from './home.module.css';
 
-const VIDEO_URL = 'https://ams1.vultrobjects.com/ptpbcktdist01/ptplatest.mp4';
-
 export default function Page() {
   const router = useRouter();
 
