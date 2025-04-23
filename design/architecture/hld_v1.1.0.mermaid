@@ -1,16 +1,24 @@
 ---
 config:
   look: neo
+  layout: elk
 ---
 flowchart LR
  subgraph uiContainer["Vercel"]
         webapp["WebApp"]
   end
+ subgraph hfContainer["HuggingFace"]
+        llmrepo["LLM"]
+  end
+ subgraph gpuContainer["AMD"]
+        hostedllm["LLM"]
+  end
  subgraph backContainer["Vultr"]
         api["Reserved IP"]
+        containerrepo["Container Registry"]
         backserver["Backend Server"]
         objectstore["ObjectStore"]
-        llm["LLM on AMD"]
+        gpuContainer
   end
  subgraph mistralContainer["Mistral"]
         aivision["AI vision"]
@@ -20,7 +28,8 @@ flowchart LR
         nosqldb["NoSQL"]
   end
  subgraph lumaContainer["Luma"]
-        txt2media["Text-To-Image/Video"]
+        txt2img["Text-To-Image"]
+        txt2vid["Text-To-Video"]
   end
  subgraph s1["Picture-to-Palatable"]
         uiContainer
@@ -30,16 +39,21 @@ flowchart LR
         lumaContainer
   end
     user["User"] --> webapp
-    webapp --> nosqldb & aivision & api
+    webapp --> nosqldb & aivision & api & objectstore
     api --> backserver
-    backserver --> llm & objectstore & nosqldb & mistralllm & txt2media
+    llmrepo --> hostedllm
+    containerrepo --> backserver
+    backserver --> hostedllm & objectstore & nosqldb & mistralllm & txt2img & txt2vid
     webapp@{ icon: "fa:building"}
+    llmrepo@{ icon: "fa:address-card"}
+    hostedllm@{ icon: "fa:chess-pawn"}
     api@{ icon: "fa:map"}
-    backserver@{ icon: "fa:circle-play"}
+    containerrepo@{ icon: "fa:square-caret-right"}
+    backserver@{ icon: "fa:sun"}
     objectstore@{ icon: "fa:folder-open"}
-    llm@{ icon: "fa:chess-pawn"}
     aivision@{ icon: "fa:eye"}
     mistralllm@{ icon: "fa:chess-pawn"}
-    txt2media@{ icon: "fa:chess-rook"}
     nosqldb@{ icon: "fa:file-lines"}
+    txt2img@{ icon: "fa:chess-rook"}
+    txt2vid@{ icon: "fa:chess-pawn"}
     user@{ icon: "fa:circle-user"}
