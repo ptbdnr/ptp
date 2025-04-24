@@ -20,7 +20,7 @@ import MealCard from "@/components/meal-card/MealCard";
 
 import styles from './meal-discovery.module.css';
 
-import { mockupMeals, mockupSupriseMeal } from '@/data/meals';
+import { mockupMeals } from '@/data/meals';
 
 export default function Page() {
   const { profile } = useProfileContext();
@@ -29,8 +29,8 @@ export default function Page() {
   const [ stockMeals, setStockMeals ] = useState<Meal[]>(mockupMeals);
   const [ searchMeals, setSearchMeals ] = useState<Meal[]>([]);  
   const [ aiMeals, setAiMeals ] = useState<Meal[]>([]);  
-  const surpriseMeal: Meal = mockupSupriseMeal;
-  const [likedMeals, setLikedMeals] = useState<Meal[]>([]);
+  const [ surpriseMeals, setSupriseMeals] = useState<Meal[]>([stockMeals[Math.floor(Math.random() * stockMeals.length)]]);
+  const [ likedMeals, setLikedMeals ] = useState<Meal[]>([]);
   const router = useRouter();
   const toastId = useRef<Id | undefined>(undefined);
   
@@ -97,7 +97,7 @@ export default function Page() {
           ? searchMeals[0]
           : mealSource === "ai"
           ? aiMeals[0]
-          : surpriseMeal,
+          : surpriseMeals[0],
       ]);
       setMeals(likedMeals);
     }
@@ -116,20 +116,20 @@ export default function Page() {
           ) : searchMeals.length > 0 ? (
             <MealSwipeCard 
               meal={searchMeals[0]}
-              // tags={["search"]}
+              tags={["search"]}
               onSwipe={(direction) => handleSwipe(direction, "search", setSearchMeals)}
             />
           ) : aiMeals.length > 0 ? (
             <MealSwipeCard 
               meal={aiMeals[0]}
-              // tags={["ai"]}
+              tags={["ai"]}
               onSwipe={(direction) => handleSwipe(direction, "ai", setAiMeals)}
             />
-          ) : (
+          ) : surpriseMeals.length > 0 && (
             <MealSwipeCard
-              meal={surpriseMeal}
-              // tags={["surprise"]}
-              onSwipe={(direction) => handleSwipe(direction, "surprise", setAiMeals)}
+              meal={surpriseMeals[0]}
+              tags={["surprise"]}
+              onSwipe={(direction) => handleSwipe(direction, "surprise", setSupriseMeals)}
             />
           )}
         </div>
