@@ -23,6 +23,7 @@ host: `kipxqyn.mongodb.net`
 
 Useful links:
 * [How to use Python with MongoDB](https://www.mongodb.com/resources/languages/python)
+* [Configure IP Address List Entries](https://www.mongodb.com/docs/atlas/security/ip-access-list/#std-label-access-list)
 
 ## Vector Storage
 
