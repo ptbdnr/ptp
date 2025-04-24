@@ -1,22 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { v4 } from "uuid";
 
+import { log } from '@/utils/logger';
 import { Ingredient } from '@/types/ingredients';
 
 type ResponseData = {
     error?: string;
     ingredients?: Ingredient[];
-}
-
-// Helper function for consistent logging
-const log = (func_name: string, level: 'info' | 'error' | 'debug', message: string, data?: unknown) => {
-    const timestamp = new Date().toISOString();
-    const logMessage = `[${timestamp}] [${func_name}] [${level.toUpperCase()}] ${message}`;
-    if (data) {
-        console.log(logMessage, data);
-    } else {
-        console.log(logMessage);
-    }
 }
  
 export default async function handler(
