@@ -110,7 +110,7 @@ export default function Page() {
           {stockMeals.length > 0 ? (
             <MealSwipeCard 
               meal={stockMeals[0]}
-              // tags={["stock"]}
+              tags={["stock"]}
               onSwipe={(direction) => handleSwipe(direction, "stock", setStockMeals)}
             />
           ) : searchMeals.length > 0 ? (
@@ -137,8 +137,14 @@ export default function Page() {
         <div className={styles.menu}>
           {
           likedMeals.length == 0 &&
+            (stockMeals.length > 0 || searchMeals.length > 0 || aiMeals.length > 0 || surpriseMeals.length > 0 ) 
+            ?
             <div className={styles.menuInstruction}>
               Swipe right to add meal to your menu,<br />left to skip.
+            </div>
+            :
+            <div className={styles.menuInstruction}>
+              Your menu is empty, restart to discover meals!
             </div>
           }
           <div className={styles.menuCards}>
