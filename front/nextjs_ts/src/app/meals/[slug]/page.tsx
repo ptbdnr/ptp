@@ -20,7 +20,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     const host = headersList.get('host') || 'localhost:3000';
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
     const baseUrl = `${protocol}://${host}`;
-    const response = await fetch(`${baseUrl}/api/meals`);
+    const response = await fetch(`${baseUrl}/api/meals`, {
+      method: 'GET',
+    });
     if (!response.ok) {
       throw new Error('Failed to fetch meal data');
     }
