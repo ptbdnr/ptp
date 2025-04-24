@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
       'meal-videos.ams1.vultrobjects.com',
     ],
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },  
   async rewrites() {
     return [
       {

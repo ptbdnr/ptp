@@ -28,6 +28,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     }
     const mealData = await response.json();
     meal = mealData.meals.find((meal: Meal) => meal.id === slug);
+    if (!meal) {
+      meal = mealData.meals[0]; // fallback to first meal
+    }
   }
   
   
