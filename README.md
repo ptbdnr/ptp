@@ -13,10 +13,6 @@ Picture-to-Palatable is a multi-modal AI application that transforms the way you
 
 Hackaton: [The Ultimate, Multi-modal, AI Acceleration Event LPB 25](https://www.kxsb.org/lpb25)
 
-Delivered:
-- Product video: https://youtu.be/B5o5uPj2KiY
-- Product access (may break): [link](https://ptp-gamma.vercel.app)
-
 
 Partners:
 <div align="center">
